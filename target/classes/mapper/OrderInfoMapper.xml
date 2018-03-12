@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IOrderInfoDao">
+  <resultMap id="BaseResultMap" type="com.entity.OrderInfo">
+    <id column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="goods_count" jdbcType="INTEGER" property="goodsCount" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="order_user" jdbcType="VARCHAR" property="orderUser" />
+    <result column="order_tel" jdbcType="VARCHAR" property="orderTel" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+    <result column="operator_lasttime" jdbcType="TIMESTAMP" property="operatorLasttime" />
+    <result column="allout_time" jdbcType="TIMESTAMP" property="alloutTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, order_no, goods_count, unit, order_time, order_user, order_tel, creator, 
+    create_time, operator, operate_time, operator_lasttime, allout_time
+  </sql>
+  <!-- 默认查询 -->
+  <select id="select" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_info
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 默认删除 -->
+  <delete id="delete" parameterType="java.lang.String">
+    delete from order_info
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 默认添加 -->
+  <insert id="insert" parameterType="com.entity.OrderInfo">
+    insert into order_info (order_id, goods_count, unit, 
+      order_time, order_user, order_tel, 
+      creator, create_time, operator, 
+      operate_time, operator_lasttime, allout_time
+      )
+    values (#{orderId,jdbcType=VARCHAR}, #{goodsCount,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, 
+      #{orderTime,jdbcType=TIMESTAMP}, #{orderUser,jdbcType=VARCHAR}, #{orderTel,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR}, 
+      #{operateTime,jdbcType=TIMESTAMP}, #{operatorLasttime,jdbcType=TIMESTAMP}, #{alloutTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+<!-- 默认修改 -->
+  <update id="update" parameterType="com.entity.OrderInfo">
+    update order_info
+    set goods_count = #{goodsCount,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      order_user = #{orderUser,jdbcType=VARCHAR},
+      order_tel = #{orderTel,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator = #{operator,jdbcType=VARCHAR},
+      operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      operator_lasttime = #{operatorLasttime,jdbcType=TIMESTAMP},
+      allout_time = #{alloutTime,jdbcType=TIMESTAMP}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

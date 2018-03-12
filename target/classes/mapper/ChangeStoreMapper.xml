@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IChangeStoreDao">
+	<resultMap id="BaseResultMap" type="com.entity.ChangeStore">
+		<id column="change_id" jdbcType="VARCHAR" property="changeId" />
+		<result column="change_no" jdbcType="VARCHAR" property="changeNo" />
+		<result column="bar_code" jdbcType="VARCHAR" property="barCode" />
+		<result column="store_id_from" jdbcType="VARCHAR" property="storeIdFrom" />
+		<result column="store_id_ing" jdbcType="VARCHAR" property="storeIdIng" />
+		<result column="store_id_to" jdbcType="VARCHAR" property="storeIdTo" />
+		<result column="change_time" jdbcType="TIMESTAMP" property="changeTime" />
+		<result column="statue" jdbcType="INTEGER" property="statue" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		change_id, change_no, bar_code, store_id_from, store_id_ing, store_id_to,
+		change_time,
+		statue
+	</sql>
+	<!-- 新增调库单 -->
+	<insert id="insertChangeStore" parameterType="com.entity.ChangeStore">
+		insert into
+		change_store (change_id, change_no, bar_code, store_id_from,
+		store_id_ing, store_id_to, change_time,
+		statue)
+		values
+		(#{changeId,jdbcType=VARCHAR}, #{changeNo,jdbcType=VARCHAR},
+		#{barCode,jdbcType=VARCHAR}, #{storeIdFrom,jdbcType=VARCHAR},
+		#{storeIdIng,jdbcType=VARCHAR}, #{storeIdTo,jdbcType=VARCHAR},
+		#{changeTime,jdbcType=TIMESTAMP},
+		#{statue,jdbcType=INTEGER})
+	</insert>
+	
+	<!--根据调库单号查询 -->
+	<select id="selectChangeStoreByNo" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from change_store
+		where change_no =#{changeNo,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据状态查询调库单 -->
+	<select id="selectByStatue" parameterType="java.lang.Integer"
+		resultType="hashmap">
+		SELECT
+		cs.*, fromsh.store_no fromno,
+		tosh.store_no tono
+		FROM
+		change_store cs
+		LEFT JOIN storehouse fromsh ON cs.store_id_from =
+		fromsh.store_id
+		LEFT JOIN storehouse tosh ON tosh.store_id =
+		cs.store_id_to
+		WHERE
+		cs.statue = #{status}
+	</select>
+	<!-- 根据主键删除 -->
+	<delete id="deleteByChangeId" parameterType="java.lang.String">
+		delete from
+		change_store
+		where change_id = #{changeId,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 根据起始仓库id删除调库单-->
+	<delete id="deleteChangeStoreByStoreIdFrom" parameterType="java.lang.String">
+		delete from change_store
+		where store_id_from = #{storeIdFrom,jdbcType=VARCHAR}
+	</delete>
+	<!-- 根据条件修改 -->
+	<update id="updateCSByCSIdSelective" parameterType="com.entity.ChangeStore">
+		update change_store
+		<set>
+			<if test="changeNo != null">
+				change_no = #{changeNo,jdbcType=VARCHAR},
+			</if>
+
+			<if test="barCode != null">
+				bar_code = #{barCode,jdbcType=VARCHAR},
+			</if>
+			<if test="storeIdFrom != null">
+				store_id_from = #{storeIdFrom,jdbcType=VARCHAR},
+			</if>
+			<if test="storeIdIng != null">
+				store_id_ing = #{storeIdIng,jdbcType=VARCHAR},
+			</if>
+			<if test="storeIdTo != null">
+				store_id_to = #{storeIdTo,jdbcType=VARCHAR},
+			</if>
+			<if test="changeTime != null">
+				change_time = #{changeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="statue != null">
+				statue = #{statue,jdbcType=INTEGER},
+			</if>
+		</set>
+		where change_id = #{changeId,jdbcType=VARCHAR}
+	</update>
+	<!-- 根据主键查找调货单 -->
+	<select id="selectChangeStoreByChangeId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from change_store
+		where change_id = #{changeId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 通过仓库id查找调库单记录的单号 -->
+  <select id="searchChangeStoreNoByStoreId" parameterType="java.lang.String" resultType="String">
+    select change_no from change_store where store_id_from = #{0}
+  </select>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from change_store
+		where change_id = #{changeId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		change_store
+		where change_id = #{changeId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.entity.ChangeStore">
+		insert into change_store
+		(change_id, change_no, bar_code, store_id_from,
+		store_id_ing,
+		store_id_to, change_time,
+		statue)
+		values (#{changeId,jdbcType=VARCHAR},
+		#{changeNo,jdbcType=VARCHAR},
+		#{barCode,jdbcType=VARCHAR},
+		#{storeIdFrom,jdbcType=VARCHAR},
+		#{storeIdIng,jdbcType=VARCHAR},
+		#{storeIdTo,jdbcType=VARCHAR},
+		#{changeTime,jdbcType=TIMESTAMP},
+		#{statue,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.entity.ChangeStore">
+		insert into change_store
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="changeId != null">
+				change_id,
+			</if>
+			<if test="changeNo != null">
+				change_no,
+			</if>
+
+			<if test="barCode != null">
+				bar_code,
+			</if>
+			<if test="storeIdFrom != null">
+				store_id_from,
+			</if>
+			<if test="storeIdIng != null">
+				store_id_ing,
+			</if>
+			<if test="storeIdTo != null">
+				store_id_to,
+			</if>
+			<if test="changeTime != null">
+				change_time,
+			</if>
+			<if test="statue != null">
+				statue,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="changeId != null">
+				#{changeId,jdbcType=VARCHAR},
+			</if>
+			<if test="changeNo != null">
+				#{changeNo,jdbcType=VARCHAR},
+			</if>
+			<if test="barCode != null">
+				#{barCode,jdbcType=VARCHAR},
+			</if>
+			<if test="storeIdFrom != null">
+				#{storeIdFrom,jdbcType=VARCHAR},
+			</if>
+			<if test="storeIdIng != null">
+				#{storeIdIng,jdbcType=VARCHAR},
+			</if>
+			<if test="storeIdTo != null">
+				#{storeIdTo,jdbcType=VARCHAR},
+			</if>
+			<if test="changeTime != null">
+				#{changeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="statue != null">
+				#{statue,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.entity.ChangeStore">
+		update change_store
+		<set>
+			<if test="changeNo != null">
+				change_no = #{changeNo,jdbcType=VARCHAR},
+			</if>
+			<if test="barCode != null">
+				bar_code = #{barCode,jdbcType=VARCHAR},
+			</if>
+			<if test="storeIdFrom != null">
+				store_id_from = #{storeIdFrom,jdbcType=VARCHAR},
+			</if>
+			<if test="storeIdIng != null">
+				store_id_ing = #{storeIdIng,jdbcType=VARCHAR},
+			</if>
+			<if test="storeIdTo != null">
+				store_id_to = #{storeIdTo,jdbcType=VARCHAR},
+			</if>
+			<if test="changeTime != null">
+				change_time = #{changeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="statue != null">
+				statue = #{statue,jdbcType=INTEGER},
+			</if>
+		</set>
+		where change_id = #{changeId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.entity.ChangeStore">
+		update
+		change_store
+		set change_no = #{changeNo,jdbcType=VARCHAR},
+		bar_code =
+		#{barCode,jdbcType=VARCHAR},
+		store_id_from =
+		#{storeIdFrom,jdbcType=VARCHAR},
+		store_id_ing =
+		#{storeIdIng,jdbcType=VARCHAR},
+		store_id_to =
+		#{storeIdTo,jdbcType=VARCHAR},
+		change_time =
+		#{changeTime,jdbcType=TIMESTAMP},
+		statue = #{statue,jdbcType=INTEGER}
+		where change_id = #{changeId,jdbcType=VARCHAR}
+	</update>
+</mapper>

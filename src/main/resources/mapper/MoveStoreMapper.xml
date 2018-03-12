@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IMoveStoreDao">
+  <resultMap id="BaseResultMap" type="com.entity.MoveStore">
+    <id column="move_id" jdbcType="VARCHAR" property="moveId" />
+    <result column="move_no" jdbcType="VARCHAR" property="moveNo" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="order_detail_id" jdbcType="VARCHAR" property="orderDetailId" />
+    <result column="bar_code" jdbcType="VARCHAR" property="barCode" />
+    <result column="store_id_from" jdbcType="VARCHAR" property="storeIdFrom" />
+    <result column="store_id_to" jdbcType="VARCHAR" property="storeIdTo" />
+    <result column="move_time" jdbcType="TIMESTAMP" property="moveTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    move_id, move_no, order_id, order_detail_id, bar_code, store_id_from, store_id_to, 
+    move_time, status
+  </sql>
+  
+  <!-- 根据移库id查找移库 -->
+  <select id="searchMoveStoreById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from move_store
+    where move_id = #{0}
+  </select>
+  
+    <!-- 根据移库id查找移库 -->
+  <select id="selectMoveStoreByNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from move_store
+    where move_no = #{0}
+  </select>
+  
+  <!-- 查询预移库列表 -->
+  <select id="searchMoveStore" parameterType="java.lang.String" resultType="hashmap">
+    select ms.*,storefrom.store_no as storeFrom,storeto.store_no as storeTo from move_store ms 
+    left join storehouse storefrom on ms.store_id_from = storefrom.store_id 
+	left join storehouse storeto on ms.store_id_to = storeto.store_id
+	where ms.status = #{0}
+  </select>
+  
+  <!-- 通过仓库id查找移库单记录的单号 -->
+  <select id="searchMoveStoreNoByStoreId" parameterType="java.lang.String" resultType="String">
+    select move_no from move_store where store_id_from = #{0}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from move_store
+    where move_id = #{moveId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 根据起始仓库id删除移库单 -->
+  <delete id="deleteMoveStoreByStoreIdFrom" parameterType="java.lang.String">
+    delete from move_store
+    where store_id_from = #{storeIdFrom,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insertMoveStore" parameterType="com.entity.MoveStore">
+    insert into move_store (move_id, move_no, order_id, 
+      order_detail_id, bar_code, store_id_from, 
+      store_id_to, move_time, status
+      )
+    values (#{moveId,jdbcType=VARCHAR}, #{moveNo,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{orderDetailId,jdbcType=VARCHAR}, #{barCode,jdbcType=VARCHAR}, #{storeIdFrom,jdbcType=VARCHAR}, 
+      #{storeIdTo,jdbcType=VARCHAR}, #{moveTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+
+<!-- 修改移库 -->
+  <update id="updateMoveStore" parameterType="com.entity.MoveStore">
+    update move_store
+    set move_no = #{moveNo,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
+      bar_code = #{barCode,jdbcType=VARCHAR},
+      store_id_from = #{storeIdFrom,jdbcType=VARCHAR},
+      store_id_to = #{storeIdTo,jdbcType=VARCHAR},
+      move_time = #{moveTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where move_id = #{moveId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="shortcut icon" href="../image/logo4.ico" type="image/x-icon" />
+    <!--公共的js库-->
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+   
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <!--   <script type="text/javascript" src="../js/bootstrap.min.js"></script> -->
+   <link rel="stylesheet" href="../css/bootstrapValidator.css" />
+   <script type="text/javascript" charset="utf-8"
+	src="../js/bootstrapValidator.min.js"></script>
+  <!--   <script type="text/javascript" charset="utf-8" src="../js/bootstrapValidator.js"></script>  -->
+	<link rel="stylesheet" href="../fonts/iconfont.css" />
+    <link rel="stylesheet" href="../css/head.css" /><!--头部样式-->
+    <script type="text/javascript" src="../js/head.js"></script><!--头部js-->
+    <!--  公共弹出提示包 -->
+   	<link rel="stylesheet" href="../css/msgbox.css">
+   	<script type="text/javascript" src="../js/msgbox.js"></script>
+    <!--公共css-->
+    <link rel="stylesheet" href="../css/rest.css">
+    
+
+<!-- 仓库信息js -->
+<script type="text/javascript" src="js/storageMessage.js"></script>
+<link rel="stylesheet" href="css/storageMessage.css" />
+<!-- 有数据页面 -->
+<link rel="stylesheet" href="css/successAdd.css" />
+<script type="text/javascript" src="../js/dateFormat.js"></script>
+<script type="text/javascript" src="js/addStorage.js" ></script><!--新建仓库js-->
+<link rel="stylesheet" href="css/addStorage.css" /><!--新建仓库css-->
+<!-- 监控界面css js -->
+<link rel="stylesheet" href="css/InterMonitor.css" />
+<script type="text/javascript" src="js/InterMonitor.js"></script>
+
+
+</head>
+<body>
+	<!--头部q-->
+	<div class="head">
+		<div class="add_top"></div>
+		<!--导航-->
+		<div class="add_nav_box clearfix">
+			<div class="wrap add_nav clearfix">
+				<ul class="clearfix add_nav_ul fl">
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r"  href="../currentTask/currentTask.html">
+							<i class="iconfont icon-cangku-" style="font-size:42px;"></i>
+						   当前任务
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r" href="../PutIn/PutIn.html">
+							<i class="iconfont icon-ruku1-copy"></i>
+						入库作业
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+					 	<a class="fc_3 fs14 pos_r" href="../OutPut/outPut.html">
+					 		<i class="iconfont icon-renwu"></i>
+					 	出库作业
+					 	</a>
+					 	<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r" href="../LibraryOut/libraryOut.html">
+						<i class="iconfont icon-yidong"></i>
+						调库作业
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r"  href="../moveStorage/moveStorage.html">
+							<i class="iconfont icon-yufenjian"></i>
+						移库作业
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="select fs14 pos_r" href="../StorageMessage/storageMessage.html">
+						  <i class="iconfont icon-tiaoxingma"></i>
+						仓库信息
+						</a>
+						<div class="sanjiao pos_a"></div>
+					</li>
+					<li class="fl pos_r none">
+						<a class="fc_3 fs14 pos_r" href="../userInfo/userInfo.html">
+						<i class="iconfont icon-guanliyuan1"></i>
+						账号管理
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r" href="../Configuration/configuration.html">
+						<i class="iconfont icon-shezhi" style="font-size:38px;"></i>
+						配置管理
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+				</ul>
+					<!-- <div class="fr fc_3 fs14 add_nav_ul_right mt50">入口复位</div> -->
+			</div>
+		</div>
+	</div>
+	<!--  无数据创建仓库q-->
+	<div class="wrap clearfix add_null_box">
+	<div class="stora_no_num none">
+		<!--搜索栏q-->
+<div class="clearfix pl20 pr20 add_seach_box pos_r">
+	<div class="fl add_search_div pos_a">
+		<input type="text" class="add_seach" placeholder="请输入订单、仓位号、条形码"/>
+	</div>
+	<div class="fl cursor add_search_img ml20 pos_a" id="addStorageSearch" style="left:420px;">
+		<img src="../image/search.png" class="add_input_img"/>
+	</div>
+	<div class="add_no_button fs15 fc_f fr cursor add_no_button pos_a" style="right:20px;">
+		<img src="../image/tianjia.png" class="fl"/>
+		<span class="fl fs15 fc_f">创建仓库</span>
+		
+	</div>
+</div>
+<!--  无数据创建仓库q-->
+<div class="clearfix add_content_back mt30">
+
+	<!-- <div class="mt30 clearfix">
+		<button class="add_no_button fs15 fc_8 fr cursor" style="background:none;border:0;"><img src="../image/add_button.png" />&nbsp;&nbsp;创建仓库</button>
+    </div> -->
+    <!--新建图片提示q-->
+    <div class="add_img_box">
+    	<div>
+    		<img src="../image/add.png" class="ml34"/>
+    	</div>
+    	<p class="fs15 fc_3 center mt30">您还没有添加仓库信息</p>
+    	<p class="fs12 fc_9 center mt10">您可先从右上角新建仓库来创建一个仓库</p>
+    	<div class="add_img_button fc_f fs12">立即创建</div>
+    </div>
+</div>
+
+</div>
+
+<!-- 有数据页面展示 -->
+<div class="stora_has_num none">
+	<!--搜索栏q-->
+<div class="clearfix pl20 pr20 success_seach_box pos_r">
+	<div class="fl success_search_div pos_a">
+		<input type="text" class="success_seach" placeholder="请输入订单、仓位号、条形码" />
+	</div>
+	<div class="fl cursor success_search_img ml20 pos_a"
+		id="successAddSearch" style="left: 420px;">
+		<img src="../image/search.png" class="success_input_img" />
+	</div>
+	<div class="warehouse_add fs15 fr cursor mt40">
+		<i class="iconfont icon-cangku-"></i> 
+		<span class="fs15 fc_f ml4">新建仓库</span>
+	</div>
+
+</div>
+<!--仓库列表开始q-->
+<div class="clearfix">
+	<ul class="clearfix warehouse_list m0" id="warehouseUl">
+<!-- 		<li class="active">
+			<img src="../image/cang.png" class="fl" />
+			<div class="warehouse_list_name fs14 center active_f">上海益课仓库1</div>
+		</li>
+		<li>
+			<img src="../image/cang.png" class="fl" />
+			<div class="warehouse_list_name fs14 center fc_8">上海益课仓库1</div>
+		</li> -->
+	</ul>
+
+</div>
+<!--仓库列表结束q-->
+<!--仓库信息栏开始q-->
+<div class="clearfix mt15">
+	<div class="success_message pos_r">
+
+	<!-- 	<div class="success_message_title fc_3 fs15 clearfix">
+			 <span
+				class="fc_3 fs15 ml10 lh28" id="storeNameId">无锡仓库</span>
+		</div> -->
+		<ul class="clearfix success_message_ul mt10">
+			<li>
+				<div class="clearfix mt10">
+					<span class="fl fs12 fc_9e">仓库类型：</span> <span
+						class="fl fs12 fc_9e" id="storeTypeId"></span>
+				</div>
+			</li>
+			<li>
+				<div class="clearfix mt10">
+					<span class="fl fs12 fc_9e">负责人：</span> <span class="fl fs12 fc_9e"
+						id="storeMasterId" dataId=""></span>
+				</div>
+			</li>
+			<li>
+				<div class="clearfix mt10">
+					<span class="fl fs12 fc_9e">联系电话：</span> <span
+						class="fl fs12 fc_9e" id="masterTelId"></span>
+				</div>
+			</li>
+			<li>
+				<div class="clearfix mt10">
+					<span class="fl fs12 fc_9e">仓库地址：</span> <a
+						class="fl fs12 fc_9e success_message_address"
+						title="上海浦东新区牡丹路60号1405室" id="storeAddressId">上海浦东新区牡丹路60号1405室</a>
+				</div>
+			</li>
+			<li>
+				<div class="clearfix mt10">
+					<span class="fl fs12 fc_9e">创建人：</span> <span class="fl fs12 fc_9e"
+						id="creatorId">王奎</span>
+				</div>
+			</li>
+			<li>
+				<div class="clearfix mt10">
+					<span class="fl fs12 fc_9e">创建时间：</span> <span
+					class="fl fs12 fc_9e" id="createTimeId"></span>
+				</div>
+			</li>
+			<li>
+				<div class="success_no_button fs15 fc_f fl cursor mr30 mt10" style="right: 0px;">
+					<img src="../image/bianji4.png" class="fl" style="height:15px;width:14px;margin-top:3px;"/> 
+					<span class="fs15 fc_4d ml4">编辑仓库</span>
+				</div>
+
+				<!-- <div class="clearfix mt10">
+					<span class="fl fs12 fc_9e">行列顺序：</span> <span class="fl fs12 fc_9e" id="sequenceId">行、列</span>
+				</div> -->
+
+				<!-- <div class="storage_monitor pos_a none" id="storage_monitor">
+					<img src="../image/list_lie.png"/>
+
+				</div>
+				<div class="storage_monitor pos_a" id="storage_list_success">
+					<img src="../image/black_list.png"/>
+				</div> -->
+					<div class="storage_monitor pos_a none storage_monitor_table" id="storage_monitor">
+				<img src="../image/list_lie.png"/>
+		</div>
+		<div class="storage_monitor pos_a storage_monitor_list" id="storage_list_success">
+			<img src="../image/black_list.png"/>
+		</div>
+			</li>
+		</ul>
+		<!-- <div class="storage_monitor pos_a none storage_monitor_table" id="storage_monitor">
+				<img src="../image/list_lie.png"/>
+		</div>
+		<div class="storage_monitor pos_a storage_monitor_list" id="storage_list_success">
+			<img src="../image/black_list.png"/>
+		</div> -->
+
+	</div>
+<!--仓库信息栏结束q-->
+	<!--表格头部开始q-->
+
+	<div class="clearfix success_table_back mt15">
+		<div class="table_box_div none">
+			<div class="success_message_table_top">
+				<div>
+					<span class="ml30">仓位</span>
+				</div>
+				<div>条码</div>
+				<div>仓位状态</div>
+				<div>数量</div>
+				<div>入库时间</div>
+				<div>操作</div>
+			</div>
+			<!--表格头部结束q-->
+			<!--表格内容开始q-->
+			<ul id="storeHourse_ul_id">
+				<!-- <li class="success_message_table_content">
+					<div>
+						<span class="ml30">A10102</span>
+					</div>
+					<div>2018010210251</div>
+					<div>
+						<span class="success_message_table_zhan"></span>
+					</div>
+					<div>0</div>
+					<div>2018/1/8 12:53</div>
+					<div style="color: #078fff;" class="cursor">
+						<a href="historyRecord.html" style="color: #078fff;">历史记录</a>
+					</div>
+				</li> -->				
+			</ul>
+		</div>
+		<!--表格内容结束q-->
+<!-- 界面监管页面开始q -->
+		<div class="inter_box_father">
+				<div class="inter_message_table_top">
+					<div class="inter_table_bg clearfix pos_r">
+						<div class="success_no_addqu fs15 fc_f fl cursor" style="right: 165px;">
+							<span class="fc_f fs30 fl">+</span>
+							<span class="fl fs15 fc_f ml4">新增区位</span>
+						</div>
+						<div class="fr clearfix mr64">
+							<div class="fl">
+								<div class="fl inter_qu_has mt7"></div>
+								<span class="fl fs14 fc_f lh28 ml5">仓库有货</span>
+							</div>
+							<div class="fl ml36">
+								<div class="fl inter_qu_none mt7"></div>
+								<span class="fl fs14 fc_f lh28 ml5">仓库无货</span>
+							</div>
+							<div class="fl ml36">
+								<div class="fl inter_qu_yu mt7"></div>
+								<span class="fl fs14 fc_f lh28 ml5">预占用</span>
+							</div>
+							<div class="fl ml36">
+								<div class="fl inter_qu_tu mt7"></div>
+								<span class="fl fs14 fc_f lh28 ml5">查询选中</span>
+							</div>		
+						</div>
+					</div>
+				</div>
+	<!-- 信息内容q -->
+<ul class="clearfix m0 inter_ul_qu">
+ <li class="clearfix">
+	<div class="clearfix state_div" style="padding-top:32px;background:#fff;padding-right:57px;">
+		<div class="inter_qu_name fl fc_6 fs30" id="areaNameSYsId">A区</div>
+		<div style="height:28px;width:1px;background:#dddddd;" class="fl ml15"></div>
+		<div class="fl fs24 lh30 ml15" id="stateNoSys" style="width:80px;height:55px;color:#3379d1;"></div>
+		<div class="fl ml20">
+			<span class="fl fs12 fc_9 lh30">订单号</span>
+			<input type="text" class="inter_input ml5" id="orderIdSys"/>
+		</div>
+		<div class="fl ml20">
+			<span class="fl fs12 fc_9 lh30">货物条码</span>
+			<input type="text" class="inter_input ml5" id="goodNoSys"/>
+		</div>
+		<div class="fl ml20">
+			<span class="fl fs12 fc_9 lh30">数量</span>
+			<input type="text" class="inter_input ml5" id="countSys" style="width:40px;"/>
+		</div>
+		<div class="inter_no_button fs15 fc_f fr cursor ml15" style="height:27px;margin-top:14px;">
+			<img src="../image/bianji4.png" class="fl" style="margin-top: 0px;width:14px;height:15px;" /> 
+			<span class="fl fs14 fc_4d" style="height:27px;">编辑区位</span>
+		</div>
+		<ul class="clearfix fr">
+			<li class="fl clearfix">
+				<div class="clearfix">
+					<span class="fl fs10 fc_9e font_r" style="font-size:10px;">层&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数：</span> <span class="fl fs10 fc_9e"
+						id="rowsCountId" style="font-size:10px;">10</span>
+				</div>
+				<div class="clearfix mt10">
+					<span class="fl fs10 fc_9e font_r" style="font-size:10px;">层起始值：</span> <span
+						class="fl fs10 fc_9e" id="rowsStartId" style="font-size:10px;">1</span>
+				</div>
+			</li>
+			<li class="fl clearfix ml15">
+				<div class="clearfix">
+					<span class="fl fs10 fc_9e font_r" style="font-size:10px;">列&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数：</span> <span class="fl fs10 fc_9e"
+						id="columnsCountId" style="font-size:10px;">10</span>
+				</div>
+				<div class="clearfix mt10">
+					<span class="fl fs10 fc_9e font_r" style="font-size:10px;">列起始值：</span> <span
+						class="fl fs10 fc_9e" id="columnsStartId" style="font-size:10px;">10</span>
+				</div>
+			</li>
+			<li class="fl clearfix ml20">
+				<!-- <div class="clearfix">
+					<span class="fl fs10 fc_9e font_r" style="font-size:10px;">区位名称：</span> <select
+						class="fl fs10 fc_9e" id="areaNameId" style="width: 55px;border: none;border-bottom: 1px solid #9e9e9e;font-size:10px;">
+						<option value="A1">A1</option>
+					</select>
+				</div> -->
+				<div class="clearfix">
+					<span class="fl fs10 fc_9e" style="font-size:10px;">层列顺序：</span> <span
+						class="fl fs10 fc_9e" id="sequenceId" style="font-size:10px;">层、列</span>
+				</div>
+			</li>
+		</ul>
+	
+	</div>
+  </li>
+
+</ul>
+
+</div>
+<!-- 界面监管页面结束q -->
+	</div>
+</div>
+<!--编辑仓库弹出框q-->
+<div class="zhezhaos none" id="about_zhezhao">
+	<form id="successAdd_hourseId" action="">
+		<div class="success_tan_box" >
+			<div class="success_tan_name_div">
+				<img src="../image/bianji.png" class="fl"
+					style="width: 30px; height: 30px; margin-top: 9px;" /> <span
+					class="fl fs15 fc_f">编辑仓库</span> <span
+					class="fr fs14 fc_6 lh38 success_close"><img
+					src="../image/off.png" /></span>
+			</div>
+			<div class="success_content_box">
+				<!--仓库信息-->
+				<div class="success_content_cang">
+					<div class="success_cang_name clearfix form-group success_yan_i">
+						<p class="fl success_icon">
+							<img src="../image/cname.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">仓库名称：</span> <input
+							type="text" id="storeNameEditId" name="storeName"
+							class="success_cang_name_input fl place_input form-control"
+							placeholder="请输入" />
+					</div>
+					
+					<div class="success_cang_lei clearfix mt10 form-group success_yan_i">
+						<p class="fl success_icon">
+							<img src="../image/clei.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">仓库类型：</span> <input
+							type="text" id="storeTypeEditId" name="storeType"
+							class="success_cang_name_input fl place_input form-control"
+							placeholder="请输入至少6个字符" />
+					</div>
+					<div class="success_cang_people clearfix mt10 form-group success_yan_i">
+						<p class="fl success_icon">
+							<img src="../image/cfuze.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">负责人：</span>
+						<input type="text" id="storeMasterEditId" name="storeMaster"
+							class="success_cang_name_input fl place_input form-control"
+							placeholder="请输入" />
+					</div>
+					<div class="success_cang_phone clearfix mt10 form-group success_yan_i">
+						<p class="fl success_icon">
+							<img src="../image/ctel.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">联系电话：</span> <input
+							type="text" id="masterTelEditId" name="masterTel"
+							class="success_cang_name_input fl place_input form-control"
+							placeholder="请输入手机号" />
+					</div>
+					
+					<div class="success_cang_address clearfix mt10 form-group success_yan_i">
+						<p class="fl success_icon">
+							<img src="../image/cadderss.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">仓库地址：</span>
+						<!-- <select class="success_cang_name_input fl place_input" style="width: 291px;">
+						<option value="请选择">请选择</option>
+					</select> -->
+						<textarea id="storeAddressEditId" name="storeAddress"
+							class="success_cang_name_input fl place_input form-control"
+							placeholder="请输入" style="height:64px;resize: none; "></textarea>
+
+					</div>
+					<!-- <div class="success_cang_update mt15 center fc_f">保存</div> -->
+					<!-- <div class="success_cang_bit none"><img src="../image/tianjia1.png"/>&nbsp;&nbsp;增加区位</div>
+				<div class="success_cang_induce none mt15 center fc_f">增加区位信息</div> -->
+				</div>
+
+			</div>
+			<!--确认取消q-->
+			<div class="success_okorno">
+				<div class="success_button_box">
+					<div class="add_button_delect fl mr100">删除仓库</div>
+					<div class="success_button_no fl">取消</div>
+					<button type="submit" class="success_button_ok fr">确认</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<!--新建qu区位弹出框q-->
+<div class="zhezhao_qu none" id="about_zhezhao1">
+	<div class="success_tan_box">
+		<form id="successAdd_areaId" class="">
+
+			<div class="success_tan_name_div">
+
+				<img src="../image/tianjia.png" class="fl"
+					style="width: 20px; height: 20px; margin-top: 13px;" /> <span
+					class="fl fs15 fc_f edit_qu">&nbsp;新增区位</span> <span
+					class="fr fs14 fc_6 lh38 success_close"><img
+					src="../image/off.png" /></span>
+			</div>
+			<div class="success_content_box">
+				<!--仓库信息-->
+				<!--新增区位q-->
+				<div class="success_content_bitbox">
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<p class="fl success_icon">
+							<img src="../image/qname.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">区位名称：</span> <input
+							type="text" name="areaName" id="areaNameEditId"
+							class="success_cang_name_input fl place_input clearArea"
+							placeholder="请输入" /> <span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+					</div>
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<p class="fl success_icon">
+							<img src="../image/ah.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">层&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数：</span>
+						<input type="text" name="rowsCount" id="rowsCountEditId"
+							class="success_cang_name_input fl place_input clearArea form-control"
+							placeholder="请输入" /> <span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+					</div>
+					<!-- <div class="success_cang_lei clearfix mt10 form-group">
+						<p class="fl success_icon">
+							<img src="../image/qqishi.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">行起始值：</span> <input
+							type="text" name="rowsStart" id="rowsStartEditId"
+							class="success_cang_name_input fl place_input clearArea form-control"
+							placeholder="请输入" />
+					</div> -->
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<p class="fl success_icon">
+							<img src="../image/qlie.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">列&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数：</span>
+						<input type="text" name="columnsCount" id="columnsCountEditId"
+							class="success_cang_name_input fl place_input clearArea form-control"
+							placeholder="请输入" /> <span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+					</div>
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<p class="fl success_icon">
+							<img src="../image/qlieshi.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">层列起始值：</span> &nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="columnsStart" class="  place_input clearArea"  id="columnsStartEditId0" value="0"/> 0&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="columnsStart" class="  place_input clearArea"   id="columnsStartEditId1" value="1"/> 1
+						<span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+					</div>
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<p class="fl success_icon">
+							<img src="../image/qshunxu.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">层列顺序：</span> <!-- <select id="sequenceEditId" 
+						class="success_cang_name_input fl place_input clearArea form-control"
+							name="sequence" style="width: 284px;padding:0;">
+							<option value="">请选择</option>
+							<option value="0">行/层/列</option>
+							<option value="1">行/列/层</option>
+						</select>  -->
+						<input type="radio" name="sequence" class="  place_input clearArea" style="margin-left: 20px;" id="sequenceEditId0" value="0"/> 行/层/列&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="sequence" class="  place_input clearArea"   id="sequenceEditId1" value="1"/> 行/列/层
+						<span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+						<!-- <input type="text"  class="success_cang_name_input fl place_input" placeholder="请输入"/> -->
+					</div>
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<p class="fl success_icon">
+							<img src="../image/qshunxu.png">
+						</p>
+						<span class="fl fc_8 fs12 lh24 span">机器码：</span> <input
+							type="text" id="robotNoEditId" name="robotNo"
+							class="success_cang_name_input fl place_input clearArea place_input clearArea form-control"
+							placeholder="请输入" />
+					</div>
+					
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<input type="hidden" id="createstoreareaId"><!-- 区位id隐藏域 -->
+						
+						<input type="hidden" id="insertOrEdit"><!-- 新增还是修改隐藏域 -->
+					</div>
+					<!-- <button type="submit" class="success_cang_save">保存</button> -->
+					<!-- <div class="success_cang_bits none">
+						<img src="../image/tianjia1.png" />&nbsp;&nbsp;增加区位
+					</div> -->
+					<!-- 				<div class="success_cang_bits"><img src="../image/tianjia.png"/>&nbsp;&nbsp;增加区位</div>
+ -->
+				</div>
+			</div>
+			<!--确认取消q-->
+			<div class="success_okorno">
+				<div class="success_button_delect fl ml40 none">删除区位</div>
+				<div class="success_button_box">
+					<div class="success_button_no fl">取消</div>
+					<button type="submit" class="success_button_ok fr"
+						>确认</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+
+	</div>
+<!--新建仓库弹出框开始q-->
+<div class="zhezhao none" id="about_zhezhao2">
+	<div class="add_tan_box">
+		<div class="add_tan_name_div">
+			<span class="fl fs14 fc_6 lh48 add_name_title_left"><img src="../image/tianjia.png" class="fl"/></span>
+			<span class="fl fs14 fc_f lh48 ml4">新建仓库</span>
+			<span class="fr fs14 fc_6 lh48 add_close"><img src="../image/off.png"/></span>
+		</div>
+		<div class="add_content_box">
+		<form id="create_store_form"><!-- form表单开始-->
+			<!--仓库信息-->
+			<div class="add_content_cang">
+				<div class="form-group add_cang_name clearfix add_i_right">
+					<p class="fl add_icon"><img src="../image/cname.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">仓库名称：</span>
+					<input type="text" name="storeName"  class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入"/> <span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<div class="form-group add_cang_address clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/cadderss.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">仓库地址：</span>
+					<!-- <select class="add_cang_name_input fl place_input" style="width: 291px;">
+						<option value="请选择">请选择</option>
+					</select> -->
+					<input type="text" name="storeAddress" class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入"/><span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/clei.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">仓库类型：</span>
+					<input type="text" name="storeType" class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入至少6个字符"/><span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<div class="form-group add_cang_people clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/cfuze.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">负责人：</span>
+					<input type="text" name="storeMaster" class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入"/><span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<div class="form-group add_cang_phone clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/ctel.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">联系电话：</span>
+					<input type="text" name="masterTel"  class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入手机号"/><span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<!-- <div class="add_cang_bit">
+					<span class="fl fs14 fc_6 lh48 add_name_title_left" style="margin-left:154px;"><img src="../image/tianjia.png" class="fl" style="margin-top:9px;"/></span>
+					<span class="fl fs15 fc_f ml4">增加区位信息</span>
+				</div> -->
+			</div>
+			<!--新增区位q-->
+			<!-- <div class="add_content_bitbox">
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qname.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">区位名称：</span>
+					<input type="text" name="areaName"  class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/><span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/ah.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">行数：</span>
+					<input type="text"  name="rowsCount" class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/><span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qqishi.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">行起始值：</span>
+					<input type="text" name="rowsStart"  class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qlie.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">列数：</span>
+					<input type="text" name="columnsCount"  class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/><span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qlieshi.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span" style="width:72px;">行列起始值：</span>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="columnsStart" class="  place_input "  id="columnsStartId0" value="0" />0 &nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="columnsStart" class="  place_input " id="columnsStartId1" value="1" /> 1
+						<span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qshunxu.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">行列顺序：</span>
+
+					<select name="sequence" class="form-control add_cang_name_input fl place_input clearArea" style="width: 284px;padding:0;">
+						<option value="">请选择</option>
+						<option value="0">行/层/列</option>
+						<option value="1">行/列/层</option>
+					</select>
+					<input type="radio" name="sequence" class="  place_input " style="margin-left: 20px;"  id="sequenceId0" value="0"/> 行/层/列&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="sequence" class="  place_input "   id="sequenceId1" value="1"/> 行/列/层
+					<span style="color:red;font-size:14px;line-height: 24px;float: right;">*</span>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qshunxu.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">机器码：</span>
+					<input type="text" name="robotNo" class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/>
+				</div>
+				<button   type="submit"  class="add_cang_save">保存</button>
+				<div class="add_cang_bits none"><img src="../image/tianjia1.png"/>&nbsp;&nbsp;增加区位</div>
+			</div> -->
+			</form><!-- form表单结束-->
+		</div>
+		<!--确认取消q-->
+		<div class="add_okorno">
+			<div class="add_button_box">
+				<div class="add_button_no fl">取消</div>
+				<div class="add_button_ok fr" >确认</div>
+			</div>	
+		</div>
+	</div>
+</div>
+<!--新建仓库弹出框结束q-->
+
+<!--库存修改信息弹出框开始q -->
+<div class="zhezhao_store none" id="zhezhao_store">
+	<div class="success_tan_box">
+		<form id="successAdd_areaId_store" class="successAdd_areaId_store">
+
+			<div class="success_tan_name_div_store">
+					<div class="fr fs14 fc_6 lh38 success_close1">
+						<img src="../image/off.png" style="width:20px;height:20px;"/>
+					</div>
+					<div class="fc_f fs30 pt20" name="storeNo">A10101</div>
+					<div class="fc_f fs14 clearfix" style="margin-top:-9px;">
+						<span class="fc_f fs14 fl" name="createhourseName">所属库</span>
+						<span class="fc_f fs14 fl ml4">/</span>
+						<span class="fc_f fs14 fl ml4" name="areaName">所属区位</span>
+					</div>
+			</div>
+			<div class="success_content_box">
+				<!--仓库信息-->
+				<div class="success_content_bitbox">
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<span class="fl fc_8 fs12 lh24 span1">状&nbsp;&nbsp;&nbsp;&nbsp;态：</span>
+						<input type="radio" name="storeStatue" class="  place_input clearArea" id="statueEditId0" value="0"/> 空
+						<input type="radio" name="storeStatue" class="  place_input clearArea" style="margin-left: 62px;"   id="statueEditId1" value="1"/> 预占用
+						<input type="radio" name="storeStatue" class="  place_input clearArea" style="margin-left: 62px;"   id="statueEditId2" value="2"/> 已占用
+						<!-- <input type="text"  class="success_cang_name_input fl place_input" placeholder="请输入"/> -->
+					</div>
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<span class="fl fc_8 fs12 lh24 span1">货物码：</span> 
+						<input type="text" name="goodNo" id="goodNoEditId"
+							class="success_cang_name_input fl place_input clearArea"
+							placeholder="请输入" style="width:332px;" />
+					</div>
+					<div class="success_cang_lei clearfix mt10 form-group fl">
+						<span class="fl fc_8 fs12 lh24 span1">订单号：</span>
+						<input type="text" name="orderId" id="orderEditId"
+							class="success_cang_name_input fl place_input clearArea form-control" style="width:150px;"
+							placeholder="请输入" />
+					</div>
+					<div class="success_cang_lei clearfix mt10 form-group fl">
+						<span class="fl fc_8 fs12 lh24 span1" style="margin-left:40px;width:37px;">数量：</span>
+						<input type="text" name="count" id="CountEditId"
+							class="success_cang_name_input fl place_input clearArea form-control" style="width:100px;"
+							placeholder="请输入" />
+					</div>
+					<div class="success_cang_lei clearfix mt10 form-group">
+						<span class="fl fc_8 fs12 lh24 span">备&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+						<textarea id="remarkEditId" name="remark"
+							class="success_cang_name_input fl place_input form-control"
+							placeholder="请输入" style="height:64px;resize: none;width:332px; "></textarea>
+					</div>
+					<input type="hidden" name="storeId">
+				</div>
+			</div>
+			<!--确认取消q-->
+			<div class="success_okorno" style="border:0;">
+				<div class="success_button_box">
+					<div class="success_button_no_stroe fl">重置</div>
+					<button type="submit" class="success_button_ok_stroe fr"
+						>确认</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<!--库存修改信息弹出框结束q -->
+	<!--日期格式化-->
+<script type="text/javascript" src="js/successAdd.js"></script>
+<script>
+/* $(function() {
+	bindClick('successAdd.html');
+
+});
+function bindClick(url) {
+
+	$.get(url, function(data) {
+		$(".success_table_back").html(data);
+	})
+} */
+//编辑仓库
+	$('#successAdd_hourseId')
+			.bootstrapValidator(
+					{
+						container : 'tooltip',
+						//trigger: 'blur',
+						feedbackIcons : {
+							valid : 'glyphicon glyphicon-ok',
+							invalid : 'glyphicon glyphicon-remove',
+							validating : 'glyphicon glyphicon-refresh'
+						},
+						fields : {
+							//仓库名称
+							storeName : {
+								validators : {
+									notEmpty : {
+										message : '仓库名称不能为空!'
+									},
+
+									stringLength : {
+										min : 1,
+										max : 30,
+										message : '仓库名称长度不能超过30'
+									}
+								}
+							},
+							//仓库地址
+							storeAddress : {
+								validators : {
+									notEmpty : {
+										message : '仓库地址不能为空!'
+									},
+
+									stringLength : {
+										min : 1,
+										max : 200,
+										message : '仓库地址长度不能超过200'
+									}
+								}
+							},
+							//仓库类型
+							storeType : {
+								validators : {
+									notEmpty : {
+										message : '仓库类型不能为空!'
+									},
+
+									stringLength : {
+										min : 1,
+										max : 20,
+										message : '仓库类型长度不能超过20'
+									}
+								}
+							},
+							//负责人
+							storeMaster : {
+								validators : {
+									notEmpty : {
+										message : '负责人不能为空!'
+									},
+
+									stringLength : {
+										min : 1,
+										max : 10,
+										message : '负责人长度不能超过10'
+									}
+								}
+							},
+							//联系电话
+							masterTel : {
+								validators : {
+									notEmpty : {
+										message : '联系电话不能为空!'
+									},
+									regexp : {
+										regexp : /^(13[0-9]|15[012356789]|17[678]|18[0-9])[0-9]{8}$/,
+										message : '请输入正确格式的联系电话！'
+									},
+								}
+							},
+						}
+					}).on('success.form.bv', function(e) {
+				e.preventDefault();
+				var $form = $(e.target);
+				/* var params = var params= $form.serialize(); */
+ 				var params={
+						"storeName":$("#storeNameEditId").val(),
+						"storeAddress":$("#storeAddressEditId").val(),
+						"masterTel":$("#masterTelEditId").val(),
+						"storeType":$("#storeTypeEditId").val(),
+						"storeMaster":$("#storeMasterEditId").val(),
+						"createstorehouseId":$(".warehouse_list_name.active_f").attr("dataNo"),
+
+				}; 
+				var storeName = $("#storeNameEditId").val();//修改的仓库名
+				$.post("../createStoreHouse/editCreateStoreHouse", params, function(resultJson) {
+					if(resultJson.code=200){
+						$(".zhezhaos").addClass("none").removeClass("block");
+						publicTipMessage("ok","操作成功！");
+						//getCreateStoreData();
+						storeBaseInfo()
+						$(".warehouse_list_name.active_f").text(storeName)//更改选中的仓库的名称
+//						$(".success_cang_update").addClass("none").removeClass("block");
+//						$(".success_cang_bit").addClass("block").removeClass("none");
+					}else{
+						publicTipMessage("error","操作失败！");
+					}
+
+				}, "json");
+			});
+</script>
+</body>
+</html>

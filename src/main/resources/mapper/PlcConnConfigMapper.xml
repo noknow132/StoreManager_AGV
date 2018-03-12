@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IPlcConnConfigDao">
+  <resultMap id="BaseResultMap" type="com.entity.PlcConnConfig">
+    <id column="pic_id" jdbcType="VARCHAR" property="picId" />
+    <result column="plc_name" jdbcType="VARCHAR" property="plcName" />
+    <result column="local_ip" jdbcType="VARCHAR" property="localIp" />
+    <result column="plc_ip" jdbcType="VARCHAR" property="plcIp" />
+    <result column="plc_port" jdbcType="INTEGER" property="plcPort" />
+    <result column="refresh" jdbcType="INTEGER" property="refresh" />
+    <result column="plc_type" jdbcType="INTEGER" property="plcType" />
+  </resultMap>
+  <!-- 查找所有plc配置 -->
+  <select id="searchPlcConnConfigAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from plc_conn_config
+  </select>
+  
+<!-- 通过plc的名字，查找plc的配置 -->
+  <select id="searchPLCByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from plc_conn_config
+    where plc_name = #{0}
+  </select>
+  
+  <!--通过plc类型查找plc配置 -->
+  <select id="searchPlcConnConfigByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from plc_conn_config
+    where plc_type = #{0}
+  </select>
+  
+  <!-- 通过plc的id，查找plc的配置 -->
+  <select id="searchPLCById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from plc_conn_config
+    where pic_id = #{0}
+  </select>
+  
+ <!--  通过id删除plc连接配置 -->
+  <delete id="deletePlcConfigById" parameterType="java.lang.String">
+    delete from plc_conn_config
+    where pic_id = #{picId,jdbcType=VARCHAR}
+  </delete>
+  
+ <!--  新增plc连接配置 -->
+  <insert id="insertPlcConfig" parameterType="com.entity.PlcConnConfig">
+    insert into plc_conn_config (pic_id, plc_name, local_ip, 
+      plc_ip, plc_port, refresh, 
+      plc_type)
+    values (#{picId,jdbcType=VARCHAR}, #{plcName,jdbcType=VARCHAR}, #{localIp,jdbcType=VARCHAR}, 
+      #{plcIp,jdbcType=VARCHAR}, #{plcPort,jdbcType=INTEGER}, #{refresh,jdbcType=INTEGER}, 
+      #{plcType,jdbcType=INTEGER})
+  </insert>
+
+<!-- 修改plc配置 -->
+  <update id="updatePlcConnConfig" parameterType="com.entity.PlcConnConfig">
+    update plc_conn_config
+    set plc_name = #{plcName,jdbcType=VARCHAR},
+      local_ip = #{localIp,jdbcType=VARCHAR},
+      plc_ip = #{plcIp,jdbcType=VARCHAR},
+      plc_port = #{plcPort,jdbcType=INTEGER},
+      refresh = #{refresh,jdbcType=INTEGER},
+      plc_type = #{plcType,jdbcType=INTEGER}
+    where pic_id = #{picId,jdbcType=VARCHAR}
+  </update>
+</mapper>

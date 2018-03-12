@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>授权码</title>
+    <link rel="shortcut icon" href="../image/logo4.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/rest.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrapValidator.css">
+    <link rel="stylesheet" href="./css/impower.css">
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrapValidator.js"></script>
+    <!--  公共弹出提示包 -->
+   	<link rel="stylesheet" href="../css/msgbox.css">
+   	<script type="text/javascript" src="../js/msgbox.js"></script>
+</head>
+<body>
+<div class="login_bg">
+    <div class="login_form">
+        <div class="login_fBox">
+			<span style="width:10px;height:10px;position:absolute;top:20px;left: 500px;"><a href="login.html"><img src="../image/close2.png" style="width:100%;height:100%;"></a></span>        	
+            <form id="impower_form">
+            
+            	<span class="im_pos_a" style="top: 106px; left: 66px;">学校名称</span>
+                <div class="imp_text form-group" style="top:95px;">
+                	<input type="text" class="form-control" name="name" placeholder="学校名称">
+                </div>
+                
+                <span class="im_pos_a" style="top: 155px; left: 66px;">负责人</span>
+                <div class="imp_text form-group" style="top:150px;">
+                	<input type="text" class="form-control" name="principal" placeholder="负责人">
+                </div>
+                
+                <span class="im_pos_a" style="top: 210px; left: 66px;">联系电话</span>
+                <div class="imp_text form-group" style="top:204px;">
+                	<input type="text" class="form-control" name="tel" placeholder="联系电话">
+                </div>
+                
+                <span class="im_pos_a" style="top: 264px; left: 66px;">邮箱</span>
+                <div class="imp_text form-group" style="top:258px;">
+                	<input type="text" class="form-control" name="email" placeholder="邮箱">
+                </div>
+
+                <div class="imp_btnGroup">
+                <input type="submit" id="sure" class="imp_subBtn"  value="生成申请文件">
+                    <a  class="imp_subBtn" href="" download="../storeRegedit.txt">点击下载</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="login_y"></div>
+
+</div>
+
+<script>
+    var height =  $(window).height();
+    $(".login_bg").css("height",height);
+
+    $('#impower_form').bootstrapValidator({
+        container: 'tooltip',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	name: {
+                validators: {
+                    notEmpty: {
+                        message: '学校名称不能为空！'
+                    },
+                    /*  stringLength: {
+                     min: 6,
+                     max: 18,
+                     message: '用户名长度必须在6到18位之间'
+                     }, */
+
+                }
+            },
+            tel: {
+                validators: {
+                    notEmpty: {
+                        message: '联系电话不能为空！'
+                    },
+                    regexp: {
+	                    regexp: /^(13[0-9]|15[012356789]|17[678]|18[0-9])[0-9]{8}$/,
+	                    message: '请输入正确格式的移动电话！'
+	                },
+                    /*  stringLength: {
+                     min: 6,
+                     max: 18,
+                     message: '用户名长度必须在6到18位之间'
+                     }, */
+
+                }
+            },
+            principal: {
+                validators: {
+                    notEmpty: {
+                        message: '负责人不能为空！'
+                    },
+                    /*  stringLength: {
+                     min: 6,
+                     max: 18,
+                     message: '用户名长度必须在6到18位之间'
+                     }, */
+
+                }
+            },
+            email: {
+                validators: {
+                    notEmpty: {
+                        message: '邮箱不能为空！'
+                    },
+                    emailAddress:{
+                        message:"请输入正确格式的邮箱"
+                    }
+                   
+                }
+            },
+
+        }
+    }).on('success.form.bv', function(e) {
+        // Prevent form submission
+        e.preventDefault();
+        window.location.href="localhost:8080/StoreManager/storeRegedit.txt" ;
+
+    });
+</script>
+<script type="text/javascript" src="../login/js/impower.js"></script>
+</body>
+</html>

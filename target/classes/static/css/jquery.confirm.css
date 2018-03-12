@@ -1,0 +1,64 @@
+#confirmOverlay{
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	background:url('../images/ie.png');
+	background: -moz-linear-gradient(rgba(11,11,11,0.1), rgba(11,11,11,0.6)) repeat-x rgba(11,11,11,0.2);
+	/*background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(11,11,11,0.1)), to(rgba(11,11,11,0.6))) repeat-x rgba(11,11,11,0.2);*/
+	z-index:100000;
+}
+
+/*---------------------------------------------------寮圭獥鐨勫ぇ灏忔牱寮�*/
+#confirmBox{
+	background:#fff;
+	width:320px;
+	height: 166px;
+	position:fixed;
+	left:50%;
+	top:50%;
+	margin:-83px 0 0 -160px;
+	/*border: 1px solid rgba(33, 33, 33, 0.6);*/
+	-moz-box-shadow: 0 0 2px rgba(255, 255, 255, 0.6) inset;
+	-webkit-box-shadow: 0 0 2px rgba(255, 255, 255, 0.6) inset;
+	box-shadow: 0 0 2px rgba(255, 255, 255, 0.6) inset;
+	border-radius:4px;
+	overflow: hidden;
+}
+.confi_title{ height: 40px; line-height: 40px; background: #2EB2E8; color: #fff; padding: 0 10px;}
+.confi_body{ height: 76px; line-height: 76px; padding: 0 10px;color: #666;}
+.confi_bodyImg{display: inline-block; vertical-align: text-top; width: 22px; height: 22px; margin-right: 10px;}
+.confi_bodyText{display: inline-block;vertical-align: text-top;height: 22px; line-height: 22px;}
+.confi_bodyImg img{ vertical-align: top;}
+
+#confirmButtons{
+	width: 100%;
+	height: 49px;
+	line-height: 48px;
+	background: #F9FAFB;
+	border-top:1px solid #D9DADC;
+	text-align:center;}
+
+#confirmBox .button{
+	display:inline-block;
+	background:#2185d0;
+	position:relative;
+	height: 30px;
+	font:12px/30px 'Cuprum','Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+	margin:0 15px;
+	padding: 0 20px;
+	border-radius: 4px;
+	text-decoration:none;
+	border:none;
+}
+
+/*#confirmBox .button:last-child{	margin-right:0;}*/
+
+
+#confirmBox .blue{background:#2185d0; color: #fff;}
+#confirmBox .blue:hover{background:#1678C2;}
+
+#confirmBox .gray{background:#e0e1e2; color: #666;}
+#confirmBox .gray:hover{background:#CACBCD;}
+/*----------------------------------------------寮圭獥鐨勫ぇ灏忔牱寮�*/

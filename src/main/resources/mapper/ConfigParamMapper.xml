@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IConfigParamDao">
+  <resultMap id="BaseResultMap" type="com.entity.ConfigParam">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="reset" jdbcType="INTEGER" property="reset" />
+    <result column="warn" jdbcType="INTEGER" property="warn" />
+    <result column="warn_tag" jdbcType="INTEGER" property="warnTag" />
+    <result column="run_AGV" jdbcType="INTEGER" property="runAgv" />
+    <result column="rebot_code" jdbcType="VARCHAR" property="rebotCode" />
+    <result column="program_name" jdbcType="VARCHAR" property="programName" />
+    <result column="local_ip" jdbcType="VARCHAR" property="localIp" />
+    <result column="plc_ip" jdbcType="VARCHAR" property="plcIp" />
+    <result column="plc_port" jdbcType="INTEGER" property="plcPort" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
+    <result column="reg_edit" jdbcType="VARCHAR" property="regEdit" />
+    <result column="reg_edit_copy" jdbcType="VARCHAR" property="regEditCopy" />
+    <result column="is_run" jdbcType="INTEGER" property="isRun" />
+    <result column="is_scan" jdbcType="INTEGER" property="isScan" />
+  </resultMap>
+  
+  <select id="selectConfigParamOne" resultMap="BaseResultMap">
+   select * from config_param  limit 0,1
+  </select>
+  <!-- 一键初始化 -->
+   <delete id="initByOnekey" statementType="CALLABLE" >
+   {
+         call proInitial( )
+      }
+  </delete>
+  
+<insert id="insert" parameterType="com.entity.ConfigParam">
+  insert into config_param (id, reset, warn, 
+      warn_tag, run_AGV, rebot_code, 
+      program_name, local_ip, plc_ip, 
+      plc_port, mac, reg_edit, 
+      reg_edit_copy, is_run, is_scan
+      )
+    values (#{id,jdbcType=INTEGER}, #{reset,jdbcType=INTEGER}, #{warn,jdbcType=INTEGER}, 
+      #{warnTag,jdbcType=INTEGER}, #{runAgv,jdbcType=INTEGER}, #{rebotCode,jdbcType=VARCHAR}, 
+      #{programName,jdbcType=VARCHAR}, #{localIp,jdbcType=VARCHAR}, #{plcIp,jdbcType=VARCHAR}, 
+      #{plcPort,jdbcType=INTEGER}, #{mac,jdbcType=VARCHAR}, #{regEdit,jdbcType=VARCHAR}, 
+      #{regEditCopy,jdbcType=VARCHAR}, #{isRun,jdbcType=INTEGER}, #{isScan,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <update id="updateConfigParam" parameterType="com.entity.ConfigParam">
+    update config_param
+    set reset = #{reset},
+      warn = #{warn},
+      warn_tag = #{warnTag},
+      run_AGV = #{runAgv},
+      rebot_code = #{rebotCode},
+      program_name = #{programName},
+      local_ip = #{localIp},
+      plc_ip = #{plcIp},
+      plc_port = #{plcPort},
+      mac = #{mac},
+      reg_edit = #{regEdit},
+      is_run = #{isRun},
+      is_scan=#{isScan},
+      reg_edit_copy = #{regEditCopy}
+    where id = #{id}
+  </update>
+</mapper>

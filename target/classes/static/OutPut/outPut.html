@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="shortcut icon" href="../image/logo4.ico" type="image/x-icon" />
+	<!--<script src="../css/commonCss.js"></script><!--公共的js库-->
+	<!--<script src="../js/commonJs.js"></script>--><!--公共的js库-->
+	<script src="../js/jquery-3.2.1.min.js" type="text/javascript"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="../fonts/iconfont.css" />
+	<link rel="stylesheet" href="../css/bootstrap.min.css" />
+	<link rel="stylesheet" href="../css/head.css" /><!--头部样式-->
+	<script type="text/javascript" src="../js/head.js" ></script><!--头部js-->
+	<!--  公共弹出提示包 -->
+   	<link rel="stylesheet" href="../css/msgbox.css">
+   	<script type="text/javascript" src="../js/msgbox.js"></script>
+	<script type="text/javascript" src="js/outPut.js" ></script>
+	<link rel="stylesheet" href="css/outPut.css" />
+	<link rel="stylesheet" href="../css/rest.css" /><!--公共css-->
+	
+	
+</head>
+<body>
+	<!--头部q-->
+   <div class="head">
+	<div class="add_top">
+	</div>
+	<!--导航-->
+		<div class="add_nav_box clearfix">
+			<div class="wrap add_nav clearfix">
+				<ul class="clearfix add_nav_ul fl">
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r"  href="../currentTask/currentTask.html">
+							<i class="iconfont icon-cangku-" style="font-size:42px;"></i>
+						   当前任务
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r" href="../PutIn/PutIn.html">
+							<i class="iconfont icon-ruku1-copy"></i>
+						入库作业
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+					 	<a class="select fc_3 fs14 pos_r" href="../OutPut/outPut.html">
+					 		<i class="iconfont icon-renwu"></i>
+					 	出库作业
+					 	</a>
+					 	<div class="sanjiao pos_a"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r" href="../LibraryOut/libraryOut.html">
+						<i class="iconfont icon-yidong"></i>
+						调库作业
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r"  href="../moveStorage/moveStorage.html">
+							<i class="iconfont icon-yufenjian"></i>
+						移库作业
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fs14 pos_r" href="../StorageMessage/storageMessage.html">
+						  <i class="iconfont icon-tiaoxingma"></i>
+						仓库信息
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r none">
+						<a class="fc_3 fs14 pos_r" href="../userInfo/userInfo.html">
+						<i class="iconfont icon-guanliyuan1"></i>
+						账号管理
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r" href="../Configuration/configuration.html">
+						<i class="iconfont icon-shezhi" style="font-size:38px;"></i>
+						配置管理
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+				</ul>
+					<!-- <div class="fr fc_3 fs14 add_nav_ul_right mt50">入口复位</div> -->
+			</div>
+		</div>
+	</div>
+	<!-- 搜索栏 -->
+ <div class="clearfix out_seach_box wrap pos_r">
+	<div class="fl out_search_div ml20 pos_a">
+		<input type="text" class="out_seach" placeholder="请输入订单、仓位号、条形码"/>
+	</div>
+	<div class="fl cursor out_search_img ml20 pos_a" id="outPut_search">
+		<img src="../image/search.png" class="out_input_img"/>
+	</div>
+	<div class="fr out_carry putIn_btn_T1 fs14" style="width: auto;margin-top:34px;margin-right:20px;color:#fff;"><i class="iconfont icon-ruku1-copy"></i>&nbsp;&nbsp;执行出库作业</div>
+</div>
+  <div class="wrap clearfix">
+  	<!--表格q-->
+  	<div class="out_table_back mt15">
+  		<div class="clearfix" style="margin-top:6px;">
+  		<div class="fl out_all">全选</div>
+  		<!-- <div class="fl out_delect ml20">删除</div>  -->
+  		
+  	</div>
+	  	<div class="out_table_top" style="margin-top:12px;">
+	  		<div><span class="ml30">选择</span></div>
+	  		<div>订单号</div>
+	  		<div>仓位</div>
+	  		<div>条码</div>
+	  		<div>仓位状态</div>
+	  		<div>数量</div>
+	  		<div>入库时间</div>
+	  	</div>
+	  	<ul id="outPut_ul_id">
+	  		<!-- <li class="out_table_content">
+	  			<div>
+	  				<input type="checkbox"  class="out_input_checkbox mt8 ml40"/>
+	  			</div>
+		  		<div>入库</div>
+		  		<div>1</div>
+		  		<div>A1012</div>
+		  		<div><span class="out_message_table_zhan"></span></div>
+		  		<div>A1013</div>
+		  		<div>
+		  			<a  class="out_overflow" title="2017/12/28 12:43">2017/12/28 12:43</a>
+		  		</div>
+	  		</li>
+	  		<li class="out_table_content">
+	  			<div>
+	  				<input type="checkbox"  class="out_input_checkbox mt8 ml40"/>
+	  			</div>
+		  		<div>入库</div>
+		  		<div>1</div>
+		  		<div>A1012</div>
+		  		<div><span class="out_message_table_zhan current_zhan"></span></div>
+		  		<div>A1013</div>
+		  		<div>
+		  			<a  class="out_overflow" title="2017/12/28 12:43">2017/12/28 12:43</a>
+		  		</div>
+	  		</li>
+	  		<li class="out_table_content">
+	  			<div>
+	  				<input type="checkbox"  class="out_input_checkbox mt8 ml40"/>
+	  			</div>
+		  		<div>入库</div>
+		  		<div>1</div>
+		  		<div>A1012</div>
+		  		<div><span class="out_message_table_zhan"></span></div>
+		  		<div>A1013</div>
+		  		<div>
+		  			<a  class="out_overflow" title="2017/12/28 12:43">2017/12/28 12:43</a>
+		  		</div>
+	  		</li>
+	  		<li class="out_table_content">
+	  			<div>
+	  				<input type="checkbox"  class="out_input_checkbox mt8 ml40"/>
+	  			</div>
+		  		<div>入库</div>
+		  		<div>1</div>
+		  		<div>A1012</div>
+		  		<div><span class="out_message_table_zhan"></span></div>
+		  		<div>A1013</div>
+		  		<div>
+		  			<a  class="out_overflow" title="2017/12/28 12:43">2017/12/28 12:43</a>
+		  		</div>
+	  		</li> -->
+	  	</ul>
+  	</div>
+  </div>
+  <!-- 模态框-->
+<div class="modal fade hid" id="outLetModalId">
+    <div class="modal-backdrop fade in"></div>
+    <div class="modalTabs" style="width:768px;height: 470px;background: #fff;">
+        <div class="message_mod_tit" ><img src="../image/putIn/putIn_03.png" alt=""> &nbsp;选择入库仓位<span class="fr" style="margin-right:20px;font-size:26px;cursor:pointer;" data-dismiss="modal">×</span></div>
+        <div class="message_mod_main" style="width:90%;">
+            <ul class="move_haveStrUl" id="select_letout_id">
+                <li class="clearfix">
+                	<div class="fl"><img src="../image/putIn/putIn_07.png" alt=""> &nbsp;A0101</div>
+                	<div class="fr">
+                		<select class="out_chu_select">
+                			<option>出口1</option>
+                		</select>
+                	</div>
+                </li>
+                <li class="clearfix">
+                	<div class="fl"><img src="../image/putIn/putIn_07.png" alt=""> &nbsp;A0101</div>
+                	<div class="fr">
+                		<select class="out_chu_select">
+                			<option>出口1</option>
+                		</select>
+                	</div>
+                </li>
+                <li class="clearfix">
+                	<div class="fl"><img src="../image/putIn/putIn_07.png" alt=""> &nbsp;A0101</div>
+                	<div class="fr">
+                		<select class="out_chu_select">
+                			<option>出口1</option>
+                		</select>
+                	</div>
+                </li>
+                <li class="clearfix">
+                	<div class="fl"><img src="../image/putIn/putIn_07.png" alt=""> &nbsp;A0101</div>
+                	<div class="fr">
+                		<select class="out_chu_select">
+                			<option>出口1</option>
+                		</select>
+                	</div>
+                </li>
+                <li class="clearfix">
+                	<div class="fl"><img src="../image/putIn/putIn_07.png" alt=""> &nbsp;A0101</div>
+                	<div class="fr">
+                		<select class="out_chu_select">
+                			<option>出口1</option>
+                		</select>
+                	</div>
+                </li>
+               <li class="clearfix">
+                	<div class="fl"><img src="../image/putIn/putIn_07.png" alt=""> &nbsp;A0101</div>
+                	<div class="fr">
+                		<select class="out_chu_select">
+                			<option>出口1</option>
+                		</select>
+                	</div>
+               </li>
+            </ul>
+           		<!--  统一出口 -->
+				<div class="fl clearfix mt20">
+            			<span class="fl fs14 fc_3 lh35">统一出口：</span>
+                		<select class="out_chu_select fl ml5" id="select_letout_same_id" style="border:1px solid #666;border-radius:3px;">
+                			<option>统一出口</option>
+                		</select>
+                </div>
+            <div class="message_mod_foot" style="margin-top:40px;padding-top: 20PX;">
+            	
+                <button class="btn putIn_btn_T" data-dismiss="modal" aria-hidden="true">取消</button>
+        <!--     <button type="submit" class="btn putIn_btn" style="color: #fff;" id="moveMoYes"  aria-hidden="true">确认</button> -->            
+                <button class="btn putIn_btn" style="color: #fff;" id="outLetModalYes"  >确认</button>
+       </div>
+
+        </div>
+    </div>
+</div>
+<!-- 删除模态框-->
+<div class="modal fade hid" id="user_del">
+    <div class="modal-backdrop fade in"></div>
+    <div class="modalTabs" style="width:540px;height: 230px;background: #fff;margin-left: -270px;">
+        <div class="message_mod_tit" >确认删除<span class="fr" style="margin-right:20px;font-size:20px;cursor:pointer;" data-dismiss="modal">×</span></div>
+        <div class="message_mod_main login_fBox" style="width:700px;">
+          
+                <h3 style="font-size: 18px;  font-weight: bold; color: #666; float: left; margin-left: 40px;">你确认删除选中信息吗？</h3>
+                    <div class="message_mod_foot" style="position: absolute;bottom:60px;right: 90px;">
+                        <button type="submit" class="btn putIn_btn1" style="color: #fff;"  id="delUserYes"  aria-hidden="true">确认</button>
+                        <button class="btn putIn_btn_T" data-dismiss="modal" aria-hidden="true">取消</button>
+                    </div>
+
+            
+        </div>
+    </div>
+</div>
+</body>
+</html>

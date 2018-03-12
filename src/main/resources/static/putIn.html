@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>入库</title>
+    <link rel="stylesheet" href="css/rest.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="putIn.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="putIn_up">
+        <div class="fl" style="margin-left: 20px;">
+            请扫描货物条码：<input type="text" class="putIn_num" name="barCode">
+            数量：<input type="number" class="putIn_num" name="count">
+            选择仓位：<select class="putIn_num" id="storeId">
+                <option value="">Please select store</option>
+            </select>
+      <button type="button" onclick="insertInputStore()">确认</button>   
+        </div>
+        <div class="fr">
+            <button class="putIn_do" onclick="startInputStore()">执行入库作业</button>
+        </div>
+    </div>
+
+    <div class="putIn_down">
+        <div style="margin: 20px;">
+           <span class="putIn_btn" id="putIn_allChe" style="background: #2eb2e8;color: #fff;">全选</span> &nbsp;&nbsp;<span class="putIn_btn" onclick="deleteInputStore()">删除</span>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>选择</td>
+                    <td>订单号</td>
+                    <td>仓位</td>
+                    <td>条码</td>
+                    <td>数量</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>A10102</td>
+                    <td>A0102</td>
+                    <td>A0102</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        $(function () {
+        	loadInputStore();//加载未确认的入库单
+        	searchEmptyStoreHouse();//加载空仓位
+            $("#putIn_allChe").click(function () {
+                if($("#putIn_allChe").text()=="全选"){
+                    $(this).text('取消');
+                    $("tbody").find("input[type='checkbox']").prop("checked",true);
+                }else if($("#putIn_allChe").text()=="取消"){
+                    $(this).text('全选');
+                    $("tbody").find("input[type='checkbox']").prop("checked",false);
+                }
+            });
+
+        });
+        
+        //加载未确认的入库单
+        function loadInputStore(){
+        	$.post("../../InputStoreController/searchInputStore",{status:0},function(result){
+        		$("tbody").empty();
+        		console.info(result.list)
+        		var list = result.list;
+        		for(var i = 0;i < list.length;i++){
+        			$("tbody").append(' <tr>'+
+                            '<td><input type="checkbox" value="'+list[i].inputStoreId+'"></td>'+
+                            '<td>'+list[i].orderId+'</td>'+
+                            '<td>'+list[i].storeId+'</td>'+
+                            '<td>'+list[i].barCode+'</td>'+
+                            '<td>'+list[i].count+'</td>'+
+                            '</tr>');
+        		}
+        		
+        	})
+        }
+        
+        //入库添加
+        function insertInputStore(){
+        	if($("#storeId").val()==""){
+				publicTipMessage("error","请选择仓位");
+
+        		return;
+        	}
+        	$.post("../../InputStoreController/insertGoods",{
+        		barCode:$("input[name='barCode']").val(),
+        		count:$("input[name='count']").val(),
+        		storeId:$("#storeId").val()
+        		},function(result){
+        		if(result.stus == "200"){
+
+        		   publicTipMessage("ok","操作成功");
+
+        			searchEmptyStoreHouse();//刷新仓库下拉框
+        			loadInputStore();//刷新
+        		}else{
+
+         		   publicTipMessage("ok","操作失败");
+
+        		}
+        	})
+        }
+        
+        //入库删除
+        function deleteInputStore(){
+        	var inputStoreArray = new Array();//入库id数组
+        	console.info($("input[type='checkbox']:checked"))
+        	var checkboxList = $("input[type='checkbox']:checked");//选中的入库作业
+        	for (var i = 0; i < checkboxList.length; i++) {
+        		inputStoreArray[i] = checkboxList[i].value;
+    		}
+         	$.ajax({
+        		url:"../../InputStoreController/deleteManyInputStoreById",
+        		type:"POST",
+        		data:{ids:inputStoreArray},
+        		traditional: true,
+        		success:function(result){
+        			if(result.stus == "200"){
+             		   publicTipMessage("ok","操作成功");
+
+            			searchEmptyStoreHouse();//刷新仓库下拉框
+            			loadInputStore();//刷新入库作业
+            		}else{
+              		   publicTipMessage("error","操作失败");
+
+            		}
+        		}
+        	})
+        }
+        
+        //执行入库作业
+        function startInputStore(){
+        	var inputStoreArray = new Array();//入库id数组
+        	console.info($("input[type='checkbox']:checked"))
+        	var checkboxList = $("input[type='checkbox']:checked");//选中的入库作业
+        	if(checkboxList.length == 0){
+        		//alert("请选择入库作业");
+        		publicTipMessage("error","请选择入库作业");
+        		return;
+        	}
+        	for (var i = 0; i < checkboxList.length; i++) {
+        		inputStoreArray[i] = checkboxList[i].value;
+    		}
+        	
+        	$.ajax({
+        		url:"../../InputStoreController/startInputStore",
+        		type:"POST",
+        		data:{ids:inputStoreArray},
+        		traditional: true,
+        		success:function(result){
+        			if(result.stus == "200"){
+            			//alert("操作成功")
+            			publicTipMessage("ok","操作成功");
+            			loadInputStore();//刷新
+            		}else{
+            			//alert("操作失败")
+            			publicTipMessage("error","操作失败");
+            		}
+        		}
+        	})
+        }
+        
+        //空仓位列表
+        function searchEmptyStoreHouse(){
+        	$.get("../../storeHouse/searchEmptyStoreHouse",function(list){
+        		$("#storeId").empty();//先清空
+        		$("#storeId").append('<option value="">Please select store</option>');
+        		for(var i = 0; i < list.length; i++){
+        			$("#storeId").append('<option value="'+list[i].storeId+'">'+list[i].storeNo+'</option>');
+        		}
+        	})
+        	
+        }
+        
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

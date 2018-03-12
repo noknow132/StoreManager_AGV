@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IWarnTypeDao">
+  <resultMap id="BaseResultMap" type="com.entity.WarnType">
+    <id column="warn_type_id" jdbcType="VARCHAR" property="warnTypeId" />
+    <result column="warn_code" jdbcType="INTEGER" property="warnCode" />
+    <result column="warn_name" jdbcType="VARCHAR" property="warnName" />
+    <result column="resolve" jdbcType="VARCHAR" property="resolve" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    warn_type_id, warn_code, warn_name, resolve
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from warn_type
+    where warn_type_id = #{warnTypeId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 查询报警类型 -->
+  <select id="searchWarnTypeAll" resultMap="BaseResultMap">
+    select *  from warn_type
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from warn_type
+    where warn_type_id = #{warnTypeId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.entity.WarnType">
+    insert into warn_type (warn_type_id, warn_code, warn_name, 
+      resolve)
+    values (#{warnTypeId,jdbcType=VARCHAR}, #{warnCode,jdbcType=INTEGER}, #{warnName,jdbcType=VARCHAR}, 
+      #{resolve,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.entity.WarnType">
+    update warn_type
+    set warn_code = #{warnCode,jdbcType=INTEGER},
+      warn_name = #{warnName,jdbcType=VARCHAR},
+      resolve = #{resolve,jdbcType=VARCHAR}
+    where warn_type_id = #{warnTypeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

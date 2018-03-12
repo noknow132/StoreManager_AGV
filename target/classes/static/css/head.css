@@ -1,0 +1,115 @@
+*{
+	text-decoration: none;
+	list-style: none;
+}
+.fl{float: left;}
+.fr{float: right;}
+.none{display: none;}
+.block{display: block;}
+.fc_f{color: #fff;}
+.mt16{margin-top: 16px;}
+.ml10{margin-left: 10px;}
+.clearfix:after{content:'\20';display:block;clear:both;visibility:hidden;line-height:0;height:0;}
+.clearfix{display:block;zoom:1;}
+/*头部导航q*/
+.add_top{
+	height: 60px;
+	width: 100%;
+	background: -ms-linear-gradient(top, #262626,  #616060);
+	background:-moz-linear-gradient(top,#262626,#616060);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#262626), to(#616060));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#262626), to(#616060));
+	background: -webkit-linear-gradient(top, #262626, #616060);
+	background: -o-linear-gradient(top, #262626, #616060);
+}
+.add_top_logbox{
+	/* width: 170px; */
+	height: 60px;
+}
+.add_top_fen{
+	height:14px;
+	width: 1px;
+	background: #5183c1;
+	margin-left: 20px;
+}
+.add_top_open{
+	margin-left:20px;
+}
+
+@media only screen and (max-width:1200px){
+	html{width:1200px;}
+	body{width:1200px;}
+	.main{width:100%;}
+}
+
+
+*{
+	text-decoration: none;
+	list-style: none;
+}
+.
+body{
+	margin: 0;
+	padding: 0;
+}
+
+/* 模态框 */
+.modalTabs1{
+    background-size:100% 100%;
+    position: absolute;
+    z-index: 10001;
+    top: 50%;
+    left: 50%;
+    margin-left: -384px;
+    margin-top: -235px;
+}
+.message_mod_tit1{
+    text-align:left;
+    padding-left: 30px;
+    color:#fff;
+    line-height:60px;
+    font-size:18px;
+    border-bottom: 1px solid #eee;
+    background-image:url('../image/baojing_bg_03.png');
+    background-repeat: no-repeat;
+        background-size: 100%;
+}
+.message_mod_mainTop{
+    width:585px;
+    height:293px;
+    margin:38px auto;
+}
+
+.message_mod_foot{
+    text-align: right;
+    margin-top: 20px;
+}
+
+.putIn_btn{
+    display: inline-block;
+    padding: 4px 34px;
+    border-radius:20px;
+    font-size: 14px;
+    cursor: pointer;
+    background: -ms-linear-gradient(top, #1c51a3,  #5a8bc9);
+    background:-moz-linear-gradient(top,#1c51a3,#5a8bc9);
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#1c51a3), to(#5a8bc9));
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1c51a3), to(#5a8bc9));
+    background: -webkit-linear-gradient(top, #1c51a3, #5a8bc9);
+    background: -o-linear-gradient(top, #1c51a3, #5a8bc9);
+    box-shadow:0 -2px 5px #4374ae inset;
+}
+.putIn_btnTop{
+    display: inline-block;
+    padding: 4px 34px;
+    border-radius:20px;
+    font-size: 14px;
+    cursor: pointer;
+    background: -ms-linear-gradient(top, #1c51a3,  #5a8bc9);
+    background:-moz-linear-gradient(top,#1c51a3,#5a8bc9);
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#1c51a3), to(#5a8bc9));
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1c51a3), to(#5a8bc9));
+    background: -webkit-linear-gradient(top, #1c51a3, #5a8bc9);
+    background: -o-linear-gradient(top, #1c51a3, #5a8bc9);
+    box-shadow:0 -2px 5px #4374ae inset;
+}

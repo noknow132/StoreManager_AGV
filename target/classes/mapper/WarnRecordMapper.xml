@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IWarnRecordDao">
+  <resultMap id="BaseResultMap" type="com.entity.WarnRecord">
+    <id column="warn_record_id" jdbcType="VARCHAR" property="warnRecordId" />
+    <result column="warn_type" jdbcType="INTEGER" property="warnType" />
+    <result column="work_type" jdbcType="INTEGER" property="workType" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="bar_code1" jdbcType="VARCHAR" property="barCode1" />
+    <result column="bar_code2" jdbcType="VARCHAR" property="barCode2" />
+    <result column="warn_time" jdbcType="TIMESTAMP" property="warnTime" />
+    <result column="resolve_time" jdbcType="TIMESTAMP" property="resolveTime" />
+  </resultMap>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from warn_record
+    where warn_record_id = #{warnRecordId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 查找最新的报警记录 -->
+  <select id="searchLastWarnRecord" resultMap="BaseResultMap">
+    select * from warn_record order by warn_time desc limit 1
+  </select>
+  
+  <!-- 查询报警记录 -->
+  <select id="searchWarnRecord" parameterType="java.lang.String" resultType="hashmap">
+	select * from (
+	<!-- 入库 -->
+	select
+	wr0.warn_record_id,
+	wr0.warn_time as warnTime,
+	wr0.warn_type warnType,
+	wr0.work_type workType,
+	ins.order_id orderNo1,
+	ins.bar_code barConde1,
+	ins.store_id storeId1,
+	sh.store_no as storeNo1,
+	null as orderNo2,
+	null as barConde2,
+	null as store2,
+	null as storeNo2,
+	wr0.resolve_time as resolveTime
+	from warn_record wr0
+	inner join input_store ins on wr0.bar_code1 = ins.bar_code
+	inner join storehouse sh on sh.store_id = ins.store_id
+	where wr0.work_type = 0
+
+	union
+
+	<!-- 出库 -->
+	select
+	wr1.warn_record_id,
+	wr1.warn_time as warnTime,
+	wr1.warn_type warnType,
+	wr1.work_type workType,
+	os.order_id orderNo1,
+	os.bar_code barConde1,
+	os.store_id storeId1,
+	sh1.store_no as storeNo1,
+	null as orderNo2,
+	null as barConde2,
+	null as store2,
+	null as storeNo2,
+	wr1.resolve_time as resolveTime
+	from warn_record wr1
+	inner join output_store os on wr1.bar_code1 = os.bar_code
+	inner join storehouse sh1 on sh1.store_id = os.store_id
+	where wr1.work_type = 1
+
+	union
+
+	<!-- 移库 -->
+	select
+	wr2.warn_record_id,
+	wr2.warn_time as warnTime,
+	wr2.warn_type warnType,
+	wr2.work_type workType,
+	ms.move_no orderNo1,
+	ms.bar_code barConde1,
+	ms.store_id_from storeId1,
+	sh21.store_no as storeNo1,
+	null as orderNo2,
+	null as barConde2,
+	null as store2,
+	sh22.store_no as storeNo2,
+	wr2.resolve_time as resolveTime
+	from warn_record wr2
+	inner join move_store ms on wr2.bar_code1 = ms.bar_code
+	inner join storehouse sh21 on sh21.store_id = ms.store_id_from
+	inner join storehouse sh22 on sh22.store_id = ms.store_id_to
+	where wr2.work_type = 2
+
+	union
+
+	<!-- 调库 -->
+	select
+	wr3.warn_record_id,
+	wr3.warn_time as warnTime,
+	wr3.warn_type warnType,
+	wr3.work_type workType,
+	null orderNo1,
+	sh31.good_no barConde1,
+	cs.store_id_from storeId1,
+	sh31.store_no as storeNo1,
+
+	null as orderNo2,
+	sh32.good_no as barConde2,
+	cs.store_id_to as store2,
+	sh32.store_no as storeNo2,
+
+	wr3.resolve_time as resolveTime
+	from warn_record wr3
+	inner join change_store cs on wr3.bar_code1 = cs.bar_code
+	inner join storehouse sh31 on sh31.store_id = cs.store_id_from
+	inner join storehouse sh32 on sh32.store_id = cs.store_id_to
+	where wr3.work_type = 3
+
+	) 
+	as t_warn_record
+	where 1=1
+    <if test='type != "" and type != null and type != -1 '>
+    and t_warn_record.workType = #{type}
+    </if>
+    <if test='no != null and no!= ""'>
+		and (orderNo1 like CONCAT('%',#{no},'%') or barConde1 like CONCAT('%',#{no},'%'))
+	</if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from warn_record
+    where warn_record_id = #{warnRecordId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insertWarnRecord" parameterType="com.entity.WarnRecord">
+    insert into warn_record (warn_record_id, warn_type, work_type, 
+      order_no, bar_code1, bar_code2, 
+      warn_time, resolve_time)
+    values (#{warnRecordId,jdbcType=VARCHAR}, #{warnType,jdbcType=INTEGER}, #{workType,jdbcType=INTEGER}, 
+      #{orderNo,jdbcType=VARCHAR}, #{barCode1,jdbcType=VARCHAR}, #{barCode2,jdbcType=VARCHAR}, 
+      #{warnTime,jdbcType=TIMESTAMP}, #{resolveTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="updateWarnRecord" parameterType="com.entity.WarnRecord">
+    update warn_record
+    set warn_type = #{warnType,jdbcType=INTEGER},
+      work_type = #{workType,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      bar_code1 = #{barCode1,jdbcType=VARCHAR},
+      bar_code2 = #{barCode2,jdbcType=VARCHAR},
+      warn_time = #{warnTime,jdbcType=TIMESTAMP},
+      resolve_time = #{resolveTime,jdbcType=TIMESTAMP}
+    where warn_record_id = #{warnRecordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

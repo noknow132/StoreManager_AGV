@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ICreateStoreAreaDao">
+  <resultMap id="BaseResultMap" type="com.entity.CreateStoreArea">
+    <id column="createstorearea_id" jdbcType="VARCHAR" property="createstoreareaId" />
+    <result column="createstorehouse_id" jdbcType="VARCHAR" property="createstorehouseId" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="rows_count" jdbcType="INTEGER" property="rowsCount" />
+    <result column="rows_start" jdbcType="INTEGER" property="rowsStart" />
+    <result column="columns_count" jdbcType="INTEGER" property="columnsCount" />
+    <result column="columns_start" jdbcType="INTEGER" property="columnsStart" />
+    <result column="sequence" jdbcType="INTEGER" property="sequence" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="robot_no" jdbcType="VARCHAR" property="robotNo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    createstorearea_id, createstorehouse_id, area_name, rows_count, rows_start, columns_count, 
+    columns_start, sequence, creator, create_time, robot_no
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from createstorearea
+    where createstorearea_id = #{createstoreareaId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据仓位位id查询区位信息 -->
+  <select id="selectCreateStoreAreaByStoreId" parameterType="java.lang.String" resultMap="BaseResultMap">
+   select c.* from createstorearea c where c.createstorearea_id =
+    ( select sh.createstorearea_id from storehouse sh where sh.store_id=#{storeId})  
+   </select>
+  
+  <!-- 根据建库 查找区位 表格使用-->
+  <select id="searchCreateStoreAreaByCreateStoreHouseId" parameterType="java.lang.String" resultType="hashmap">
+    select csh.store_name,csh.store_type,csh.store_address,csh.store_master,csh.master_tel,csa.* from createstorehouse csh 
+	inner join createstorearea csa on csh.createstorehouse_id = csa.createstorehouse_id where csa.createstorehouse_id = #{0}
+  </select>
+  
+  <!-- 根据建库id 查找区位 -->
+  <select id="selectCreateStoreAreaByCreateStoreHouseId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from createstorearea csa where csa.createstorehouse_id = #{0}
+  </select>
+  
+  <!-- 根据建库 查找区位 -->
+  <select id="checkAreaNameExist" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from createstorearea where 1 = 1
+    <if test='createstorehouseId !=null and createstorehouseId != ""'>
+    and createstorehouse_id = #{createstorehouseId}
+    </if>
+    and area_name = #{areaName}
+  </select>
+  
+  <!-- 根据区位id查询区位信息 -->
+  <select id="selectCreateStoreAreaById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from createstorearea c where c.createstorearea_id = #{0}
+  </select>
+  
+  <!-- 根据id删除区位 -->
+  <delete id="deleteCreateStoreAreaById" parameterType="java.lang.String">
+  delete from createstorearea where createstorearea_id = #{0}
+  </delete>
+  
+  <!-- 新增区位 -->
+  <insert id="insertCreateStoreArea" parameterType="com.entity.CreateStoreArea">
+    insert into createstorearea (createstorearea_id, createstorehouse_id, 
+      area_name, rows_count, rows_start, 
+      columns_count, columns_start, sequence, 
+      creator, create_time, robot_no
+      )
+    values (#{createstoreareaId,jdbcType=VARCHAR}, #{createstorehouseId,jdbcType=VARCHAR}, 
+      #{areaName,jdbcType=VARCHAR}, #{rowsCount,jdbcType=INTEGER}, #{rowsStart,jdbcType=INTEGER}, 
+      #{columnsCount,jdbcType=INTEGER}, #{columnsStart,jdbcType=INTEGER}, #{sequence,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{robotNo,jdbcType=VARCHAR}
+      )
+  </insert>
+
+<!-- 修改区位 -->
+  <update id="updateCreateStoreArea" parameterType="com.entity.CreateStoreArea">
+    update createstorearea
+    set createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR},
+      area_name = #{areaName,jdbcType=VARCHAR},
+      rows_count = #{rowsCount,jdbcType=INTEGER},
+      rows_start = #{rowsStart,jdbcType=INTEGER},
+      columns_count = #{columnsCount,jdbcType=INTEGER},
+      columns_start = #{columnsStart,jdbcType=INTEGER},
+      sequence = #{sequence,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      robot_no = #{robotNo,jdbcType=VARCHAR}
+    where createstorearea_id = #{createstoreareaId,jdbcType=VARCHAR}
+  </update>
+</mapper>

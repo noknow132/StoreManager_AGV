@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ICreateStoreHouseDao">
+	<resultMap id="BaseResultMap" type="com.entity.CreateStoreHouse">
+		<id column="createstorehouse_id" jdbcType="VARCHAR" property="createstorehouseId" />
+		<result column="store_name" jdbcType="VARCHAR" property="storeName" />
+		<result column="store_type" jdbcType="VARCHAR" property="storeType" />
+		<result column="store_address" jdbcType="VARCHAR" property="storeAddress" />
+		<result column="store_master" jdbcType="VARCHAR" property="storeMaster" />
+		<result column="master_tel" jdbcType="VARCHAR" property="masterTel" />
+		<result column="area_name" jdbcType="VARCHAR" property="areaName" />
+		<result column="rows_count" jdbcType="INTEGER" property="rowsCount" />
+		<result column="rows_start" jdbcType="INTEGER" property="rowsStart" />
+		<result column="columns_count" jdbcType="INTEGER" property="columnsCount" />
+		<result column="columns_start" jdbcType="INTEGER" property="columnsStart" />
+		<result column="sequence" jdbcType="INTEGER" property="sequence" />
+		<result column="creator" jdbcType="VARCHAR" property="creator" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="robot_no" jdbcType="VARCHAR" property="robotNo" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		createstorehouse_id, store_name, store_type, store_address,
+		store_master, master_tel,
+		area_name, rows_count, rows_start,
+		columns_count, columns_start,
+		sequence, creator,
+		create_time, robot_no
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from createstorehouse
+		where createstorehouse_id =
+		#{createstorehouseId,jdbcType=VARCHAR}
+	</select>
+
+    <!-- 根据名称分组查询仓库 -->
+	<select id="searchCreateStoreHouseGroupByStoreName" resultType="hashmap">
+		select cs.*,ui.user_name from createstorehouse cs 
+		left join user_info ui on cs.creator = ui.user_id 
+		group by store_name
+	</select>
+	
+	<!-- 根据建库名称查找建库 -->
+	<select id="searchCreateStoreHouseByStoreName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from createstorehouse where store_name = #{0}
+	</select>
+	
+	<!-- 仓库基本信息 -->
+	<select id="searchStoreBaseInfo" parameterType="java.lang.String" resultType="hashmap">
+		select cs.*,ui.user_name from createstorehouse cs 
+		left join user_info ui on cs.creator = ui.user_id 
+		where cs.createstorehouse_id = #{0}
+	</select>
+	
+	
+	<!-- 查询所有建库 -->
+	<select id="searchCreateStoreHouseAll" resultMap="BaseResultMap">
+		select * from createstorehouse 
+	</select>
+	
+ <!-- 删除区位 -->
+	<delete id="deleteCreateStoreHouseById" parameterType="java.lang.String">
+		delete from
+		createstorehouse
+		where createstorehouse_id =
+		#{createstorehouseId,jdbcType=VARCHAR}
+	</delete>
+
+
+	<!-- 新增建库 -->
+	<insert id="insertCreateStoreHouse" parameterType="com.entity.CreateStoreHouse">
+		insert into
+		createstorehouse (createstorehouse_id, store_name, store_type,
+		store_address, store_master, master_tel,
+		area_name, rows_count,
+		rows_start,
+		columns_count, columns_start, sequence,
+		creator,
+		create_time, robot_no
+		)
+		values (#{createstorehouseId,jdbcType=VARCHAR},
+		#{storeName,jdbcType=VARCHAR}, #{storeType,jdbcType=VARCHAR},
+		#{storeAddress,jdbcType=VARCHAR}, #{storeMaster,jdbcType=VARCHAR},
+		#{masterTel,jdbcType=VARCHAR},
+		#{areaName,jdbcType=VARCHAR},
+		#{rowsCount,jdbcType=INTEGER}, #{rowsStart,jdbcType=INTEGER},
+		#{columnsCount,jdbcType=INTEGER}, #{columnsStart,jdbcType=INTEGER},
+		#{sequence,jdbcType=INTEGER},
+		#{creator,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{robotNo,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 查询建库 只有一个 -->
+	<select id="selectCreateStoreHouseOne" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from createstorehouse csh order by csh.create_time desc limit 0 ,1
+	</select>
+
+	<!-- 查询建库 只有一个 -->
+	<select id="selectCreateStoreHouseByAreaName" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from createstorehouse csh where csh.area_name=#{areaName} limit 0 ,1
+	</select>
+
+	<!-- 查询建库根据仓位号 只有一个 -->
+	<select id="selectCreateStoreHouseByStoreNo" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from createstorehouse csh where csh.createstorehouse_id
+		in (select
+		sh.createstorehouse_id from storehouse sh where
+		sh.store_no=#{storeNo}) limit 0 ,1
+	</select>
+	<!-- 查询所有的区位信息 -->
+	<select id="selectAreaNames" resultType="hashmap">
+		select
+		<include refid="Base_Column_List" />
+		from createstorehouse csh
+	</select>
+	<!-- 根据主键查询建库实体 -->
+	<select id="selectCreateStoreHouseById" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from createstorehouse
+		where createstorehouse_id =
+		#{createstorehouseId,jdbcType=VARCHAR}
+	</select>
+	<!-- 修改建库信息 -->
+	<update id="updateCreateStoreHouseBySelective" parameterType="Map">
+		update createstorehouse
+		<set>
+			<if test="createStoreHouse.storeName != null">
+				store_name =
+				#{createStoreHouse.storeName,jdbcType=VARCHAR},
+			</if>
+			<if test="createStoreHouse.storeType != null">
+				store_type =
+				#{createStoreHouse.storeType,jdbcType=VARCHAR},
+			</if>
+			<if test="createStoreHouse.storeAddress != null">
+				store_address =
+				#{createStoreHouse.storeAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="createStoreHouse.storeMaster != null">
+				store_master =
+				#{createStoreHouse.storeMaster,jdbcType=VARCHAR},
+			</if>
+			<if test="createStoreHouse.masterTel != null">
+				master_tel =
+				#{createStoreHouse.masterTel,jdbcType=VARCHAR},
+			</if>
+			<if test="createStoreHouse.areaName != null">
+				area_name =
+				#{createStoreHouse.areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="createStoreHouse.rowsCount != null">
+				rows_count =
+				#{createStoreHouse.rowsCount,jdbcType=INTEGER},
+			</if>
+			<if test="createStoreHouse.rowsStart != null">
+				rows_start =
+				#{createStoreHouse.rowsStart,jdbcType=INTEGER},
+			</if>
+			<if test="createStoreHouse.columnsCount != null">
+				columns_count =
+				#{createStoreHouse.columnsCount,jdbcType=INTEGER},
+			</if>
+			<if test="createStoreHouse.columnsStart != null">
+				columns_start =
+				#{createStoreHouse.columnsStart,jdbcType=INTEGER},
+			</if>
+			<if test="createStoreHouse.sequence != null">
+				sequence = #{createStoreHouse.sequence,jdbcType=INTEGER},
+			</if>
+			<if test="createStoreHouse.creator != null">
+				creator = #{createStoreHouse.creator,jdbcType=VARCHAR},
+			</if>
+			<if test="createStoreHouse.createTime != null">
+				create_time =
+				#{createStoreHouse.createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createStoreHouse.robotNo != null">
+				robot_no = #{createStoreHouse.robotNo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where store_name = #{storeName,jdbcType=VARCHAR}
+		<!-- where createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR} -->
+
+	</update>
+
+
+	<insert id="insert" parameterType="com.entity.CreateStoreHouse">
+		insert into createstorehouse
+		(createstorehouse_id, store_name, store_type,
+		store_address,
+		store_master, master_tel,
+		area_name, rows_count, rows_start,
+		columns_count, columns_start, sequence,
+		creator, create_time, robot_no
+		)
+		values (#{createstorehouseId,jdbcType=VARCHAR},
+		#{storeName,jdbcType=VARCHAR}, #{storeType,jdbcType=VARCHAR},
+		#{storeAddress,jdbcType=VARCHAR}, #{storeMaster,jdbcType=VARCHAR},
+		#{masterTel,jdbcType=VARCHAR},
+		#{areaName,jdbcType=VARCHAR},
+		#{rowsCount,jdbcType=INTEGER}, #{rowsStart,jdbcType=INTEGER},
+		#{columnsCount,jdbcType=INTEGER}, #{columnsStart,jdbcType=INTEGER},
+		#{sequence,jdbcType=INTEGER},
+		#{creator,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}, #{robotNo,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.entity.CreateStoreHouse">
+		insert into createstorehouse
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="createstorehouseId != null">
+				createstorehouse_id,
+			</if>
+			<if test="storeName != null">
+				store_name,
+			</if>
+			<if test="storeType != null">
+				store_type,
+			</if>
+			<if test="storeAddress != null">
+				store_address,
+			</if>
+			<if test="storeMaster != null">
+				store_master,
+			</if>
+			<if test="masterTel != null">
+				master_tel,
+			</if>
+			<if test="areaName != null">
+				area_name,
+			</if>
+			<if test="rowsCount != null">
+				rows_count,
+			</if>
+			<if test="rowsStart != null">
+				rows_start,
+			</if>
+			<if test="columnsCount != null">
+				columns_count,
+			</if>
+			<if test="columnsStart != null">
+				columns_start,
+			</if>
+			<if test="sequence != null">
+				sequence,
+			</if>
+			<if test="creator != null">
+				creator,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="robotNo != null">
+				robot_no,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="createstorehouseId != null">
+				#{createstorehouseId,jdbcType=VARCHAR},
+			</if>
+			<if test="storeName != null">
+				#{storeName,jdbcType=VARCHAR},
+			</if>
+			<if test="storeType != null">
+				#{storeType,jdbcType=VARCHAR},
+			</if>
+			<if test="storeAddress != null">
+				#{storeAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="storeMaster != null">
+				#{storeMaster,jdbcType=VARCHAR},
+			</if>
+			<if test="masterTel != null">
+				#{masterTel,jdbcType=VARCHAR},
+			</if>
+			<if test="areaName != null">
+				#{areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="rowsCount != null">
+				#{rowsCount,jdbcType=INTEGER},
+			</if>
+			<if test="rowsStart != null">
+				#{rowsStart,jdbcType=INTEGER},
+			</if>
+			<if test="columnsCount != null">
+				#{columnsCount,jdbcType=INTEGER},
+			</if>
+			<if test="columnsStart != null">
+				#{columnsStart,jdbcType=INTEGER},
+			</if>
+			<if test="sequence != null">
+				#{sequence,jdbcType=INTEGER},
+			</if>
+			<if test="creator != null">
+				#{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="robotNo != null">
+				#{robotNo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.entity.CreateStoreHouse">
+		update createstorehouse
+		<set>
+			<if test="storeName != null">
+				store_name = #{storeName,jdbcType=VARCHAR},
+			</if>
+			<if test="storeType != null">
+				store_type = #{storeType,jdbcType=VARCHAR},
+			</if>
+			<if test="storeAddress != null">
+				store_address = #{storeAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="storeMaster != null">
+				store_master = #{storeMaster,jdbcType=VARCHAR},
+			</if>
+			<if test="masterTel != null">
+				master_tel = #{masterTel,jdbcType=VARCHAR},
+			</if>
+			<if test="areaName != null">
+				area_name = #{areaName,jdbcType=VARCHAR},
+			</if>
+			<if test="rowsCount != null">
+				rows_count = #{rowsCount,jdbcType=INTEGER},
+			</if>
+			<if test="rowsStart != null">
+				rows_start = #{rowsStart,jdbcType=INTEGER},
+			</if>
+			<if test="columnsCount != null">
+				columns_count = #{columnsCount,jdbcType=INTEGER},
+			</if>
+			<if test="columnsStart != null">
+				columns_start = #{columnsStart,jdbcType=INTEGER},
+			</if>
+			<if test="sequence != null">
+				sequence = #{sequence,jdbcType=INTEGER},
+			</if>
+			<if test="creator != null">
+				creator = #{creator,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="robotNo != null">
+				robot_no = #{robotNo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateCreateStoreHouse" parameterType="com.entity.CreateStoreHouse">
+		update
+		createstorehouse
+		set store_name = #{storeName,jdbcType=VARCHAR},
+		store_type = #{storeType,jdbcType=VARCHAR},
+		store_address =
+		#{storeAddress,jdbcType=VARCHAR},
+		store_master =
+		#{storeMaster,jdbcType=VARCHAR},
+		master_tel =
+		#{masterTel,jdbcType=VARCHAR},
+		area_name =
+		#{areaName,jdbcType=VARCHAR},
+		rows_count =
+		#{rowsCount,jdbcType=INTEGER},
+		rows_start =
+		#{rowsStart,jdbcType=INTEGER},
+		columns_count =
+		#{columnsCount,jdbcType=INTEGER},
+		columns_start =
+		#{columnsStart,jdbcType=INTEGER},
+		sequence =
+		#{sequence,jdbcType=INTEGER},
+		creator = #{creator,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		robot_no =
+		#{robotNo,jdbcType=VARCHAR}
+		where createstorehouse_id =
+		#{createstorehouseId,jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IOrderDetailDao">
+  <resultMap id="BaseResultMap" type="com.entity.OrderDetail">
+    <id column="order_detail_id" jdbcType="VARCHAR" property="orderDetailId" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="goods_id" jdbcType="VARCHAR" property="goodsId" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="statue" jdbcType="INTEGER" property="statue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_detail_id, order_id, goods_id, count, unit, statue
+  </sql>
+<!--   根据id查找订单详情 -->
+  <select id="searchOrderDetailById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from order_detail
+    where order_detail_id = #{orderDetailId,jdbcType=VARCHAR}
+  </select>
+<!--   <delete id="" parameterType="java.lang.String">
+    delete from order_detail
+    where order_detail_id = #{orderDetailId,jdbcType=VARCHAR}
+  </delete> -->
+<!--   <insert id="" parameterType="com.entity.OrderDetail">
+    insert into order_detail (order_detail_id, order_id, goods_id, 
+      count, unit, statue
+      )
+    values (#{orderDetailId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, 
+      #{count,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, #{statue,jdbcType=INTEGER}
+      )
+  </insert> -->
+
+<!--   <update id="" parameterType="com.entity.OrderDetail">
+    update order_detail
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      statue = #{statue,jdbcType=INTEGER}
+    where order_detail_id = #{orderDetailId,jdbcType=VARCHAR}
+  </update> -->
+</mapper>

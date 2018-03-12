@@ -1,0 +1,52 @@
+.type_message,.config_table_back{
+	padding: 10px 18px;
+	background:#fff;
+	box-shadow:1px 1px 13px 0px #b9c7da;
+	border-radius:3px;
+}
+.config_table_back{padding-bottom:40px;}
+.plc_input{
+	width:150px;
+    height: 26px;
+    line-height: 26px;
+    border: 2px solid #ececec;
+    padding-left: 5px;
+    border-radius: 20px;
+    margin-left: 10px;
+    background: none;
+    outline: none;
+}
+.plc_span{
+	width:143px;
+	text-align: right;
+}
+.plc_button{
+	display: inline-block;
+    padding: 6px 34px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    background: -ms-linear-gradient(top, #1c51a3, #5a8bc9);
+    background: -moz-linear-gradient(top,#1c51a3,#5a8bc9);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%,from(#1c51a3), to(#5a8bc9));
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1c51a3), to(#5a8bc9));
+    background: -webkit-linear-gradient(top, #1c51a3, #5a8bc9);
+    background: -o-linear-gradient(top, #1c51a3, #5a8bc9);
+    box-shadow: 0 -2px 5px #4374ae inset;
+    /* margin-left:235px; */
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #ccc; opacity:1; 
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #ccc;opacity:1;
+}
+
+input:-ms-input-placeholder{
+    color: #ccc;opacity:1;
+}
+
+input::-webkit-input-placeholder{
+    color: #ccc;opacity:1;
+}

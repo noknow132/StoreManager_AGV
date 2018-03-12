@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IOutputStoreDao">
+	<resultMap id="BaseResultMap" type="com.entity.OutputStore">
+		<id column="output_store_id" jdbcType="VARCHAR" property="outputStoreId" />
+		<result column="order_id" jdbcType="VARCHAR" property="orderId" />
+		<result column="output_store_no" jdbcType="VARCHAR" property="outputStoreNo" />
+		<result column="bar_code" jdbcType="VARCHAR" property="barCode" />
+		<result column="createstorehouse_id" jdbcType="VARCHAR"
+			property="createstorehouseId" />
+		<result column="store_id" jdbcType="VARCHAR" property="storeId" />
+		<result column="count" jdbcType="INTEGER" property="count" />
+		<result column="unit" jdbcType="VARCHAR" property="unit" />
+		<result column="output_time" jdbcType="TIMESTAMP" property="outputTime" />
+		<result column="statue" jdbcType="INTEGER" property="statue" />
+		<result column="outlet_id" jdbcType="VARCHAR" property="outletId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		output_store_id, order_id, output_store_no, bar_code,
+		createstorehouse_id, store_id,
+		count, unit, output_time, statue,
+		outlet_id
+	</sql>
+
+	<!-- 新增出库单 -->
+	<insert id="insertOutputStore" parameterType="com.entity.OutputStore">
+		insert into
+		output_store (output_store_id, order_id, output_store_no,
+		bar_code,
+		createstorehouse_id, store_id,
+		count, unit, output_time,
+		statue,
+		outlet_id)
+		values (#{outputStoreId,jdbcType=VARCHAR},
+		#{orderId,jdbcType=VARCHAR},
+		#{outputStoreNo,jdbcType=VARCHAR},
+		#{barCode,jdbcType=VARCHAR}, #{createstorehouseId,jdbcType=VARCHAR},
+		#{storeId,jdbcType=VARCHAR},
+		#{count,jdbcType=INTEGER},
+		#{unit,jdbcType=VARCHAR},
+		#{outputTime,jdbcType=TIMESTAMP},
+		#{statue,jdbcType=INTEGER}, #{outletId,jdbcType=VARCHAR})
+
+	</insert>
+
+	<!-- 批量新增出库单 -->
+	<insert id="insertOutputStores" parameterType="java.util.List">
+		insert into output_store (output_store_id, order_id, output_store_no,
+		bar_code, createstorehouse_id, store_id,
+		count, unit, output_time,
+		statue, outlet_id
+		)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.outputStoreId,jdbcType=VARCHAR},
+			#{item.orderId,jdbcType=VARCHAR},
+			#{item.outputStoreNo,jdbcType=VARCHAR},
+			#{item.barCode,jdbcType=VARCHAR},
+			#{item.createstorehouseId,jdbcType=VARCHAR},
+			#{item.storeId,jdbcType=VARCHAR},
+			#{item.count,jdbcType=INTEGER},
+			#{item.unit,jdbcType=VARCHAR},
+			#{item.outputTime,jdbcType=TIMESTAMP},
+			#{item.statue,jdbcType=INTEGER}, #{item.outletId,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	<!--根据出库单号查询 -->
+	<select id="selectOutputStoreByNo" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from output_store
+		where output_store_no =
+		#{outputStoreNo,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from output_store
+		where output_store_id =
+		#{outputStoreId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 通过仓库id查找出库单记录的单号 -->
+  <select id="searchOutPutStoreNoByStoreId" parameterType="java.lang.String" resultType="String">
+    select output_store_no from output_store where store_id = #{0}
+  </select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		output_store
+		where output_store_id = #{outputStoreId,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 根据仓库id删除出库订单 -->
+	<delete id="deleteOutPutStoreByStoreId" parameterType="java.lang.String">
+		delete from output_store
+		where store_id = #{storeId,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert" parameterType="com.entity.OutputStore">
+		insert into output_store
+		(output_store_id, order_id, output_store_no,
+		bar_code,
+		createstorehouse_id, store_id,
+		count, unit, output_time,
+		statue,
+		outlet_id)
+		values (#{outputStoreId,jdbcType=VARCHAR},
+		#{orderId,jdbcType=VARCHAR},
+		#{outputStoreNo,jdbcType=VARCHAR},
+		#{barCode,jdbcType=VARCHAR}, #{createstorehouseId,jdbcType=VARCHAR},
+		#{storeId,jdbcType=VARCHAR},
+		#{count,jdbcType=INTEGER},
+		#{unit,jdbcType=VARCHAR},
+		#{outputTime,jdbcType=TIMESTAMP},
+		#{statue,jdbcType=INTEGER}, #{outletId,jdbcType=VARCHAR})
+	</insert>
+	<!-- 更改 -->
+	<update id="updateOutputStoreByIdSelective" parameterType="com.entity.OutputStore">
+		update output_store
+		<set>
+			<if test="orderId != null">
+				order_id = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="outputStoreNo != null">
+				output_store_no = #{outputStoreNo,jdbcType=VARCHAR},
+			</if>
+			<if test="barCode != null">
+				bar_code = #{barCode,jdbcType=VARCHAR},
+			</if>
+			<if test="createstorehouseId != null">
+				createstorehouse_id =
+				#{createstorehouseId,jdbcType=VARCHAR},
+			</if>
+			<if test="storeId != null">
+				store_id = #{storeId,jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				count = #{count,jdbcType=INTEGER},
+			</if>
+			<if test="unit != null">
+				unit = #{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="outputTime != null">
+				output_time = #{outputTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="statue != null">
+				statue = #{statue,jdbcType=INTEGER},
+			</if>
+			<if test="outletId != null">
+				outlet_id = #{outletId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where output_store_id = #{outputStoreId,jdbcType=VARCHAR}
+	</update>
+	
+	<insert id="insertSelective" parameterType="com.entity.OutputStore">
+		insert into output_store
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="outputStoreId != null">
+				output_store_id,
+			</if>
+			<if test="orderId != null">
+				order_id,
+			</if>
+			<if test="outputStoreNo != null">
+				output_store_no,
+			</if>
+			<if test="barCode != null">
+				bar_code,
+			</if>
+			<if test="createstorehouseId != null">
+				createstorehouse_id,
+			</if>
+			<if test="storeId != null">
+				store_id,
+			</if>
+			<if test="count != null">
+				count,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="outputTime != null">
+				output_time,
+			</if>
+			<if test="statue != null">
+				statue,
+			</if>
+			<if test="outletId != null">
+				outlet_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="outputStoreId != null">
+				#{outputStoreId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderId != null">
+				#{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="outputStoreNo != null">
+				#{outputStoreNo,jdbcType=VARCHAR},
+			</if>
+			<if test="barCode != null">
+				#{barCode,jdbcType=VARCHAR},
+			</if>
+			<if test="createstorehouseId != null">
+				#{createstorehouseId,jdbcType=VARCHAR},
+			</if>
+			<if test="storeId != null">
+				#{storeId,jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				#{count,jdbcType=INTEGER},
+			</if>
+			<if test="unit != null">
+				#{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="outputTime != null">
+				#{outputTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="statue != null">
+				#{statue,jdbcType=INTEGER},
+			</if>
+			<if test="outletId != null">
+				#{outletId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.entity.OutputStore">
+		update output_store
+		<set>
+			<if test="orderId != null">
+				order_id = #{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="outputStoreNo != null">
+				output_store_no = #{outputStoreNo,jdbcType=VARCHAR},
+			</if>
+			<if test="barCode != null">
+				bar_code = #{barCode,jdbcType=VARCHAR},
+			</if>
+			<if test="createstorehouseId != null">
+				createstorehouse_id =
+				#{createstorehouseId,jdbcType=VARCHAR},
+			</if>
+			<if test="storeId != null">
+				store_id = #{storeId,jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				count = #{count,jdbcType=INTEGER},
+			</if>
+			<if test="unit != null">
+				unit = #{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="outputTime != null">
+				output_time = #{outputTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="statue != null">
+				statue = #{statue,jdbcType=INTEGER},
+			</if>
+			<if test="outletId != null">
+				outlet_id = #{outletId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where output_store_id = #{outputStoreId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.entity.OutputStore">
+		update
+		output_store
+		set order_id = #{orderId,jdbcType=VARCHAR},
+		output_store_no = #{outputStoreNo,jdbcType=VARCHAR},
+		bar_code =
+		#{barCode,jdbcType=VARCHAR},
+		createstorehouse_id =
+		#{createstorehouseId,jdbcType=VARCHAR},
+		store_id =
+		#{storeId,jdbcType=VARCHAR},
+		count = #{count,jdbcType=INTEGER},
+		unit =
+		#{unit,jdbcType=VARCHAR},
+		output_time =
+		#{outputTime,jdbcType=TIMESTAMP},
+		statue = #{statue,jdbcType=INTEGER},
+		outlet_id = #{outletId,jdbcType=VARCHAR}
+		where output_store_id =
+		#{outputStoreId,jdbcType=VARCHAR}
+	</update>
+</mapper>

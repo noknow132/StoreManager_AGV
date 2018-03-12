@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IWorkStepDao">
+	<resultMap id="BaseResultMap" type="com.entity.WorkStep">
+		<id column="work_id" jdbcType="VARCHAR" property="workId" />
+		<result column="order_id" jdbcType="VARCHAR" property="orderId" />
+		<result column="work_type" jdbcType="INTEGER" property="workType" />
+		<result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+		<result column="work_statue" jdbcType="INTEGER" property="workStatue" />
+		<result column="fringe_code" jdbcType="VARCHAR" property="fringeCode" />
+		<result column="count" jdbcType="INTEGER" property="count" />
+		<result column="get_place" jdbcType="VARCHAR" property="getPlace" />
+		<result column="put_place" jdbcType="VARCHAR" property="putPlace" />
+		<result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+		<result column="scan_time" jdbcType="TIMESTAMP" property="scanTime" />
+		<result column="input_store_time" jdbcType="TIMESTAMP"
+			property="inputStoreTime" />
+		<result column="output_store_time" jdbcType="TIMESTAMP"
+			property="outputStoreTime" />
+		<result column="rebot_code" jdbcType="VARCHAR" property="rebotCode" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		work_id, order_id, work_type, order_no, work_statue,
+		fringe_code, count,
+		get_place,
+		put_place, insert_time, scan_time,
+		input_store_time, output_store_time,
+		rebot_code
+	</sql>
+	<!-- 插入作业 -->
+	<insert id="insertWorkStep" parameterType="com.entity.WorkStep">
+		insert into work_step
+		(work_id, order_id, work_type,
+		order_no, work_statue, fringe_code,
+		count, get_place, put_place,
+		insert_time, scan_time, input_store_time,
+		output_store_time, rebot_code)
+		values (#{workId,jdbcType=VARCHAR},
+		#{orderId,jdbcType=VARCHAR},
+		#{workType,jdbcType=INTEGER},
+		#{orderNo,jdbcType=VARCHAR}, #{workStatue,jdbcType=INTEGER},
+		#{fringeCode,jdbcType=VARCHAR},
+		#{count,jdbcType=INTEGER},
+		#{getPlace,jdbcType=VARCHAR},
+		#{putPlace,jdbcType=VARCHAR},
+		#{insertTime,jdbcType=TIMESTAMP}, #{scanTime,jdbcType=TIMESTAMP},
+		#{inputStoreTime,jdbcType=TIMESTAMP},
+		#{outputStoreTime,jdbcType=TIMESTAMP}, #{rebotCode,jdbcType=VARCHAR})
+	</insert>
+	<!--批量 插入作业 -->
+	<insert id="insertWorkSteps" parameterType="java.util.List">
+		insert into work_step(work_id, order_id, work_type,
+		order_no,
+		work_statue, fringe_code,
+		count, get_place, put_place,
+		insert_time,
+		scan_time, input_store_time, output_store_time,
+		rebot_code)
+		values
+		<foreach collection="wss" item="item" index="index" separator=",">
+			(#{item.workId,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR},
+			#{item.workType,jdbcType=INTEGER},
+			#{item.orderNo,jdbcType=VARCHAR},
+			#{item.workStatue,jdbcType=INTEGER},
+			#{item.fringeCode,jdbcType=VARCHAR},
+			#{item.count,jdbcType=INTEGER},
+			#{item.getPlace,jdbcType=VARCHAR},
+			#{item.putPlace,jdbcType=VARCHAR},
+			#{item.insertTime,jdbcType=TIMESTAMP},
+			#{item.scanTime,jdbcType=TIMESTAMP},
+			#{item.inputStoreTime,jdbcType=TIMESTAMP},
+			#{item.outputStoreTime,jdbcType=TIMESTAMP},
+			#{item.rebotCode,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改作业 -->
+	<update id="updateWorkStep" parameterType="com.entity.WorkStep">
+		update work_step
+		set
+		order_id = #{orderId,jdbcType=VARCHAR},
+		work_type
+		=#{workType,jdbcType=INTEGER},
+		order_no = #{orderNo,jdbcType=VARCHAR},
+		work_statue = #{workStatue,jdbcType=INTEGER},
+		fringe_code
+		=#{fringeCode,jdbcType=VARCHAR},
+		count = #{count,jdbcType=INTEGER},
+		get_place = #{getPlace,jdbcType=VARCHAR},
+		put_place
+		=#{putPlace,jdbcType=VARCHAR},
+		insert_time
+		=#{insertTime,jdbcType=TIMESTAMP},
+		scan_time =
+		#{scanTime,jdbcType=TIMESTAMP},
+		input_store_time
+		=#{inputStoreTime,jdbcType=TIMESTAMP},
+		output_store_time
+		=#{outputStoreTime,jdbcType=TIMESTAMP},
+		rebot_code
+		=#{rebotCode,jdbcType=VARCHAR}
+		where work_id
+		=#{workId,jdbcType=VARCHAR}
+	</update>
+	
+    <!-- 根据状态查找作业类型 数量-->
+	<select id="selectWorkStepCountByStatus" parameterType ="hashmap" resultType="java.lang.Integer">
+	    select count(*) from work_step ws  where  
+		<if test="workStatue==2"> <!-- 已完成 -->
+			ws.work_statue = 2
+		</if>
+		<if test="workStatue!=2"><!-- 正在执行或未完成 -->
+			(ws.work_statue = 1 or ws.work_statue = 0 or ws.work_statue = 3)
+		</if>
+		 AND ws.work_type = #{workType}
+	</select>
+	
+	<!-- 根据执行状态查找作业 -->
+	<select id="selectWorkStepsByWorkStatue" 
+		resultType="hashmap">
+		select ws.*,shput.store_no put_placeNo, shget.store_no get_placeNo
+		from ( SELECT
+		ws.*, CASE ws.work_type
+		WHEN 0 THEN
+		(
+		SELECT
+		ins.input_time
+		FROM
+		input_store ins
+		WHERE
+		ins.input_store_no = ws.order_no
+		)
+		WHEN 1 THEN
+		(
+		SELECT
+		ous.output_time
+		FROM
+		output_store ous
+		WHERE
+		ous.output_store_no =
+		ws.order_no
+		)
+		WHEN 2 THEN
+		(
+		SELECT
+		mos.move_time
+		FROM
+		move_store mos
+		WHERE
+		mos.move_no = ws.order_no
+		)
+		WHEN 3 THEN
+		(
+		SELECT
+		chs.change_time
+		FROM
+		change_store chs
+		WHERE
+		chs.change_no = ws.order_no
+		)
+		END begintime,
+		CASE
+		ws.work_type
+		WHEN 1 THEN
+		(
+		SELECT
+		oul.outlet_name
+		FROM
+		output_store ous
+		LEFT
+		JOIN out_let oul ON ous.outlet_id = oul.outlet_id
+		WHERE
+		ous.output_store_no = ws.order_no
+		)
+		ELSE
+		- 1
+		END outlet_name
+		FROM
+		work_step
+		ws
+		WHERE
+		<if test="workStatue==2"> <!-- 已完成 -->
+			ws.work_statue = 2
+		</if>
+
+		<if test="workStatue!=2"><!-- 正在执行或未完成 -->
+			ws.work_statue = 1 or ws.work_statue = 0 or ws.work_statue = 3
+		</if>
+
+		<if test="workType!=-1"> <!-- 作业类型 -->
+			and ws.work_type = #{workType}
+		</if>
+		<if test="workStatue!=2"><!-- 正在执行或未完成 -->
+			order by FIELD(ws.work_statue,1,3,0) ,ws.insert_time
+		</if>
+		<if test="workStatue==2"> <!-- 已完成 -->
+			order by ws.insert_time
+		</if>
+
+		) ws
+		left join storehouse shput on shput.store_id=ws.put_place
+		left join
+		storehouse shget on shget.store_id=ws.get_place
+		where 1=1
+		<if test='no != null and no!= ""'>
+			and (ws.order_no like CONCAT('%',#{no},'%') or ws.fringe_code like
+			CONCAT('%',#{no},'%'))
+		</if>
+	</select>
+
+	<!-- 根据货物码查找作业 -->
+	<select id="selectWorkStepByFringeCode" parameterType="hashmap"
+		resultMap="BaseResultMap">
+		select * from work_step ws
+		where 1=1
+		<if test="fringeCode!=null">
+			and ws.fringe_code=#{fringeCode}
+		</if>
+		<if test="workType!=null">
+			and ws.work_type=#{workType}
+		</if>
+		limit 0, 1
+	</select>
+
+	<!-- 批量删除作业 根据主键 -->
+	<delete id="delectWorkStepsByWorkIds" parameterType="java.lang.String">
+		delete from
+		work_step
+		where work_id in
+		<foreach item="item" collection="array" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</delete>
+	<!-- 删除作业根据主键 -->
+	<delete id="delectWorkStepByWorkId" parameterType="java.lang.String">
+		delete from
+		work_step
+		where work_id = #{workId,jdbcType=VARCHAR}
+	</delete>
+	<!-- 根据主键查找作业实体 -->
+	<select id="selectWorkStepByWorkId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from work_step
+		where work_id = #{workId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据条形码查找作业实体（已完成的作业除外） -->
+	<select id="selectWorkStepByCode" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from work_step
+		where fringe_code = #{0}
+		and
+		work_statue != 2
+	</select>
+
+
+	<!-- 根据执行状态查找作业 -->
+	<select id="searchWorkStepByStatue" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from work_step
+		where work_statue =
+		#{workStatue,jdbcType=VARCHAR} order by work_step.insert_time asc
+	</select>
+
+	<!-- 根据多个执行状态查找作业 -->
+	<select id="searchWorkStepByStatues" parameterType="hashmap"
+		resultMap="BaseResultMap">
+		select * from work_step
+		where work_statue in
+		<foreach collection="list" item="item" index="index" open="("
+			close=")" separator=",">
+			#{item}
+		</foreach>
+		order by work_step.insert_time asc
+	</select>
+
+	<!-- 根据执行状态作业类型查找作业 -->
+	<select id="searchWorkStepByStatueAndType" parameterType="hashmap"
+		resultMap="BaseResultMap">
+		SELECT
+		ws.*
+		FROM
+		work_step ws
+		WHERE
+		ws.work_id = (
+		SELECT
+		IF (
+		(
+		SELECT
+		count(*) type_count
+		FROM
+		work_step ws
+		WHERE
+		ws.work_statue in
+		<foreach collection="list" item="item" index="index" open="("
+			close=")" separator=",">
+			#{item}
+		</foreach>
+		AND ws.work_type = #{workType}
+		ORDER BY
+		ws.insert_time ASC
+		) > 0,
+		(
+		SELECT
+		ws.work_id
+		FROM
+		work_step ws
+		WHERE
+		ws.work_statue in
+		<foreach collection="list" item="item" index="index" open="("
+			close=")" separator=",">
+			#{item}
+		</foreach>
+		AND ws.work_type = #{workType}
+
+		<if test="workType==0"> <!-- 入库 -->
+			order by case when ws.scan_time is null then 1 else 0 end
+			,ws.scan_time
+		</if>
+		<if test="workType!=0"> <!-- 非入库 -->
+			ORDER BY
+			ws.insert_time ASC
+		</if>
+		LIMIT 0,
+		1
+		),
+		(
+		SELECT
+		ws.work_id
+		FROM
+		work_step ws
+		WHERE
+		ws.work_statue in
+		<foreach collection="list" item="item" index="index" open="("
+			close=")" separator=",">
+			#{item}
+		</foreach>
+		ORDER BY
+		ws.insert_time ASC
+		LIMIT 0,
+		1
+		)
+		) work_id
+		)
+	</select>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from work_step
+		where work_id = #{workId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		work_step
+		where work_id = #{workId,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- 根据单号删除作业 -->
+	<delete id="deleteWorkStepByOrderNo" parameterType="java.util.List">
+		delete from work_step where order_no in
+		<foreach collection="orderNoList" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<insert id="insert" parameterType="com.entity.WorkStep">
+		insert into work_step
+		(work_id, order_id, work_type,
+		order_no, work_statue, fringe_code,
+		count, get_place, put_place,
+		insert_time, scan_time, input_store_time,
+		output_store_time, rebot_code)
+		values (#{workId,jdbcType=VARCHAR},
+		#{orderId,jdbcType=VARCHAR},
+		#{workType,jdbcType=INTEGER},
+		#{orderNo,jdbcType=VARCHAR}, #{workStatue,jdbcType=INTEGER},
+		#{fringeCode,jdbcType=VARCHAR},
+		#{count,jdbcType=INTEGER},
+		#{getPlace,jdbcType=VARCHAR},
+		#{putPlace,jdbcType=VARCHAR},
+		#{insertTime,jdbcType=TIMESTAMP}, #{scanTime,jdbcType=TIMESTAMP},
+		#{inputStoreTime,jdbcType=TIMESTAMP},
+		#{outputStoreTime,jdbcType=TIMESTAMP}, #{rebotCode,jdbcType=VARCHAR})
+	</insert>
+
+</mapper>

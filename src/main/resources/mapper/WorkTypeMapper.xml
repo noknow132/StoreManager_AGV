@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IWorkTypeDao">
+  <resultMap id="BaseResultMap" type="com.entity.WorkType">
+    <id column="type_id" jdbcType="VARCHAR" property="typeId" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="type_statue" jdbcType="INTEGER" property="typeStatue" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    type_id, type_name, type_statue, create_time, update_time
+  </sql>
+  <!-- 根据id查找作业类型 -->
+  <select id="searchWorkTypeById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from work_type
+    where type_id = #{typeId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 查找作业类型 -->
+  <select id="searchWorkType" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from work_type
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from work_type
+    where type_id = #{typeId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 新增作业类型 -->
+  <insert id="insertWorkType" parameterType="com.entity.WorkType">
+    insert into work_type (type_id, type_name, type_statue, 
+      create_time,update_time)
+    values (#{typeId,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, #{typeStatue,jdbcType=INTEGER}, 
+      now(),null)<!-- #{createTime,jdbcType=TIMESTAMP} -->
+  </insert>
+
+<!-- 修改作业类型 -->
+  <update id="updateWorkType" parameterType="com.entity.WorkType">
+    update work_type
+    set type_name = #{typeName,jdbcType=VARCHAR},
+      type_statue = #{typeStatue,jdbcType=INTEGER},
+      update_time = now()<!-- #{updateTime,jdbcType=TIMESTAMP} -->
+    where type_id = #{typeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

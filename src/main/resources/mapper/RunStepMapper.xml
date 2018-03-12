@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IRunStepDao">
+  <resultMap id="BaseResultMap" type="com.entity.RunStep">
+    <id column="run_step_id" jdbcType="VARCHAR" property="runStepId" />
+    <result column="run_code" jdbcType="INTEGER" property="runCode" />
+    <result column="step_name" jdbcType="VARCHAR" property="stepName" />
+    <result column="plc_id" jdbcType="VARCHAR" property="plcId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    run_step_id, run_code, step_name, plc_id
+  </sql>
+  
+    <!-- 根据运行值查找运行步骤-->
+    <select id="selectRunStepByRunCode" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from run_step
+    where run_code = #{runCode} limit 0,1
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from run_step
+    where run_step_id = #{runStepId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from run_step
+    where run_step_id = #{runStepId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.entity.RunStep">
+    insert into run_step (run_step_id, run_code, step_name, 
+      plc_id)
+    values (#{runStepId,jdbcType=VARCHAR}, #{runCode,jdbcType=INTEGER}, #{stepName,jdbcType=VARCHAR}, 
+      #{plcId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.RunStep">
+    insert into run_step
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="runStepId != null">
+        run_step_id,
+      </if>
+      <if test="runCode != null">
+        run_code,
+      </if>
+      <if test="stepName != null">
+        step_name,
+      </if>
+      <if test="plcId != null">
+        plc_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="runStepId != null">
+        #{runStepId,jdbcType=VARCHAR},
+      </if>
+      <if test="runCode != null">
+        #{runCode,jdbcType=INTEGER},
+      </if>
+      <if test="stepName != null">
+        #{stepName,jdbcType=VARCHAR},
+      </if>
+      <if test="plcId != null">
+        #{plcId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.entity.RunStep">
+    update run_step
+    <set>
+      <if test="runCode != null">
+        run_code = #{runCode,jdbcType=INTEGER},
+      </if>
+      <if test="stepName != null">
+        step_name = #{stepName,jdbcType=VARCHAR},
+      </if>
+      <if test="plcId != null">
+        plc_id = #{plcId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where run_step_id = #{runStepId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.entity.RunStep">
+    update run_step
+    set run_code = #{runCode,jdbcType=INTEGER},
+      step_name = #{stepName,jdbcType=VARCHAR},
+      plc_id = #{plcId,jdbcType=VARCHAR}
+    where run_step_id = #{runStepId,jdbcType=VARCHAR}
+  </update>
+</mapper>

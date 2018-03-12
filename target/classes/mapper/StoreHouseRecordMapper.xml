@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IStoreHouseRecordDao">
+   <resultMap id="BaseResultMap" type="com.entity.StoreHouseRecord">
+    <id column="record_id" jdbcType="VARCHAR" property="recordId" />
+    <result column="store_id1" jdbcType="VARCHAR" property="storeId1" />
+    <result column="store_id2" jdbcType="VARCHAR" property="storeId2" />
+    <result column="operate_type" jdbcType="INTEGER" property="operateType" />
+    <result column="bar_code" jdbcType="VARCHAR" property="barCode" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="operate_time_start" jdbcType="TIMESTAMP" property="operateTimeStart" />
+    <result column="operate_time_end" jdbcType="TIMESTAMP" property="operateTimeEnd" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="order_detail_id" jdbcType="VARCHAR" property="orderDetailId" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    record_id, store_id1, store_id2, operate_type, bar_code, order_no, operate_time_start, 
+    operate_time_end, count, order_id, order_detail_id, unit
+  </sql>
+	
+	<!--根据仓位id查找记录 -->
+	<select id="selectStoreHouseRecordByStoreId" parameterType="java.lang.String"
+		resultType="hashmap">
+		
+			SELECT
+				recordInfo.record_id,
+				recordInfo.store_id1,
+				recordInfo.store_id2,
+				recordInfo.operate_type,
+				recordInfo.bar_code,
+				recordInfo.operate_time_start,
+				recordInfo.operate_time_end,
+				recordInfo.order_time,
+				recordInfo.order_id,
+				recordInfo.unit,
+				recordInfo.count,
+				insth.store_no instoreno,
+				outsth.store_no outstoreno,
+				ol.outlet_name
+			FROM
+				(
+					SELECT
+						shr.record_id,
+						shr.store_id1,
+						shr.store_id2,
+						shr.operate_type,
+						shr.bar_code,
+						shr.order_id,
+						shr.operate_time_start,
+						shr.operate_time_end,
+						shr.unit,
+						shr.count,
+						 	<!--  入库时间 -->
+						CASE shr.operate_type
+					WHEN 0 THEN
+						(
+							SELECT
+								ins.input_time
+							FROM
+								input_store ins
+							WHERE
+								shr.order_no = ins.input_store_no
+						)
+					WHEN 1 THEN
+						(
+							SELECT
+								ous.output_time
+							FROM
+								output_store ous
+							WHERE
+								shr.order_no = ous.output_store_no
+						)
+					WHEN 2 THEN
+						(
+							SELECT
+								chs.change_time
+							FROM
+								change_store chs
+							WHERE
+								shr.order_no = chs.change_no
+						)
+					WHEN 3 THEN
+						(
+							SELECT
+								mos.move_time
+							FROM
+								move_store mos
+							WHERE
+								shr.order_no = mos.move_no
+						)
+					END order_time,
+					<!--  生成各自单的时间 -->
+					<!-- 入库仓位 -->
+					CASE shr.operate_type
+				WHEN 1 THEN
+					- 1
+				WHEN 2 THEN
+					<!--  调库 -->
+					(
+						SELECT
+							shr.store_id2
+						FROM
+							change_store chs
+						WHERE
+							shr.order_no = chs.change_no
+					)
+				WHEN 3 THEN
+					<!--  移库 -->
+					(
+						SELECT
+							shr.store_id2
+						FROM
+							move_store mos
+						WHERE
+							shr.order_no = mos.move_no
+					)
+				ELSE
+					shr.store_id1
+				END input_storeno,
+				   <!-- 出库仓位 -->
+				CASE shr.operate_type
+			WHEN 0 THEN
+				- 1
+			WHEN 2 THEN
+				<!--  调库 -->
+				(
+					SELECT
+						shr.store_id1
+					FROM
+						change_store chs
+					WHERE
+						shr.order_no = chs.change_no
+				)
+			WHEN 3 THEN
+				<!--  移库 -->
+				(
+					SELECT
+						shr.store_id1
+					FROM
+						move_store mos
+					WHERE
+						shr.order_no = mos.move_no
+				)
+			ELSE
+				shr.store_id1
+			END output_storeno,
+			 <!--   出口 -->
+			CASE shr.operate_type
+			WHEN 1 THEN
+				(
+					SELECT
+						ous.outlet_id
+					FROM
+						output_store ous
+					WHERE
+						shr.order_no = ous.output_store_no
+				)
+			ELSE
+				- 1
+			END outlet_id
+			FROM
+				storehouse_record shr
+			WHERE
+			<!-- 条件 -->
+				(shr.store_id1 =  #{storeId,jdbcType=VARCHAR}
+			OR shr.store_id2 =  #{storeId,jdbcType=VARCHAR} )
+			<if test="search!=null and search!=''">
+			and ( shr.order_id like CONCAT('%',#{search},'%') or 
+		    shr.bar_code like CONCAT('%',#{search},'%') )
+			</if>
+			<if test="operateType!=null and operateType!=''">
+			and ( shr.operate_type =#{operateType} )
+			</if>
+			order by shr.operate_time_end desc
+				) recordInfo
+			LEFT JOIN storehouse insth ON insth.store_id = recordInfo.input_storeno
+			LEFT JOIN storehouse outsth ON outsth.store_id = recordInfo.output_storeno
+			LEFT JOIN out_let ol ON ol.outlet_id = recordInfo.outlet_id
+	</select>
+	
+		<!--根据仓位id查找记录  dao层传参方式不同 -->
+	<select id="selectStoreHouseRecordByStoreIdMap" parameterType="hashmap"
+		resultType="hashmap">
+		
+			SELECT
+				recordInfo.record_id,
+				recordInfo.store_id1,
+				recordInfo.store_id2,
+				recordInfo.operate_type,
+				recordInfo.bar_code,
+				recordInfo.operate_time_start,
+				recordInfo.operate_time_end,
+				recordInfo.order_time,
+				recordInfo.order_id,
+				recordInfo.unit,
+				recordInfo.count,
+				insth.store_no instoreno,
+				outsth.store_no outstoreno,
+				ol.outlet_name
+			FROM
+				(
+					SELECT
+						shr.record_id,
+						shr.store_id1,
+						shr.store_id2,
+						shr.operate_type,
+						shr.bar_code,
+						shr.order_id,
+						shr.operate_time_start,
+						shr.operate_time_end,
+						shr.unit,
+						shr.count,
+						 	<!--  入库时间 -->
+						CASE shr.operate_type
+					WHEN 0 THEN
+						(
+							SELECT
+								ins.input_time
+							FROM
+								input_store ins
+							WHERE
+								shr.order_no = ins.input_store_no
+						)
+					WHEN 1 THEN
+						(
+							SELECT
+								ous.output_time
+							FROM
+								output_store ous
+							WHERE
+								shr.order_no = ous.output_store_no
+						)
+					WHEN 2 THEN
+						(
+							SELECT
+								chs.change_time
+							FROM
+								change_store chs
+							WHERE
+								shr.order_no = chs.change_no
+						)
+					WHEN 3 THEN
+						(
+							SELECT
+								mos.move_time
+							FROM
+								move_store mos
+							WHERE
+								shr.order_no = mos.move_no
+						)
+					END order_time,
+					<!--  生成各自单的时间 -->
+					<!-- 入库仓位 -->
+					CASE shr.operate_type
+				WHEN 1 THEN
+					- 1
+				WHEN 2 THEN
+					<!--  调库 -->
+					(
+						SELECT
+							shr.store_id2
+						FROM
+							change_store chs
+						WHERE
+							shr.order_no = chs.change_no
+					)
+				WHEN 3 THEN
+					<!--  移库 -->
+					(
+						SELECT
+							shr.store_id2
+						FROM
+							move_store mos
+						WHERE
+							shr.order_no = mos.move_no
+					)
+				ELSE
+					shr.store_id1
+				END input_storeno,
+				   <!-- 出库仓位 -->
+				CASE shr.operate_type
+			WHEN 0 THEN
+				- 1
+			WHEN 2 THEN
+				<!--  调库 -->
+				(
+					SELECT
+						shr.store_id1
+					FROM
+						change_store chs
+					WHERE
+						shr.order_no = chs.change_no
+				)
+			WHEN 3 THEN
+				<!--  移库 -->
+				(
+					SELECT
+						shr.store_id1
+					FROM
+						move_store mos
+					WHERE
+						shr.order_no = mos.move_no
+				)
+			ELSE
+				shr.store_id1
+			END output_storeno,
+			 <!--   出口 -->
+			CASE shr.operate_type
+			WHEN 1 THEN
+				(
+					SELECT
+						ous.outlet_id
+					FROM
+						output_store ous
+					WHERE
+						shr.order_no = ous.output_store_no
+				)
+			ELSE
+				- 1
+			END outlet_id
+			FROM
+				storehouse_record shr
+			WHERE
+			<!-- 条件 -->
+				(shr.store_id1 =  #{storeId,jdbcType=VARCHAR}
+			OR shr.store_id2 =  #{storeId,jdbcType=VARCHAR} )
+		   <if test="searchList != null and searchList.size() >0 ">
+				and 
+			<foreach item="search" index="index" collection="searchList"  separator=" or " >  <!-- open="(" close=")" -->
+               ( shr.order_id like CONCAT('%',#{search},'%') or 
+		    shr.bar_code like CONCAT('%',#{search},'%') )
+            </foreach> 
+			
+			
+			</if>
+			<if test="operateType!=null and operateType!=''">
+			and ( shr.operate_type =#{operateType} )
+			</if>
+			order by shr.operate_time_end desc
+				) recordInfo
+			LEFT JOIN storehouse insth ON insth.store_id = recordInfo.input_storeno
+			LEFT JOIN storehouse outsth ON outsth.store_id = recordInfo.output_storeno
+			LEFT JOIN out_let ol ON ol.outlet_id = recordInfo.outlet_id
+	</select>
+		<!--删除历史记录 (支持批量删除) -->
+	<delete id="deleteStoreHouseRecordByIds" parameterType="Map">
+		delete from storehouse_record where record_id in
+		<foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+		
+ <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from storehouse_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </select>
+  
+<!--   通过仓库id查找仓库存储记录 -->
+  <select id="searchStoreHouseRecordByStoreId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from storehouse_record
+    where store_id1 = #{storeId1,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from storehouse_record
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 根据仓库id删除仓库存储记录 -->
+  <delete id="deleteStoreHouseRecordByStoreId" parameterType="java.lang.String">
+    delete from storehouse_record
+    where store_id1 = #{storeId1,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 添加仓库记录 -->
+  <insert id="insertStoreHouseRecord" parameterType="com.entity.StoreHouseRecord">
+       insert into storehouse_record (record_id, store_id1, store_id2, 
+      operate_type, bar_code, order_no, 
+      operate_time_start, operate_time_end, count, 
+      order_id, order_detail_id, unit
+      )
+    values (#{recordId,jdbcType=VARCHAR}, #{storeId1,jdbcType=VARCHAR}, #{storeId2,jdbcType=VARCHAR}, 
+      #{operateType,jdbcType=INTEGER}, #{barCode,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{operateTimeStart,jdbcType=TIMESTAMP}, #{operateTimeEnd,jdbcType=TIMESTAMP}, #{count,jdbcType=INTEGER}, 
+      #{orderId,jdbcType=VARCHAR}, #{orderDetailId,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.entity.StoreHouseRecord">
+        update storehouse_record
+    set store_id1 = #{storeId1,jdbcType=VARCHAR},
+      store_id2 = #{storeId2,jdbcType=VARCHAR},
+      operate_type = #{operateType,jdbcType=INTEGER},
+      bar_code = #{barCode,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      operate_time_start = #{operateTimeStart,jdbcType=TIMESTAMP},
+      operate_time_end = #{operateTimeEnd,jdbcType=TIMESTAMP},
+      count = #{count,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
+      unit = #{unit,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

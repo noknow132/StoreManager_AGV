@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IUserInfoDao">
+    <resultMap id="BaseResultMap" type="com.entity.UserInfo">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_sex" jdbcType="VARCHAR" property="userSex" />
+    <result column="user_tel" jdbcType="VARCHAR" property="userTel" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+    <result column="role_level" jdbcType="INTEGER" property="roleLevel" />
+    <result column="is_used" jdbcType="INTEGER" property="isUsed" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, login_name, password, user_name, user_sex, user_tel, id_card, user_address, 
+    role_level
+  </sql>
+  
+ <!--  通过id查找账号 -->
+  <select id="searchUserInfoById" resultType="int" resultMap="BaseResultMap">
+    select * from user_info where user_id = #{0}
+  </select>
+  
+  <!-- 账户管理 查询所有账号数目 分页 -->
+  <select id="searchAllUserInfoCount" resultType="int">
+    select count(1) from user_info
+  </select>
+  
+  <!-- 账户管理 查询所有账号 分页 -->
+  <select id="searchAllUserInfoPage" parameterType="Map" resultType="hashmap">
+    select * from user_info where 1=1
+    <if test='userName !=null and userName !=""'>
+    and user_name like CONCAT('%',#{userName},'%')
+    </if>
+     limit #{startRow},#{endRow}
+  </select> 
+  
+  <!-- 登录 -->
+  <select id="userLogin" parameterType="String" resultMap="BaseResultMap">
+  	select * from user_info where login_name = #{0} and password = #{1}
+  </select>
+  
+  <!-- 检查登录名称是否存在 -->
+  <select id="checkLoginNameExist" parameterType="String" resultType="int">
+  	select count(1) from user_info  where login_name = #{0}
+  </select>
+  
+  <!-- 根据账号id删除 -->
+  <delete id="deleteUserInfoById" parameterType="java.lang.String">
+    delete from user_info
+    where user_id = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 多选删除账号 -->
+  <delete id="deleteManyUserInfoById" parameterType="java.lang.String">
+    delete from user_info
+    where user_id in(
+    <foreach collection="ids" item="item" separator=",">
+			#{item}
+	</foreach>
+	)
+  </delete>
+  
+  <!-- 新增账号 -->
+  <insert id="addUserInfo" parameterType="com.entity.UserInfo">
+    insert into user_info (user_id, login_name, password, 
+      user_name, user_sex, user_tel, 
+      id_card, user_address, role_level, 
+      is_used)
+    values (#{userId,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{userSex,jdbcType=VARCHAR}, #{userTel,jdbcType=VARCHAR}, 
+      #{idCard,jdbcType=VARCHAR}, #{userAddress,jdbcType=VARCHAR}, #{roleLevel,jdbcType=INTEGER}, 
+      #{isUsed,jdbcType=INTEGER})
+  </insert>
+  
+<!-- 通过id修改账号 -->
+  <update id="updateUserInfo" parameterType="com.entity.UserInfo">
+    update user_info
+    set login_name = #{loginName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_sex = #{userSex,jdbcType=VARCHAR},
+      user_tel = #{userTel,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      user_address = #{userAddress,jdbcType=VARCHAR},
+      role_level = #{roleLevel,jdbcType=INTEGER},
+      is_used = #{isUsed,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>

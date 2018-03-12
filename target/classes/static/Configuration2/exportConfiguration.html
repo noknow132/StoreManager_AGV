@@ -1,0 +1,98 @@
+<div class="config_add mt10 clearfix">
+			<img class="fl" src="../image/configadd.png"/>
+			<span class="fl ml5">新建出口</span>
+</div>
+<div class="config_message_table_top">
+			<div><span class="ml30">名称</span></div>
+			<div>出口类型</div>
+			<div>出口编号</div>
+			<div>状态</div>
+			<div>创建时间</div>
+			<div>最近修改时间</div>
+			<div>操作</div>
+		</div>
+		<!--表格内容q-->
+		<ul id="storeHourse_ul_id">
+			<!-- <li class="config_message_table_content">
+				<div><span class="ml30">出口1</span></div>
+			    <div>出货口</div>
+				<div>
+					<img class="config_table_diss ml5" src="../image/diss.png"/>
+					<img class="config_table_start none ml5" src="../image/start.png"/>
+				</div>
+				<div>2018/1/8 12:53</div>
+				<div style="color: #078fff;" class="cursor">
+					<span style="color: #078fff;" class="fl config_disable">禁用</span>
+					<span style="color: #078fff;" class="fl config_alert ml20">修改</span>
+				</div>
+			</li>
+			<li class="config_message_table_content">
+				<div><span class="ml30">出口1</span></div>
+			    <div>出货口</div>
+				<div>
+					<img class="config_table_diss ml5 none" src="../image/diss.png"/>
+					<img class="config_table_start ml5" src="../image/start.png"/>
+				</div>
+				<div>2018/1/8 12:53</div>
+				<div style="color: #078fff;" class="cursor">
+					<span style="color: #078fff;" class="fl config_disable">禁用</span>
+					<span style="color: #078fff;" class="fl config_alert ml20">修改</span>
+				</div>
+			</li>
+			<li class="config_message_table_content">
+				<div><span class="ml30">出口1</span></div>
+			    <div>出货口</div>
+				<div>
+					<img class="config_table_diss ml5" src="../image/diss.png"/>
+					<img class="config_table_start none ml5" src="../image/start.png"/>
+				</div>
+				<div>2018/1/8 12:53</div>
+				<div style="color: #078fff;" class="cursor">
+					<span style="color: #078fff;" class="fl config_disable">禁用</span>
+					<span style="color: #078fff;" class="fl config_alert ml20">修改</span>
+				</div>
+			</li> -->
+		</ul>
+	<!-- 新建弹窗框q -->
+	<div class="zhezhao none" id="zhezhao">
+		<div class="export_zhe_box">
+			<div class="export_tan_name_div">
+				<span class="fl fs14 fc_6 lh48 export_name_title_left"><img src="../image/configadd.png" class="fl"/></span>
+				<span class="fl fs14 fc_f lh48 ml4 export_tan_">新建出口</span>
+				<span class="fr fs14 fc_6 lh48 export_close"><img src="../image/off.png"/></span>
+			</div>
+			<div class="export_content_box">
+				<div class="export_content_cang">
+					<div class="form-group export_cang_name clearfix mt15">
+						<p class="fl export_icon"><img src="../image/name.png" ></p>
+						<span class="fl fc_8 fs12 lh24 span">名称</span>
+						<input type="text" name="outletName" class="form-control export_cang_name_input fl place_input" placeholder="请输入"/>
+					</div>
+					<div class="form-group export_cang_name clearfix">
+						<p class="fl export_icon"><img src="../image/leixing.png" ></p>
+						<span class="fl fc_8 fs12 lh24 span">类型</span>
+						<input type="radio" name="outType" id="radio-1-2" value="0" class="fl" style="margin-left: 13px;width: 16px;height: 16px;background: none;"/>
+						<span class="fl ml5 fs14 fc_6 lh24">出货口</span>
+						<input type="radio" name="outType" value="1" id="radio-1-3" class="fl ml30" style="margin-left:30px;width: 16px;height: 16px;"/>
+						<span class="fl ml5 fs14 fc_6 lh24">拣货口</span>		
+					</div>
+					<div class="form-group export_cang_name clearfix mt15">
+						<p class="fl export_icon"><img src="../image/qlieshi.png"  style="width: 53px;height: 68px;"></p>
+						<span class="fl fc_8 fs12 lh24 span">编号</span>
+						<input type="text" id="outNo" name="outNo" class="form-control export_cang_name_input fl place_input" placeholder="请输入"/>
+						<p class="fl mt10 fs12" style="color:red;">注意：新建出口后只能禁用或修改，不能删除，请谨慎操作</p>
+					</div>
+					<input type="hidden" id="outletId"><!-- 出口id隐藏域 -->
+				</div>
+			</div>
+			<!--确认取消q-->
+			<div class="export_okorno">
+				<div class="export_button_box">
+					<div class="export_button_no fl">取消</div>
+					<div class="export_button_ok fr">确认</div>
+				</div>	
+			</div>
+		</div>
+	</div>
+	<link rel="stylesheet" href="css/exportConfiguration.css" />
+	<script type="text/javascript" src="js/exportConfiguration.js"></script>

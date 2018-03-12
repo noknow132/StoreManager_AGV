@@ -1,0 +1,262 @@
+/*头部样式q*/
+.inter_message_table_top{
+	box-sizing:border-box;
+	border:4px solid transparent;
+	background-clip:padding-box,border-box;
+	background-origin:padding-box,border-box;
+	background-image:linear-gradient(#fff,#fff),linear-gradient(#d4d3d3,#f9f9f9);
+	border-radius:20px;
+	width: 100%;
+	height: 35px;
+	line-height: 35px;
+	margin-top: 10px;
+	
+}
+.inter_table_bg{
+	width: 100%;
+	background: -ms-linear-gradient(top, #2366c2,  #5fb2fd);
+	background:-moz-linear-gradient(top,#2366c2,#5a8bc9);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#2366c2), to(#5fb2fd));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#2366c2), to(#5fb2fd));
+	background: -webkit-linear-gradient(top, #12366c2, #5fb2fd);
+	background: -o-linear-gradient(top, #2366c2, #5fb2fd);
+	color:#fff!important;
+	border-radius: 20px;
+}
+.inter_qu_name{
+	line-height: 28px;
+}
+.lh28{line-height: 28px;}
+.mr64{margin-right:64px;}
+.mt7{margin-top:7px;}
+.inter_qu_has{
+	width: 20px;
+	height: 14px;
+	background: -ms-linear-gradient(top, #ffa751,  #e84421);
+	background:-moz-linear-gradient(top,#ffa751,#e84421);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#ffa751), to(#e84421));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffa751), to(#e84421));
+	background: -webkit-linear-gradient(top, #ffa751, #e84421);
+	background: -o-linear-gradient(top, #ffa751, #e84421);
+}
+.inter_qu_none{
+	width: 20px;
+	height: 14px;
+	box-sizing:border-box;
+	border:2px solid transparent;
+	background-clip:padding-box,border-box;
+	background-origin:padding-box,border-box;
+	-webkit-border-image: -webkit-linear-gradient( #ffa751, #e84421) 1 1;
+	border-image: -webkit-linear-gradient( #ffa751, #e84421) 1 1;
+}
+.inter_qu_yu,.inter_qu_tu{
+	width: 20px;
+	height: 14px;
+	background: #8ac7ff;
+}
+.inter_qu_tu{background: #ffe516;}
+/* 信息内容q */
+.pl64{padding-left:64px;}
+.pl110{padding-left:110px;}
+.inter_input{
+	width:150px;
+	height:30px;
+	/* box-sizing:border-box; */
+	border:0;
+	border-bottom:1px solid #9e9e9e;
+/* 	background-clip:padding-box,border-box;
+	background-origin:padding-box,border-box;
+	-webkit-border-image: -webkit-linear-gradient( #e5e5e5, #f6f6f6) 1 1;
+	border-image: -webkit-linear-gradient( #e5e5e5, #f6f6f6) 1 1; */
+    line-height: 30px;
+    padding-left: 5px;
+    outline: none;
+    background: #fff;
+}
+
+/* 仓库位置q */
+.inter_place_top_wai{
+	width:35px;
+	border-bottom:1px solid #eee;
+	border-right:1px solid #eee;
+	height:32px;
+}
+.inter_xuanzhuan{
+	height:40px;
+	background:#eee;
+	width:1px;
+	transform: rotate(-45deg) translate(16px,12px);
+}
+.inter_ceng{right:2px;}
+.inter_lie{top:15px;}
+.inter_lie_num{
+	width:1060px;
+	border-bottom:1px solid #eee;
+	height:32px;
+    margin-bottom:0;
+}
+.inter_lie_num>li{
+	width:100%;
+	display: -webkit-box; /*这个必须要有*/
+	display:-moz-box;
+    -moz-box-orient:horizontal;
+    display:-webkit-box;
+    -webkit-box-orient:horizontal;
+    display:box;
+    box-orient:horizontal;
+}
+.inter_lie_num>li>div{
+    -webkit-box-flex:1;
+    text-align: center;
+	margin-left:4px;
+}
+.inter_lie_num>li>div span{
+    display: inline-block;
+    width: 97%;
+    height: 100%;
+ }
+.lh12{line-height:18px;}
+.inter_ceng_ul{
+	margin:0;
+	width:35px;
+	height:100%;
+	border-right:1px solid #eee;
+}
+.inter_mointor_ceng{
+	width:1060px;
+    margin-bottom:0;
+    margin-top:8px;
+}
+.inter_mointor_ceng>li{
+	width:100%;
+	display: -webkit-box; /*这个必须要有*/
+	display:-moz-box;
+    -moz-box-orient:horizontal;
+    display:-webkit-box;
+    -webkit-box-orient:horizontal;
+    display:box;
+    box-orient:horizontal;
+    margin-top:2px;
+}
+.inter_mointor_ceng>li>div{
+	height:100%;
+    -webkit-box-flex:1;
+    margin-left:5px;
+    height:16px;
+}
+.inter_mointor_ceng>li>div span{
+    display: inline-block;
+    width: 97%;
+    height: 100%;
+    border:1px solid #ffad5c;
+    float: right;
+ }
+.inter_has_zhan{
+	background: -ms-linear-gradient(top, #ffa751,  #e84421);
+	background:-moz-linear-gradient(top,#ffa751,#e84421);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#ffa751), to(#e84421));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffa751), to(#e84421));
+	background: -webkit-linear-gradient(top, #ffa751, #e84421);
+	background: -o-linear-gradient(top, #ffa751, #e84421);
+}
+.inter_mointor_ceng>li>div .inter_yu_zhan{
+	background: #8ac7ff;
+	border:0;
+	border:1px solid #8ac7ff;
+}
+.inter_mointor_ceng>li>div span:hover{
+	background: -ms-linear-gradient(top, #ffa751,  #e84421);
+	background:-moz-linear-gradient(top,#ffa751,#e84421);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#ffa751), to(#e84421));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffa751), to(#e84421));
+	background: -webkit-linear-gradient(top, #ffa751, #e84421);
+	background: -o-linear-gradient(top, #ffa751, #e84421);
+	box-shadow:0 0 5px 3px #fff;
+}
+.inter_tu{
+	background: #ffe516;
+	border:1px solid #ffe516!important;
+	box-shadow:0 0 5px 3px #fff;
+}
+.inter_ul_qu>li{margin-top:20px;}
+.inter_ul_qu>li:nth-child(1){margin-top:0;}
+/* .inter_min_width{
+	padding-left:64px;
+} */
+@media screen and (min-width:1700px) and (max-width:1920px) {
+	.inter_min_width,.state_div{
+	padding-left:150px;
+}
+.state_div.current_state{
+	position:fixed;
+	width:1390px;
+	height:87px;
+	left:50%;
+	top:0;
+	margin-left: -695px;
+	z-index:1000;
+}
+
+}
+@media screen and (min-width:1600px) and (max-width:1700px) {
+	.inter_min_width,.state_div{
+	padding-left:90px;
+}
+.state_div.current_state{
+	position:fixed;
+	width:1330px;
+	height:87px;
+	left:50%;
+	top:0;
+	margin-left: -665px;
+	z-index:1000;
+}
+}
+/* @media screen and (max-width:1600px) {
+	.inter_min_width{
+	padding-left:30px;
+}
+} */
+@media screen and (min-width:1500px) and (max-width:1600px) {
+	.inter_min_width,.state_div{
+	padding-left:10px;
+}
+.state_div.current_state{
+	position:fixed;
+	width:1200px;
+	height:87px;
+	left:50%;
+	top:0;
+	margin-left: -600px;
+	z-index:1000;
+}
+}
+@media screen and (min-width:1500px) and (max-width:1560px) {
+	.inter_min_width,.state_div{
+	padding-left:5px;
+}
+.state_div.current_state{
+	position:fixed;
+	width:1200px;
+	height:87px;
+	left:50%;
+	top:0;
+	margin-left: -600px;
+	z-index:1000;
+}
+}
+
+@media screen and (min-width:100px) and (max-width:1500px) {
+	.inter_min_width,.state_div{
+	padding-left:26px;
+}
+.state_div.current_state{
+	position:fixed;
+	width:1200px;
+	height:87px;
+	left:50%;
+	top:0;
+	margin-left: -600px;
+	z-index:1000;
+}
+}

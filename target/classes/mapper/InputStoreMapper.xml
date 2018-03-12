@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IInputStoreDao">
+  <resultMap id="BaseResultMap" type="com.entity.InputStore">
+    <id column="input_store_id" jdbcType="VARCHAR" property="inputStoreId" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="order_detail_id" jdbcType="VARCHAR" property="orderDetailId" />
+    <result column="input_store_no" jdbcType="VARCHAR" property="inputStoreNo" />
+    <result column="createstorehouse_id" jdbcType="VARCHAR" property="createstorehouseId" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="bar_code" jdbcType="VARCHAR" property="barCode" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="input_time" jdbcType="TIMESTAMP" property="inputTime" />
+    <result column="statue" jdbcType="INTEGER" property="statue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    input_store_id, order_id, input_store_no, createstorehouse_id, store_id, bar_code, 
+    count, unit, input_time
+  </sql>
+  <!-- 查询入库作业 -->
+  <select id="searchInputStore" parameterType="java.lang.String" resultType="hashmap">
+      select inputs.*,sh.store_no from input_store inputs left join storehouse sh on inputs.store_id = sh.store_id 
+  where inputs.statue =#{0}
+  </select>
+  
+   <!-- 通过inputStoreNo查找入库作业 -->
+  <select id="selectInpuStoreByNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from input_store
+    where input_store_no = #{0}
+  </select>
+  
+  <!-- 通过id查找入库作业 -->
+  <select id="searchInpuStoreById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from input_store
+    where input_store_id = #{0}
+  </select>
+  
+  <!-- 检查条形码是否存在 -->
+  <select id="checkBarCode" parameterType="java.lang.String" resultType="int">
+    select count(1) from input_store
+    where bar_code = #{0}
+  </select>
+  
+  <!-- 通过仓库id查找最新的入库单记录 -->
+  <select id="searchInputStoreByStoreId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from input_store where store_id = #{0} order by input_time desc limit 1
+  </select>
+  
+  <!-- 通过仓库id查找入库单记录的条形码 -->
+  <select id="searchInputStoreNoByStoreId" parameterType="java.lang.String" resultType="String">
+    select input_store_no from input_store where store_id = #{0}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from input_store
+    where input_store_id = #{inputStoreId,jdbcType=VARCHAR}
+  </delete>
+  
+    <!-- 多选删除入库作业 -->
+  <delete id="deleteManyInputStoreById" parameterType="java.lang.String">
+    delete from input_store
+    where input_store_id in(
+    <foreach collection="ids" item="item" separator=",">
+			#{item}
+	</foreach>
+	)
+  </delete>
+  
+  <!-- 根据仓库id删除入库订单 -->
+  <delete id="deleteInputStoreByStoreId" parameterType="java.lang.String">
+    delete from input_store
+    where store_id = #{storeId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 入库添加 -->
+  <insert id="insertGoods" parameterType="com.entity.InputStore">
+    insert into input_store (input_store_id, order_id, order_detail_id, 
+      input_store_no, createstorehouse_id, store_id, 
+      bar_code, count, unit, 
+      input_time, statue)
+    values (#{inputStoreId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{orderDetailId,jdbcType=VARCHAR}, 
+      #{inputStoreNo,jdbcType=VARCHAR}, #{createstorehouseId,jdbcType=VARCHAR}, #{storeId,jdbcType=VARCHAR}, 
+      #{barCode,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, 
+      #{inputTime,jdbcType=TIMESTAMP}, #{statue,jdbcType=INTEGER})
+  </insert>
+
+<!-- 修改入库 -->
+  <update id="updateInputStore" parameterType="com.entity.InputStore">
+    update input_store
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
+      input_store_no = #{inputStoreNo,jdbcType=VARCHAR},
+      createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR},
+      store_id = #{storeId,jdbcType=VARCHAR},
+      bar_code = #{barCode,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      input_time = #{inputTime,jdbcType=TIMESTAMP},
+      statue = #{statue,jdbcType=INTEGER}
+    where input_store_id = #{inputStoreId,jdbcType=VARCHAR}
+  </update>
+</mapper>

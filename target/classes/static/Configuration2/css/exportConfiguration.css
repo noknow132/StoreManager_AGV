@@ -1,0 +1,234 @@
+/*表格头部q*/
+.config_message,.config_table_back{
+	padding: 10px 18px;
+	background:#fff;
+	box-shadow:1px 1px 13px 0px #b9c7da;
+	border-radius:3px;
+}
+.config_table_back{padding-bottom:40px;}
+.config_message_table_top{
+	box-sizing:border-box;
+	border:4px solid transparent;
+	background-clip:padding-box,border-box;
+	background-origin:padding-box,border-box;
+	background-image:linear-gradient(#fff,#fff),linear-gradient(#d4d3d3,#f9f9f9);
+	border-radius:20px;
+	display:-webkit-flex;
+	display:flex;
+	width: 100%;
+	height: 35px;
+	line-height: 35px;
+	margin-top: 20px;
+	
+}
+.config_message_table_content{
+	display:-webkit-flex;
+	display:flex;
+	width: 100%;
+	height: 38px;
+	line-height: 38px;
+}
+.config_message_table_top div{
+	background: -ms-linear-gradient(top, #2366c2,  #5fb2fd);
+	background:-moz-linear-gradient(top,#2366c2,#5a8bc9);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#2366c2), to(#5fb2fd));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#2366c2), to(#5fb2fd));
+	background: -webkit-linear-gradient(top, #12366c2, #5fb2fd);
+	background: -o-linear-gradient(top, #2366c2, #5fb2fd);
+	color:#fff!important;
+}
+.config_message_table_top div:nth-child(1){
+	border-radius:20px 0 0 20px;
+}
+.config_message_table_top div:last-child{
+	border-radius:0 20px 20px 0;
+}
+.config_message_table_top div,.config_message_table_content div{
+	-webkit-flex:1 1 100%;flex:1 1 100%;
+	font-size: 14px;
+	color: #333;
+	padding-left: 5px;
+	line-height:30px;
+}
+.config_message_table_content div{
+	line-height:38px;
+}
+.config_message_table_content{
+	border-bottom:1px solid #ececec;
+}
+.config_message_table_content:hover{
+	background:#e1f2fd;
+	border-radius:3px;
+	border:0;
+	box-shadow:0 1px 3px 0px #dcdcdc;
+}
+.config_message_table_content a{text-decoration: none;}
+.config_message_table_content div{
+	border-top: 0;
+	color: #888;
+	font-size: 12px;
+}
+/*表格内容q*/
+.fc_f3{color: #f3685e!important;}
+.config_message_table_zhan{
+	display: inline-block;
+	border-radius:20px;
+	width:70%;
+	height:8px;
+	background: -ms-linear-gradient(top, #e9e7e5,  #e3e1e0);
+	background:-moz-linear-gradient(top,#e9e7e5,#e3e1e0);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#e9e7e5), to(#e3e1e0));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e9e7e5), to(#e3e1e0));
+	background: -webkit-linear-gradient(top, #e9e7e5, #e3e1e0);
+	background: -o-linear-gradient(top, #e9e7e5, #e3e1e0);
+}
+.config_message_table_zhan.current_zhan{
+	background: -ms-linear-gradient(top, #fc9d71,  #f26152);
+	background:-moz-linear-gradient(top,#fc9d71,#f26152);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#fc9d71), to(#f26152));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fc9d71), to(#f26152));
+	background: -webkit-linear-gradient(top, #fc9d71, #f26152);
+	background: -o-linear-gradient(top, #fc9d71, #f26152);
+}
+/* 新建按钮 */
+.config_add{
+	width:128px;
+	padding:5px 0;
+	color: #519fee;
+	font-size: 14px;
+	border-radius:20px;
+	background: -ms-linear-gradient(top, #f7fafe,  #dfecff);
+	background:-moz-linear-gradient(top,#f7fafe,#dfecff);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#f7fafe), to(#dfecff));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f7fafe), to(#dfecff));
+	background: -webkit-linear-gradient(top, #f7fafe, #dfecff);
+	background: -o-linear-gradient(top, #f7fafe, #dfecff);
+	box-shadow:0 2px 2px 0 #cad7e9;
+	cursor: pointer;
+}
+.config_add img{
+	margin-left:26px;
+	margin-top:1px;
+}
+/* 新建弹窗框q */
+.export_icon{
+	width: 40px;
+    height: 21px;
+    position: relative;
+}
+.export_icon img{
+	position: absolute;
+    top: -22px;
+    left: -6px;
+}
+.zhezhao{
+	/* width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0; */
+	position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+	background: rgba(140,140,140,.5);
+}
+.export_zhe_box{
+	width: 470px;
+	background: rgba(255,255,255,1);
+	position: absolute;
+	z-index: 100;
+	top: 50%;
+	left: 50%;
+	margin-left: -235px;
+	margin-top: -215px;
+	border-radius: 5px;
+	padding-bottom:22px;
+}
+.export_tan_name_div{
+	height: 48px;
+	line-height: 48px;
+	border-bottom: 1px solid #f4f4f4;
+	border-radius: 5px 5px 0 0;
+	padding: 0 14px;
+	background: -ms-linear-gradient(top, #3663a6,  #6495d4);
+	background:-moz-linear-gradient(top,#3663a6,#6495d4);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#3663a6), to(#6495d4));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3663a6), to(#6495d4));
+	background: -webkit-linear-gradient(top, #3663a6, #6495d4);
+	background: -o-linear-gradient(top, #3663a6, #6495d4);
+}
+.export_tan_name_div img{
+	width: 20px;
+	height: 20px;
+}
+.export_name_title_left img{
+	margin-top: 13px;
+    width: 20px;
+    height: 20px;
+}
+.export_content_box{
+	padding:16px 28px 16px 28px;
+}
+.export_cang_name_input{
+	width: 308px;
+	height: 26px;
+	line-height: 26px;
+	border: 2px solid #ececec;
+	padding-left: 5px;
+	border-radius: 20px;
+	margin-left: 10px;
+	background:none;
+}
+input::-webkit-input-placeholder { 
+　　color:#ececec;
+　　}
+input:-moz-placeholder { 
+　　color:#ececec;
+　　}
+input::-moz-placeholder { 
+　　color:#ececec;
+　　}
+input:-ms-input-placeholder {
+　　color:#ececec;
+}
+.span{width: 36px;}
+.export_okorno{
+	height: 37px;
+	width: 100%;
+/* 	border-top:1px solid #f4f4f4; */
+	/* padding:15px 0 0 0; */
+}
+.export_button_box{
+	float: right;
+	margin-right:14px;
+}
+.export_button_no,.export_button_ok{
+	width: 100px;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+	background: -ms-linear-gradient(top, #fefeff,  #dfe0df);
+	background:-moz-linear-gradient(top,#fefeff,#dfe0df);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#fefeff), to(#dfe0df));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefeff), to(#dfe0df));
+	background: -webkit-linear-gradient(top, #fefeff, #dfe0df);
+	background: -o-linear-gradient(top, #fefeff, #dfe0df);
+	box-shadow:0 2px 3px 0 #e0e0e0;
+	border-radius: 20px;
+	color: #666;
+	cursor: pointer;
+	margin-right:20px;
+}
+.export_button_ok{
+	background: -ms-linear-gradient(top, #7fadec,  #4c82c2);
+	background:-moz-linear-gradient(top,#3663a6,#4c82c2);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#7fadec), to(#4c82c2));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7fadec), to(#4c82c2));
+	background: -webkit-linear-gradient(top, #7fadec, #4c82c2);
+	background: -o-linear-gradient(top, #7fadec, #4c82c2);
+	color: #fff;
+	border: none;
+	margin-right:0;
+}

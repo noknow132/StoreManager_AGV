@@ -1,0 +1,138 @@
+
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" charset="utf-8"
+	src="../js/bootstrapValidator.min.js"></script>
+<!--搜索栏q-->
+<div class="clearfix pl20 pr20 add_seach_box pos_r">
+	<div class="fl add_search_div pos_a">
+		<input type="text" class="add_seach" placeholder="请输入订单、仓位号、条形码"/>
+	</div>
+	<div class="fl cursor add_search_img ml20 pos_a" id="addStorageSearch" style="left:420px;">
+		<img src="../image/search.png" class="add_input_img"/>
+	</div>
+	<div class="add_no_button fs15 fc_f fr cursor add_no_button pos_a" style="right:20px;">
+		<img src="../image/tianjia.png" class="fl"/>
+		<span class="fl fs15 fc_f">创建仓库</span>
+		
+	</div>
+</div>
+<!--  无数据创建仓库q-->
+<div class="clearfix add_content_back mt30">
+	<!-- <div class="mt30 clearfix">
+		<button class="add_no_button fs15 fc_8 fr cursor" style="background:none;border:0;"><img src="../image/add_button.png" />&nbsp;&nbsp;创建仓库</button>
+    </div> -->
+    <!--新建图片提示q-->
+    <div class="add_img_box">
+    	<div>
+    		<img src="../image/add.png" class="ml34"/>
+    	</div>
+    	<p class="fs15 fc_3 center mt30">您还没有添加仓库信息</p>
+    	<p class="fs12 fc_9 center mt10">您可先从右上角新建仓库来创建一个仓库</p>
+    	<div class="add_img_button fc_f fs12">立即创建</div>
+    </div>
+</div>
+<!--新建弹出框q-->
+<div class="zhezhao none">
+	<div class="add_tan_box">
+		<div class="add_tan_name_div">
+			<span class="fl fs14 fc_6 lh48 add_name_title_left"><img src="../image/tianjia.png" class="fl"/></span>
+			<span class="fl fs14 fc_f lh48 ml4">新建仓库</span>
+			<span class="fr fs14 fc_6 lh48 add_close"><img src="../image/off.png"/></span>
+		</div>
+		<div class="add_content_box">
+		<form id="create_store_form" ><!-- form表单开始-->
+			<!--仓库信息-->
+			<div class="add_content_cang">
+				<div class="form-group add_cang_name clearfix add_i_right">
+					<p class="fl add_icon"><img src="../image/cname.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">仓库名称：</span>
+					<input type="text" name="storeName"  class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入"/>
+				</div>
+				<div class="form-group add_cang_address clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/cadderss.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">仓库地址：</span>
+					<!-- <select class="add_cang_name_input fl place_input" style="width: 291px;">
+						<option value="请选择">请选择</option>
+					</select> -->
+					<input type="text" name="storeAddress" class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入"/>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/clei.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">仓库类型：</span>
+					<input type="text" name="storeType" class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入至少6个字符"/>
+				</div>
+				<div class="form-group add_cang_people clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/cfuze.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span" >负责人：</span>
+					<input type="text" name="storeMaster" class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入"/>
+				</div>
+				<div class="form-group add_cang_phone clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/ctel.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">联系电话：</span>
+					<input type="text" name="masterTel"  class="form-control add_cang_name_input fl place_input input_disabled" placeholder="请输入手机号"/>
+				</div>
+				<div class="add_cang_bit">
+					<span class="fl fs14 fc_6 lh48 add_name_title_left" style="margin-left:154px;"><img src="../image/tianjia.png" class="fl" style="margin-top:9px;"/></span>
+					<span class="fl fs15 fc_f ml4">增加区位信息</span>
+				</div>
+			</div>
+			<!--新增区位q-->
+			<div class="add_content_bitbox">
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qname.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">区位名称：</span>
+					<input type="text" name="areaName"  class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/ah.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">行数：</span>
+					<input type="text"  name="rowsCount" class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qqishi.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">行起始值：</span>
+					<input type="text" name="rowsStart"  class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qlie.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">列数：</span>
+					<input type="text" name="columnsCount"  class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qlieshi.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">列起始值：</span>
+					<input type="text" name="columnsStart" class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qshunxu.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">行列顺序：</span>
+
+					<select name="sequence" class="form-control add_cang_name_input fl place_input clearArea" style="width: 284px;padding:0;">
+						<option value="">请选择</option>
+						<option value="0">区位/行/列</option>
+						<option value="1">区位/列/行</option>
+					</select>
+				</div>
+				<div class="form-group add_cang_lei clearfix mt10 add_i_right">
+					<p class="fl add_icon"><img src="../image/qshunxu.png" ></p>
+					<span class="fl fc_8 fs12 lh24 span">机器码：</span>
+					<input type="text" name="robotNo" class="form-control add_cang_name_input fl place_input clearArea" placeholder="请输入"/>
+				</div>
+				<button   type="submit"  class="add_cang_save">保存</button>
+				<div class="add_cang_bits none"><img src="../image/tianjia1.png"/>&nbsp;&nbsp;增加区位</div>
+			</div>
+			</form><!-- form表单结束-->
+		</div>
+		<!--确认取消q-->
+		<div class="add_okorno">
+			<div class="add_button_box">
+				<div class="add_button_no fl">取消</div>
+				<div class="add_button_ok fr" >确认</div>
+			</div>	
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/addStorage.js" ></script><!--新建仓库js-->
+<link rel="stylesheet" href="../css/rest.css" /><!--公共css-->
+<link rel="stylesheet" href="css/addStorage.css" /><!--新建仓库css-->

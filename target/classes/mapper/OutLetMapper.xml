@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IOutLetDao">
+	<resultMap id="BaseResultMap" type="com.entity.OutLet">
+		<id column="outlet_id" jdbcType="VARCHAR" property="outletId" />
+		<result column="outlet_name" jdbcType="VARCHAR" property="outletName" />
+		<result column="out_no" jdbcType="INTEGER" property="outNo" />
+		<result column="out_type" jdbcType="INTEGER" property="outType" />
+		<result column="is_uesd" jdbcType="INTEGER" property="isUesd" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		outlet_id, outlet_name, out_no, out_type, is_uesd,
+		create_time, update_time
+	</sql>
+	
+	<!-- 根据出库单选择出口 -->
+	<select id="selectOutLetByOutputStoreNo" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select ol.* from out_let ol where ol.outlet_id =(select
+		os.outlet_id from output_store os where os.output_store_no=#{outputStoreNo,jdbcType=VARCHAR})
+	</select>
+	
+	<!--根据类型选择出口 -->
+	<select id="selectOutLetByType" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from out_let
+		where
+		<choose>
+			<!-- <when test="type ==1 "> is_out=1 </when> <when test="type ==2 "> 
+				out_type=1 </when> -->
+			<otherwise>
+				1=1
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- 查询所有出口 -->
+	<select id="searchOutLet" parameterType="java.lang.String"
+		resultType="hashmap">
+		select * from out_let where 1=1
+		<if test='outType != null and outType != ""'>
+		and out_type = #{outType} 
+		order by out_no
+		</if>
+	</select>
+
+	<!-- 根据id查找出口 -->
+	<select id="searchOutLetById" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from out_let
+		where outlet_id =
+		#{outletId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 检查出口编号是否存在 -->
+	<select id="searchOutLetCountByOutNo" parameterType="int" resultType="int">
+		select count(1) from out_let where out_no = #{0} and out_type = #{1}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		out_let
+		where outlet_id = #{outletId,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- 新建出口 -->
+	<insert id="insertOutLet" parameterType="com.entity.OutLet">
+		insert into out_let
+		(outlet_id, outlet_name,out_no, out_type, is_uesd,
+		create_time,update_time)
+		values (#{outletId,jdbcType=VARCHAR},
+		#{outletName,jdbcType=VARCHAR},
+		#{outNo,jdbcType=INTEGER},#{outType,jdbcType=INTEGER},
+		#{isUesd,jdbcType=INTEGER}, now(),null
+		)
+	</insert>
+
+	<!-- 修改出口 -->
+	<update id="updateOutLet" parameterType="com.entity.OutLet">
+		update out_let
+		set
+		outlet_name = #{outletName,jdbcType=VARCHAR},
+		out_no =
+		#{outNo,jdbcType=INTEGER},
+		out_type = #{outType,jdbcType=INTEGER},
+		is_uesd = #{isUesd,jdbcType=INTEGER},
+		update_time = now()
+		where
+		outlet_id = #{outletId,jdbcType=VARCHAR}
+	</update>
+</mapper>
