@@ -12,12 +12,24 @@ import java.util.List;
 
 public class PLCController {
 	//堆垛机连接是0  输送链是1
-	public static boolean PlcConn(int handle,String PLCIP,int PLCPort){
+	public static boolean PlcConn_200(int handle,String PLCIP,int PLCPort){
 		List<String> strIps = getLocalIp();
 		String localIp = "";//获取本地Ip
 		if(strIps!=null && strIps.size()>0){
 			localIp = strIps.get(0);
-			int start = PLCConfig.YKSPlcLink(handle,localIp, 0, PLCIP, PLCPort, 0, 2, 1000);
+			int start = PLCConfig.YKSPlcLink(handle,localIp, 0, PLCIP, PLCPort, 0, 2, 1000,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2);
+			return start==0?true:false;
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean PlcConn_1200(int handle,String PLCIP,int PLCPort){
+		List<String> strIps = getLocalIp();
+		String localIp = "";//获取本地Ip
+		if(strIps!=null && strIps.size()>0){
+			localIp = strIps.get(0);
+			int start = PLCConfig.YKSPlcLink(handle,localIp, 0, PLCIP, PLCPort, 0, 2, 1000,ConnDataStr.plc_1200_1,ConnDataStr.plc_200Smart_2);
 			return start==0?true:false;
 		}else{
 			return false;
@@ -33,24 +45,26 @@ public class PLCController {
 //		startAddress = 0;//起始地址
 //		dataCount = 3;//写入数据的数量
 //		//byte[] data实际要写入的数据
-		int num2 = PLCConfig.YKSPlcWrite(handle, plcMemory, dataType, startAddress, dataCount, data);
+		short block = 1;
+		int num2 = PLCConfig.YKSPlcWrite(handle, plcMemory, dataType, block, startAddress, dataCount, data);
 		return num2==0?true:false;
 	}
 	
 	//获取PLC中读出的数据
-	public static Object readData(int handle,PlcMemory plcMemory,DataType dataType,short startAddress,short dataCount) {
+	public static Object readData_200(int handle,PlcMemory plcMemory,DataType dataType,short startAddress,short dataCount) {
 //		handle = 0;//句柄
 //		plcMemory = PlcMemory.DR;//选择寄存器区域
 //		dataType = DataType.INT16;//一次写入的数据长度
 //		startAddress = 0;//起始地址
 //		dataCount = 3;//写入数据的数量
-		return PLCConfig.YKSPlcRead(handle, plcMemory, dataType, startAddress, dataCount);
+		short block = 1;
+		return PLCConfig.YKSPlcRead(handle, plcMemory, dataType, block, startAddress, dataCount,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2);
 	}
 	
 	//获取当前位置
 	public static int[] getNowPlace(){
 		int[] data = new int[11];
-		Object obj1 = readData(0,PlcMemory.DR,DataType.BYTE8,(short)7,(short)10);
+		Object obj1 = readData_200(0,PlcMemory.DR,DataType.BYTE8,(short)7,(short)10);
 		try{
 			Object[] temp = (Object[])obj1;
 //			data[0] = ((byte)temp[0] & 0xFF);//启动标志
@@ -75,7 +89,7 @@ public class PLCController {
 	//获取启动和状态
 	public static int[] getStartState(){
 		int[] data = new int[2];
-		Object obj2 = readData(0,PlcMemory.DR,DataType.BYTE8,(short)7,(short)1);
+		Object obj2 = readData_200(0,PlcMemory.DR,DataType.BYTE8,(short)7,(short)1);
 		try{
 		    Object[] isStart=(Object[])obj2;
 			//启动
@@ -88,9 +102,8 @@ public class PLCController {
 	
 	//复位
 	public static boolean resetPlace(){
-//		PlcConn();//连接plc
 		byte[] data = new byte[]{1};
-		return wirteData(0,PlcMemory.DR,DataType.BYTE8,(short)6,(short)1,data);
+		return wirteData(0,PlcMemory.DR,DataType.BYTE8,(short)12,(short)1,data);
 	}
 	
 	//出库入库移库
@@ -104,22 +117,29 @@ public class PLCController {
 		//data[5] 放层
 		//data[6] 放列
 		//data[7] 行列层计算完成信号			
-		boolean flag = wirteData(0,PlcMemory.DR,DataType.BYTE8,(short)10,(short)8,data);
+		boolean flag = wirteData(0,PlcMemory.DR,DataType.BYTE8,(short)13,(short)8,data);
 		if(!flag) return false;
 		
 		while(true){
-			Object readDataObj = readData(0,PlcMemory.DR,DataType.BYTE8,(short)17,(short)1);
+			Object readDataObj = readData_200(0,PlcMemory.DR,DataType.BYTE8,(short)25,(short)1);
 			Object[] temp = (Object[])readDataObj;
-			 if((byte)temp[0]==2){
+			 if((byte)temp[0]==0){
 			    //启动
-				boolean flag4 = wirteData(0,PlcMemory.DR,DataType.BYTE8,(short)7,(short)1,new byte[]{1});
+				boolean flag4 = wirteData(0,PlcMemory.DR,DataType.BYTE8,(short)25,(short)1,new byte[]{1});
 				if(!flag4) return false;
 				break;
 			 }
 		}
 		return true;
 	}
+	//出库入库移库
+	public static boolean InOrOurStoreZZ(byte[] data){
 	
+		boolean flag = wirteData(0,PlcMemory.DR,DataType.BYTE8,(short)15,(short)8,data);
+		if(!flag) return false;
+		boolean flag4 = wirteData(0,PlcMemory.DR,DataType.BYTE8,(short)25,(short)1,new byte[]{1});
+		return true;
+	}
 	//获取本地Ip
 	public static List<String> getLocalIp(){
 		List<String> strIp = new ArrayList<String>();

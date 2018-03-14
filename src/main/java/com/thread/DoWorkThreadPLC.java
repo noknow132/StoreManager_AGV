@@ -30,6 +30,7 @@ import com.entity.OutLet;
 import com.entity.RunStep;
 import com.entity.RunStepRecord;
 import com.entity.WorkStep;
+import com.util.plcconn.ConnDataStr;
 import com.util.plcconn.DataType;
 import com.util.plcconn.PLCConfig;
 import com.util.plcconn.PLCController;
@@ -201,7 +202,7 @@ public class DoWorkThreadPLC extends Thread{
 					FinishWorkTool.copyByteArr(data,dataC);
 					dataC[0]=30;
 					dataC[5]=-2;//放货位 
-					if(PLCConfig.CheckConnect2(0)<0){
+					if(PLCConfig.CheckConnect2(0,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)<0){
 						continue;
 					}
 					if(FinishWorkTool.OutputTableHasGood()==1){
@@ -219,7 +220,7 @@ public class DoWorkThreadPLC extends Thread{
 					}
 					if(ws.getScanTime()!=null){
 						data[0]=20;
-						if(PLCConfig.CheckConnect2(0)<0||PLCConfig.CheckConnect2(1)<0){//如果连接断了
+						if(PLCConfig.CheckConnect2(0,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)<0||PLCConfig.CheckConnect2(1,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)<0){//如果连接断了
 							continue;
 						}
 						if(FinishWorkTool.ArrivalTableHasGood()<0){//读取入货口出现异常   这也应该会出现报警？？？？
@@ -240,7 +241,7 @@ public class DoWorkThreadPLC extends Thread{
 					}
 				}else if(ws.getWorkType()==2){   //移库
 					data[0]=40;
-					if(PLCConfig.CheckConnect2(0)<0){
+					if(PLCConfig.CheckConnect2(0,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)<0){
 						continue;
 					}
 					PLCController.InOrOurStore(data);
@@ -253,7 +254,7 @@ public class DoWorkThreadPLC extends Thread{
 					dataC[2]= (byte) ((byte)"A".charAt(0)+((byte)"A".charAt(0)%2==0?128:0));
 					dataC[5]=-1;//堆垛机放层
 					dataC[6]=-1;//堆垛机放列
-					if(PLCConfig.CheckConnect2(0)<0){
+					if(PLCConfig.CheckConnect2(0,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)<0){
 						continue;
 					}
 					PLCController.InOrOurStore(dataC);
@@ -268,7 +269,7 @@ public class DoWorkThreadPLC extends Thread{
 					dataCR[5]=data[3];
 					dataCR[6]=data[4];
 					dataCR[7]=data[7];
-					if(PLCConfig.CheckConnect2(0)<0){
+					if(PLCConfig.CheckConnect2(0,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)<0){
 						continue;
 					}
 					PLCController.InOrOurStore(dataCR);
@@ -284,7 +285,7 @@ public class DoWorkThreadPLC extends Thread{
 						dataR[5]=data[5];
 						dataR[6]=data[6];
 						dataR[7]=data[7];
-						if(PLCConfig.CheckConnect2(0)<0){
+						if(PLCConfig.CheckConnect2(0,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)<0){
 							continue;
 						}
 						PLCController.InOrOurStore(dataR);
@@ -310,12 +311,6 @@ public class DoWorkThreadPLC extends Thread{
 				}
 			}
 			
-
-			
-			
-
-			
-			
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
@@ -328,10 +323,10 @@ public class DoWorkThreadPLC extends Thread{
 	
    //判断是否能读
 	private Object[] isCanRead(){
-		int checkNum = PLCConfig.CheckConnect2(0);
+		int checkNum = PLCConfig.CheckConnect2(0,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2);
 		Object[] readDataArr=new Object[1];
 		if(checkNum==0){
-			Object readData2 = PLCController.readData(0,PlcMemory.DR,DataType.BYTE8,(short)40,(short)1);
+			Object readData2 = PLCController.readData_200(0,PlcMemory.DR,DataType.BYTE8,(short)40,(short)1);
 			if(readData2 instanceof Object[]){
 				Object[] readData2By = (Object[])readData2;	
 				if(((byte)readData2By[0] & 0xFF)>0){
@@ -343,7 +338,7 @@ public class DoWorkThreadPLC extends Thread{
 				return readDataArr;
 			}
           
-			Object readData = PLCController.readData(0,PlcMemory.DR,DataType.BYTE8,(short)10,(short)1);
+			Object readData = PLCController.readData_200(0,PlcMemory.DR,DataType.BYTE8,(short)10,(short)1);
 			if(readData instanceof Object[]){
 				readDataArr=(Object[]) readData;				
 			}else{

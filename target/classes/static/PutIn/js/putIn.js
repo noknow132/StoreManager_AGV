@@ -52,6 +52,7 @@
                             '<div>'+list[i].store_no+'</div>'+
                             '<div>'+list[i].bar_code+'</div>'+
                             '<div class="putInNu">'+(list[i].count==undefined?"0":list[i].count)+'</div>'+
+                           '<div class="take">2</div>'+
                             ' </li>');
         		}
         		//点击一行复选框选中

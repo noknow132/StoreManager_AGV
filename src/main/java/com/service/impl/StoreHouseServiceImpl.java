@@ -83,7 +83,8 @@ public class StoreHouseServiceImpl implements IStoreHouseService {
 		List<CreateStoreHouse> createStoreHouseList = createStoreHouseDao.searchCreateStoreHouseAll();//所有建库
 		for (CreateStoreHouse createStoreHouse : createStoreHouseList) {
 			//当前建库下的仓库
-			List<StoreHouse> storeHouseList = storeHouseDao.searchEmptyStoreHouse(createStoreHouse.getCreatestorehouseId(),storeNo);
+			//List<StoreHouse> storeHouseList = storeHouseDao.searchEmptyStoreHouse(createStoreHouse.getCreatestorehouseId(),storeNo);
+			List<StoreHouse> storeHouseList = storeHouseDao.searchEmptyStoreHouseZZ(createStoreHouse.getCreatestorehouseId());
 			Map<String,Object> map = new HashMap<String,Object>();
 			map.put("storeList", storeHouseList);
 			map.put("createStoreHouseStoreName", createStoreHouse.getStoreName());

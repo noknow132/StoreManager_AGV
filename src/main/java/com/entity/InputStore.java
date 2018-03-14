@@ -24,6 +24,8 @@ public class InputStore {
     private Date inputTime;
 
     private Integer statue;
+    
+    private String placeId;
 
     public String getInputStoreId() {
         return inputStoreId;
@@ -112,4 +114,12 @@ public class InputStore {
     public void setStatue(Integer statue) {
         this.statue = statue;
     }
+
+	public String getPlaceId() {
+		return this.placeId;
+	}
+
+	public void setPlaceId(String placeId) {
+		this.placeId = placeId;
+	}
 }

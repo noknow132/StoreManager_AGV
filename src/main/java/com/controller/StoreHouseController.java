@@ -37,6 +37,8 @@ public class StoreHouseController {
 		    return storeHouseService.searchStoreHouse(createstoreareaId,search,storeName);
 	}
 	
+
+	
 	//查询空仓位信息
 	@RequestMapping(value = "/searchEmptyStoreHouse")
 	public List<Map<String,Object>> searchEmptyStoreHouse(String storeNo) {

@@ -103,22 +103,22 @@
 		where work_id
 		=#{workId,jdbcType=VARCHAR}
 	</update>
-	
-    <!-- 根据状态查找作业类型 数量-->
-	<select id="selectWorkStepCountByStatus" parameterType ="hashmap" resultType="java.lang.Integer">
-	    select count(*) from work_step ws  where  
+
+	<!-- 根据状态查找作业类型 数量 -->
+	<select id="selectWorkStepCountByStatus" parameterType="hashmap"
+		resultType="java.lang.Integer">
+		select count(*) from work_step ws where
 		<if test="workStatue==2"> <!-- 已完成 -->
 			ws.work_statue = 2
 		</if>
 		<if test="workStatue!=2"><!-- 正在执行或未完成 -->
 			(ws.work_statue = 1 or ws.work_statue = 0 or ws.work_statue = 3)
 		</if>
-		 AND ws.work_type = #{workType}
+		AND ws.work_type = #{workType}
 	</select>
-	
+
 	<!-- 根据执行状态查找作业 -->
-	<select id="selectWorkStepsByWorkStatue" 
-		resultType="hashmap">
+	<select id="selectWorkStepsByWorkStatue" resultType="hashmap">
 		select ws.*,shput.store_no put_placeNo, shget.store_no get_placeNo
 		from ( SELECT
 		ws.*, CASE ws.work_type
@@ -204,9 +204,26 @@
 		storehouse shget on shget.store_id=ws.get_place
 		where 1=1
 		<if test='no != null and no!= ""'>
-			and (ws.order_no like CONCAT('%',#{no},'%') or ws.fringe_code like
+			and (ws.order_no like CONCAT('%',#{no},'%') or
+			ws.fringe_code like
 			CONCAT('%',#{no},'%'))
 		</if>
+	</select>
+
+	<!-- 查找要执行的作业 -->
+	<select id="searchWorkStepByStatueAndTypeZZ" resultMap="BaseResultMap">
+		<!-- select ws.* from work_step ws where ws.work_statue=0 order by ws.insert_time limit 0, 1 -->
+		SELECT
+		ws.*
+		FROM
+		work_step ws
+		WHERE
+		ws.work_id = (	 
+		IF( (select ws.work_type wtype from work_step ws where ws.work_statue=0 order by ws.insert_time limit 0, 1)=0,
+		IF((select count(sh.store_id) from storehouse sh where sh.store_statue=11 or sh.store_statue=2) >6,
+		 (select ws2.work_id  from work_step ws2 where ws2.work_statue=0 and ws2.work_type!=0 order by ws2.insert_time limit 0, 1),
+		 (select ws2.work_id  from work_step ws2 where ws2.work_statue=0 order by ws2.insert_time limit 0, 1)),
+		 (select ws2.work_id from work_step ws2 where ws2.work_statue=0  order by ws2.insert_time limit 0, 1)))
 	</select>
 
 	<!-- 根据货物码查找作业 -->
@@ -256,7 +273,14 @@
 		and
 		work_statue != 2
 	</select>
-
+	
+    <!-- 根据库位id和作业状态  主要是出库作业 -->
+	<select id="selectWorkStepByStoreIdAndStatus" parameterType="hashmap"
+		resultMap="BaseResultMap">
+		select * from work_step
+		where work_statue =
+		#{workStatue,jdbcType=VARCHAR} and get_place=#{getPlace}  order by work_step.insert_time asc
+	</select>
 
 	<!-- 根据执行状态查找作业 -->
 	<select id="searchWorkStepByStatue" parameterType="java.lang.String"

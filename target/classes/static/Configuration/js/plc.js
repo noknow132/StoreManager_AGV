@@ -225,6 +225,7 @@ function loadPlcConnConfig0(){
 		for (var i = 0; i < result.length; i++) {
 			$("#duiduojiDiv ul").append('<li>'
 					+'<div class="mt20 clearfix"  style="display:inline-block;">'
+					+'<span class="fl fc_8 fs14 plc_span">'+result[i].plcModel+'</span>'
 					+'<span class="fl fc_8 fs14 plc_span">PLC连接地址：</span>'
 					+'<input type="text" class="plc_input fs14 fc_8 fl" id="reg_ip" name="PLCIP" value="'+result[i].plcIp+'" placeholder=""></input>'
 					+'<span class="fl fc_8 fs14 plc_span lh24">连接端口：</span>'
@@ -243,13 +244,14 @@ function loadPlcConnConfig1(){
 		
 		for (var i = 0; i < result.length; i++) {
 			$("#shusonglianDiv ul").append('<li>'
-					+'<div class="mt20 clearfix" style="display:inline-block;">'
-			+'<span class="fl fc_8 fs14 plc_span">PLC连接地址：</span>'
-			+'<input type="text" class="plc_input fs14 fc_8 fl reg_ip"  name="PLCIP" value="'+result[i].plcIp+'" placeholder=""/>'
-			+'<span class="fl fc_8 fs14 plc_span lh24">连接端口：</span>'
-			+'<input type="text" class="plc_input fs14 fc_8 fl"  name="PLCPort" value="'+result[i].plcPort+'" placeholder="" style="width:100px;"/>'
-			+'<img src="" class="ml30 fl" style="width:16px; margin-top:7px;display:none">'
-			+'<input type="hidden" name="plcConfigId" value="'+result[i].picId+'">'
+			+'<div class="mt20 clearfix" style="display:inline-block;">'
+				+'<span class="fl fc_8 fs14 plc_span">'+result[i].plcModel+'</span>'
+				+'<span class="fl fc_8 fs14 plc_span">PLC连接地址：</span>'
+				+'<input type="text" class="plc_input fs14 fc_8 fl reg_ip"  name="PLCIP" value="'+result[i].plcIp+'" placeholder=""/>'
+				+'<span class="fl fc_8 fs14 plc_span lh24">连接端口：</span>'
+				+'<input type="text" class="plc_input fs14 fc_8 fl"  name="PLCPort" value="'+result[i].plcPort+'" placeholder="" style="width:100px;"/>'
+				+'<img src="" class="ml30 fl" style="width:16px; margin-top:7px;display:none">'
+				+'<input type="hidden" name="plcConfigId" value="'+result[i].picId+'">'
 			+'</div>'
 			+'</li>')
 		}

@@ -365,7 +365,7 @@ function startWorkOneClick(){
 		publicTipMessage("busy","请等待...");
 		setTimeout(function(){
 			//检查网络连接
-			if(isNetStateConnect()){
+			//if(isNetStateConnect()){
 				//检查PLC连接
 				var PLCstus = connectPlcConn();//PLC的返回值
 				console.info(PLCstus.stus)
@@ -395,9 +395,9 @@ function startWorkOneClick(){
 				}else{
 					publicTipMessage("error","PLC连接失败，请检查PLC连接是否正常！");
 				}
-			}else{
+			/*}else{
 				publicTipMessage("error","网络连接出错，请检查网络是否正常！");
-			}
+			}*/
 		}, 100);	
 	})
 }
@@ -410,7 +410,7 @@ function  startWorkClick(){
 		publicTipMessage("busy","请等待...");
 		setTimeout(function(){
 			//检查网络连接
-			if(isNetStateConnect()){
+			/*if(isNetStateConnect()){*/
 				//检查PLC连接
 				var PLCstus = connectPlcConn();//PLC的返回值
 				console.info(PLCstus.stus)
@@ -446,9 +446,9 @@ function  startWorkClick(){
 				}else{
 					publicTipMessage("error","PLC连接失败，请检查PLC连接是否正常！");
 				}
-			}else{
+			/*}else{
 				publicTipMessage("error","网络连接出错，请检查网络是否正常！");
-			}
+			}*/
 		}, 100);
 		}else{//暂停
 			var params={

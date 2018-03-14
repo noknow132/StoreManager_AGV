@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.entity.PLCModel;
 
@@ -32,7 +34,7 @@ public class PLCConfig {
 	 * @param ushort_5 1000
 	 * @return
 	 */
-	public static int YKSPlcLink(int handle,String localip,int ushort_1, String plcip, int plcport, int ushort_3, int ushort_4, int ushort_5)
+	public static int YKSPlcLink(int handle,String localip,int ushort_1, String plcip, int plcport, int ushort_3, int ushort_4, int ushort_5,String str1,String str2)
 	{
 		if (ushort_3 > 7 | ushort_4 > 15){
 			return -3;
@@ -43,9 +45,7 @@ public class PLCConfig {
 		try{
 			String[] array3 = localip.split("\\.");//本机ip
 			String[] array4 = plcip.split("\\.");//plc ip
-
 			for (int i = 0; i < array4.length; i++) {
-
 				array1[i] = (byte)Integer.parseInt(array3[i]);
 				array2[i] = (byte)Integer.parseInt(array4[i]);
 			}
@@ -73,42 +73,42 @@ public class PLCConfig {
 			e.printStackTrace();
 			return -3;
 		}
-		return CheckConnect((byte)socketIndex);
+		return CheckConnect((byte)socketIndex,str1,str2);
 	}
 	/**
 	 * 
-	 * @param int_1
+	 * @param handle
 	 * @param plcMemory_0  
 	 * @param dataType_0
-	 * @param ushort_1  起始位置
-	 * @param ushort_2 个数
+	 * @param address  起始位置
+	 * @param count 个数
 	 * @return 
 	 */
 
-	public synchronized static Object YKSPlcRead(int handle, PlcMemory plcMemory_0, DataType dataType_0, short ushort_1, short ushort_2)
+	public synchronized static Object YKSPlcRead(int handle, PlcMemory plcMemory_0, DataType dataType_0, short Block,short address, short count,String str1,String str2)
 	{
-		Object[] object_0 = new Object[ushort_2];
-		int num = (int)(ushort_1 * 8);
+		Object[] object_0 = new Object[count];
+		int num = (int)(address * 8);
 
 		byte num2 = HandleToIndex(handle);
 		if (num2 < 0 || num2 >= PLClength)return -19;
 
-		int re = CheckConnect(num2);
+		int re = CheckConnect(num2,str1,str2);
 		if (re != 0) return re;
 
 		short num4 = 1;
 		switch (dataType_0){
-		case INT16: num4 = 2; break;
-		case UINT16: num4 = 2; break;
-		case DINT32: num4 = 4; break;
-		case HEX32: num4 = 4; break;
-		case REAL32: num4 = 4; break;
-		case BIN16: num4 = 2; break;
-		case CHAR8: num4 = 1; break;
-		case BYTE8: num4 = 1; break;
+			case INT16: num4 = 2; break;
+			case UINT16: num4 = 2; break;
+			case DINT32: num4 = 4; break;
+			case HEX32: num4 = 4; break;
+			case REAL32: num4 = 4; break;
+			case BIN16: num4 = 2; break;
+			case CHAR8: num4 = 1; break;
+			case BYTE8: num4 = 1; break;
 		}
 
-		short num5 = (short) (plcMemory_0 == PlcMemory.DR?1:0);
+		short block = (short) (plcMemory_0 == PlcMemory.DR?Block:0);
 
 		byte[] array = new byte[31];
 		array[0] = 3;
@@ -134,10 +134,10 @@ public class PLCConfig {
 		array[20] = 10;
 		array[21] = 16;
 		array[22] = 2;
-		array[23] = (byte)((ushort_2 * num4)/ 256);
-		array[24] = (byte)((ushort_2 * num4) % 256);
-		array[25] = (byte)(num5 / 256);
-		array[26] = (byte)(num5 % 256);
+		array[23] = (byte)((count * num4)/ 256);
+		array[24] = (byte)((count * num4) % 256);
+		array[25] = (byte)(block / 256);
+		array[26] = (byte)(block % 256);
 		array[27] = (byte)(128 + plcMemory_0.getIndex());
 		array[28] = (byte)(num / 65536L);//首地址
 		array[29] = (byte)(num % 65536L / 256L);
@@ -145,9 +145,8 @@ public class PLCConfig {
 
 		try{
 			if (!SendToPlc(num2, array)) return -11;
-
 			int st = 25;
-			int num6 = (st + (ushort_2 * num4));
+			int num6 = (st + (count * num4));
 			byte[] array2 = ReceiveFromPlc(num2, num6);
 			if (array2[0] != 3) return -14;
 
@@ -211,7 +210,7 @@ public class PLCConfig {
 	 * @param value       data实际要写入的数据
 	 * @return
 	 */
-	public synchronized static int YKSPlcWrite(int int_1, PlcMemory plcMemory_0, DataType dataType_0, short address, short count, byte[] value)
+	public synchronized static int YKSPlcWrite(int int_1, PlcMemory plcMemory_0, DataType dataType_0,short Block, short address, short count, byte[] value)
 	{
 		System.out.println("YKSPlcWrite");
 		try{
@@ -232,7 +231,8 @@ public class PLCConfig {
 
 			int num6 = count * num5 + 4; //这个项目中  为5
 			int num7 = count * num5 + 35; //这个项目中是  36
-			int num8 = plcMemory_0 == PlcMemory.DR ? 1 : 0; //1
+			int block = plcMemory_0 == PlcMemory.DR ? Block : 0; 
+			
 			byte[] array = new byte[35 + count * num5];//36个字节
 			array[0] = 3;
 			array[1] = 0;
@@ -259,8 +259,8 @@ public class PLCConfig {
 			array[22] = 2;
 			array[23] = (byte)(count * num5 / 256);
 			array[24] = (byte)(count * num5 % 256);
-			array[25] = (byte)(num8 / 256);
-			array[26] = (byte)(num8 % 256);
+			array[25] = (byte)(block / 256);
+			array[26] = (byte)(block % 256);
 			array[27] = (byte)(128 + plcMemory_0.getIndex());
 			array[28] = (byte)((long)fnum / 65536L);//首地址
 			array[29] = (byte)((long)fnum % 65536L / 256L);
@@ -318,34 +318,35 @@ public class PLCConfig {
 	}
 
 	//返回0是连接正常
-	public static int CheckConnect(byte i){
+	public static int CheckConnect(byte i,String str1,String str2){
 		if (plcModel[i] != null && plcModel[i].getLinked() == 0){
 			if (CreateSocket(i)) return -2;
-			return ConnectToPLC(i);
+			return ConnectToPLC(i,str1,str2);
 		}else{
 			return 0;
 		}
 	}
 
 	//返回0是连接正常
-	public static int CheckConnect2(int handle){
+	public static int CheckConnect2(int handle,String str1,String str2){
 		byte socketIndex = HandleToIndex( handle);
 		if (plcModel[socketIndex].getLinked() == 0){
 			if (CreateSocket(socketIndex)) return -2;
-			return ConnectToPLC(socketIndex);
+			//return ConnectToPLC(socketIndex,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2);
+			return ConnectToPLC(socketIndex,str1,str2);
 		}else{
 			return 0;
 		}
 	}
 
-	public static int ConnectToPLC(byte i){
+	public static int ConnectToPLC(byte i,String str1,String str2){
 		try{
-			String str1 = "03 00 00 16 11 E0 00 00 00 DF 00 C1 02 02 01 C2 02 02 01 C0 01 0A";
+			//String str1 = ConnDataStr.plc_200Smart_1;//"03 00 00 16 11 E0 00 00 00 DF 00 C1 02 02 01 C2 02 02 01 C0 01 0A";
 			byte[] data = str16ToByteArr(str1);
 			if (SendToPlc(i, data)){
 				byte[] bufferReceive = ReceiveFromPlc(i, 22);
 				if (bufferReceive[0] == 3 && bufferReceive[21] == 1){
-					String str2 = "03 00 00 19 02 F0 80 32 01 00 00 CC C1 00 08 00 00 F0 00 00 01 00 01 03 C0";
+					//String str2 = ConnDataStr.plc_200Smart_2;//"03 00 00 19 02 F0 80 32 01 00 00 CC C1 00 08 00 00 F0 00 00 01 00 01 03 C0";
 					if (SendToPlc(i, str16ToByteArr(str2))){
 						bufferReceive = ReceiveFromPlc(i, 27);
 						if (bufferReceive[0] == 3){
@@ -381,15 +382,14 @@ public class PLCConfig {
 		return false;
 	}
 
+	//SendToPlc2(byte i, "03 00 00 16 11 E0 00 00 00 01 00 C1 02 10 00 C2 02 03 01 C0 01 0A")
 	private static byte[] ReceiveFromPlc(int i, int recount)
 	{
 		byte[] array6 = new byte[recount];
 		if (recount > 1024) return array6;
 		try{
-
 			DataInputStream socketReader = new DataInputStream(plcModel[i].getSocket().getInputStream());
 			int LastError=WaitForData(recount,2000,socketReader); //等待回复的数据
-
 			if (LastError==0){
 				//				int cc=socketReader.read(array6,0,recount);
 				socketReader.read(array6,0,recount);
@@ -552,6 +552,25 @@ public class PLCConfig {
 		return array2;
 	}
 
+	/**
+	 *10进制转换为2进制，返回非零数位的下标
+	 */
+	public static List<Integer> str10To2Arr(String string_0){
+		int place[] = new int[15];
+		List<Integer> index = new ArrayList<Integer>();
+		int i=0;
+		int num = Integer.parseInt(string_0);
+		while(num > 0) {
+			place[i] = num%2;
+			if(place[i] != 0) {
+				index.add(i);
+			}
+			num=num>>1;
+			i++;
+		}
+		return index;
+	}
+	
 	public static byte[] str16ToByteArr(String string_0)
 	{
 		String[] array1 = string_0.split(" ");
@@ -625,6 +644,7 @@ public class PLCConfig {
 		}
 		return abyte0;  
 	}
+
 }
 
 

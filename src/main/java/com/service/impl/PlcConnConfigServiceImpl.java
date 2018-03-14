@@ -55,7 +55,7 @@ public class PlcConnConfigServiceImpl implements  IPlcConnConfigService{
 					return result;
 				}
 				//再判断连接是否正常
-				boolean flag = PLCController.PlcConn(Integer.parseInt(plcConfigList.get(i).getPicId()),plcConfigList.get(i).getPlcIp(), plcConfigList.get(i).getPlcPort());
+				boolean flag = PLCController.PlcConn_200(Integer.parseInt(plcConfigList.get(i).getPicId()),plcConfigList.get(i).getPlcIp(), plcConfigList.get(i).getPlcPort());
 				result.put("stus", flag);//true PLC连接成功，false PLC连接失败
 				if(flag == false){
 					return result;
@@ -82,7 +82,13 @@ public class PlcConnConfigServiceImpl implements  IPlcConnConfigService{
 //		    }else{
 //		    	flag= PLCController.PlcConn(0,plcConfig.getPlcIp(), plcConfig.getPlcPort());
 //		    }
-		    flag= PLCController.PlcConn(Integer.parseInt(plcId),plcConfig.getPlcIp(), plcConfig.getPlcPort());
+			String plcModel = plcConfig.getPlcModel();
+			if(plcModel!=null&&("西门子S7-200Smart".equals(plcModel.trim())) ){
+			    flag= PLCController.PlcConn_200(Integer.parseInt(plcId),plcConfig.getPlcIp(), plcConfig.getPlcPort());
+			}else if(plcModel!=null&&("西门子S7-1200".equals(plcModel.trim())) ){
+			    flag= PLCController.PlcConn_1200(Integer.parseInt(plcId),plcConfig.getPlcIp(), plcConfig.getPlcPort());
+
+			}
 			result.put("stus", flag);// true PLC连接成功，false PLC连接失败
 		}
 		return result;

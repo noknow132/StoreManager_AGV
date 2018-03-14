@@ -14,32 +14,27 @@
 		<result column="output_time" jdbcType="TIMESTAMP" property="outputTime" />
 		<result column="statue" jdbcType="INTEGER" property="statue" />
 		<result column="outlet_id" jdbcType="VARCHAR" property="outletId" />
+		<result column="data_from" jdbcType="VARCHAR" property="dataFrom" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		output_store_id, order_id, output_store_no, bar_code,
 		createstorehouse_id, store_id,
 		count, unit, output_time, statue,
-		outlet_id
+		outlet_id, data_from
 	</sql>
 
 	<!-- 新增出库单 -->
 	<insert id="insertOutputStore" parameterType="com.entity.OutputStore">
-		insert into
-		output_store (output_store_id, order_id, output_store_no,
-		bar_code,
-		createstorehouse_id, store_id,
-		count, unit, output_time,
-		statue,
-		outlet_id)
-		values (#{outputStoreId,jdbcType=VARCHAR},
-		#{orderId,jdbcType=VARCHAR},
-		#{outputStoreNo,jdbcType=VARCHAR},
-		#{barCode,jdbcType=VARCHAR}, #{createstorehouseId,jdbcType=VARCHAR},
-		#{storeId,jdbcType=VARCHAR},
-		#{count,jdbcType=INTEGER},
-		#{unit,jdbcType=VARCHAR},
-		#{outputTime,jdbcType=TIMESTAMP},
-		#{statue,jdbcType=INTEGER}, #{outletId,jdbcType=VARCHAR})
+		    insert into output_store (output_store_id, order_id, output_store_no, 
+      bar_code, createstorehouse_id, store_id, 
+      count, unit, output_time, 
+      statue, outlet_id, data_from
+      )
+    values (#{outputStoreId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{outputStoreNo,jdbcType=VARCHAR}, 
+      #{barCode,jdbcType=VARCHAR}, #{createstorehouseId,jdbcType=VARCHAR}, #{storeId,jdbcType=VARCHAR}, 
+      #{count,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, #{outputTime,jdbcType=TIMESTAMP}, 
+      #{statue,jdbcType=INTEGER}, #{outletId,jdbcType=VARCHAR}, #{dataFrom,jdbcType=VARCHAR}
+      )
 
 	</insert>
 
@@ -48,7 +43,7 @@
 		insert into output_store (output_store_id, order_id, output_store_no,
 		bar_code, createstorehouse_id, store_id,
 		count, unit, output_time,
-		statue, outlet_id
+		statue, outlet_id, data_from
 		)
 		values
 		<foreach collection="list" item="item" index="index"
@@ -63,7 +58,9 @@
 			#{item.count,jdbcType=INTEGER},
 			#{item.unit,jdbcType=VARCHAR},
 			#{item.outputTime,jdbcType=TIMESTAMP},
-			#{item.statue,jdbcType=INTEGER}, #{item.outletId,jdbcType=VARCHAR}
+			#{item.statue,jdbcType=INTEGER}, 
+			#{item.outletId,jdbcType=VARCHAR},
+			#{item.dataFrom,jdbcType=INTEGER}
 			)
 		</foreach>
 	</insert>
@@ -271,24 +268,18 @@
 		where output_store_id = #{outputStoreId,jdbcType=VARCHAR}
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.entity.OutputStore">
-		update
-		output_store
-		set order_id = #{orderId,jdbcType=VARCHAR},
-		output_store_no = #{outputStoreNo,jdbcType=VARCHAR},
-		bar_code =
-		#{barCode,jdbcType=VARCHAR},
-		createstorehouse_id =
-		#{createstorehouseId,jdbcType=VARCHAR},
-		store_id =
-		#{storeId,jdbcType=VARCHAR},
-		count = #{count,jdbcType=INTEGER},
-		unit =
-		#{unit,jdbcType=VARCHAR},
-		output_time =
-		#{outputTime,jdbcType=TIMESTAMP},
-		statue = #{statue,jdbcType=INTEGER},
-		outlet_id = #{outletId,jdbcType=VARCHAR}
-		where output_store_id =
-		#{outputStoreId,jdbcType=VARCHAR}
+		update output_store
+    set order_id = #{orderId,jdbcType=VARCHAR},
+      output_store_no = #{outputStoreNo,jdbcType=VARCHAR},
+      bar_code = #{barCode,jdbcType=VARCHAR},
+      createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR},
+      store_id = #{storeId,jdbcType=VARCHAR},
+      count = #{count,jdbcType=INTEGER},
+      unit = #{unit,jdbcType=VARCHAR},
+      output_time = #{outputTime,jdbcType=TIMESTAMP},
+      statue = #{statue,jdbcType=INTEGER},
+      outlet_id = #{outletId,jdbcType=VARCHAR},
+      data_from = #{dataFrom,jdbcType=VARCHAR}
+    where output_store_id = #{outputStoreId,jdbcType=VARCHAR}
 	</update>
 </mapper>

@@ -49,7 +49,7 @@
                     </a>
                     <div class="sanjiao pos_a none"></div>
                 </li>
-                <li class="fl pos_r">
+          <!--       <li class="fl pos_r">
                     <a class="fc_3 fs14 pos_r"  href="../LibraryOut/libraryOut.html">
                         <i class="iconfont icon-yidong"></i>
                         调库作业
@@ -62,7 +62,7 @@
                         移库作业
                     </a>
                     <div class="sanjiao pos_a none"></div>
-                </li>
+                </li> -->
                 <li class="fl pos_r">
                     <a class="fc_3  fs14 pos_r" href="../StorageMessage/storageMessage.html">
                         <i class="iconfont icon-tiaoxingma"></i>
@@ -85,21 +85,26 @@
                     <div class="sanjiao pos_a none"></div>
                 </li>
             </ul>
-            <button class="fr fc_3 fs14 add_nav_ul_right mt50" id="reset"  style="margin-right:10px;border:0;">入口复位</button>
-            <button class="fr fc_3 fs14 add_nav_ul_right mt50 add_nav_ul_qi" id="startWork" style="margin-right:10px;border:0;">启动</button>
+            <button class="fr fc_3 fs14 add_nav_ul_right mt30" id="reset"  style="margin-right:10px;border:0;">入口复位</button>
+            <button class="fr fc_3 fs14 add_nav_ul_right mt30 add_nav_ul_qi" id="startWork" style="margin-right:10px;border:0;">启动</button>
+            <div class="clearfix fr mt40" style="height:40px;line-height:40px;margin-top:67px;margin-right:-211px;">
+		        <!-- <span class="fl" style="color:#fff;height:40px;">连接</span> -->
+		        <div class="fl clearfix ml4" style="height:40px;">
+		            <input id="currentStartId" type="text"  style="width: 76px; background:none;border:0;" disabled="disabled" />
+		        </div>
+		
+		        <!-- <span class="fl ml4" style="color:#fff;height:40px;">状态</span> -->
+		        <div class="fl clearfix ml4" style="height:40px;">
+		            <input id="currentStatusId" type="text" style="width: 60px;background:none;border:0;" disabled="disabled"/>
+		        </div>
+		    </div>
         </div>
     </div>
 </div>
 
 <div class="wrap clearfix add_null_box">
     <!--搜索栏q-->
-    <div class="clearfix pl20 pr20 success_seach_box">
-    
-        <!-- <span class="fl" style="position: absolute;left:20px;top:42px;color:#fff;">当前行</span>
-        <div class="fl success_search_div" style="left: 70px;">
-            <input id="currentHId" type="text" class="success_seach" style="width: 60px;" disabled="disabled"/>
-        </div> -->
-        
+    <!-- <div class="clearfix pl20 pr20 success_seach_box">
         <span class="fl" style="position: absolute;left:20px;top:42px;color:#fff;">当前层</span>
         <div class="fl success_search_div" style="left:70px;">
             <input id="currentCId" type="text" class="success_seach" style="width: 60px;" disabled="disabled"/>
@@ -136,24 +141,7 @@
         <div class="fl success_search_div fangX4" style="left:956px;">
             <input id="putLId" type="text" class="success_seach" style="width: 60px;" disabled="disabled"/>
         </div>
-
-        <span class="fl qiD1" style="position: absolute;left:1060px;top:42px;color:#fff;">连接</span>
-        <div class="fl qiD2" style="left:1100px;margin-top: 42px; position: absolute;">
-            <input id="currentStartId" type="text"  style="width: 76px; background:none;border:0;" disabled="disabled" />
-        </div>
-
-        <span class="fl zhuangT1" style="position: absolute;left:1190px;top:42px;color:#fff;">状态</span>
-        <div class="fl zhuangT2" style="left:1230px;margin-top: 42px; position: absolute;">
-            <input id="currentStatusId" type="text" style="width: 60px;background:none;border:0;" disabled="disabled"/>
-        </div>
-
-       <!--  <span class="fl zuoY1" style="position: absolute;left:1060px;top:42px;color:#fff;">作业</span>
-        <div class="fl success_search_div zuoY2" style="left:1100px;">
-            <input type="text" class="success_seach" style="width: 60px;" disabled="disabled"/>
-        </div> -->
-
-<!--         <a href="DDhistory.html"  class="fr putIn_btn_T1" id="currInCho" style="margin-top: 34px;margin-right: 22px;"><i class="iconfont icon-ruku1-copy"></i> &nbsp;订单记录</a> -->
-    </div>
+    </div> -->
     <!--表格头部q-->
     <div class="clearfix success_table_back mt15">
         <div class="putIn_down">

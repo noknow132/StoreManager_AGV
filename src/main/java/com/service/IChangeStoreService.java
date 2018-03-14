@@ -2,10 +2,6 @@ package com.service;
 
 import java.util.List;
 import java.util.Map;
-
-import com.entity.CreateStoreHouse;
-import com.entity.OutputStoreDto;
-import com.entity.Temp;
 /**
  * @author 罗欢欢
  * @date 2018-1-5

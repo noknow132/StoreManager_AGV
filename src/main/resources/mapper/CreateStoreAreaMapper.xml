@@ -13,10 +13,11 @@
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="robot_no" jdbcType="VARCHAR" property="robotNo" />
+    <result column="place_height" jdbcType="DOUBLE" property="placeHeight" />
   </resultMap>
   <sql id="Base_Column_List">
     createstorearea_id, createstorehouse_id, area_name, rows_count, rows_start, columns_count, 
-    columns_start, sequence, creator, create_time, robot_no
+    columns_start, sequence, creator, create_time, robot_no, place_height
   </sql>
   
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -57,6 +58,11 @@
     select * from createstorearea c where c.createstorearea_id = #{0}
   </select>
   
+  <!-- 查询所有区位 -->
+  <select id="searchCreateStoreAreaAll"  resultMap="BaseResultMap">
+    select * from createstorearea
+  </select>
+  
   <!-- 根据id删除区位 -->
   <delete id="deleteCreateStoreAreaById" parameterType="java.lang.String">
   delete from createstorearea where createstorearea_id = #{0}
@@ -67,13 +73,13 @@
     insert into createstorearea (createstorearea_id, createstorehouse_id, 
       area_name, rows_count, rows_start, 
       columns_count, columns_start, sequence, 
-      creator, create_time, robot_no
-      )
+      creator, create_time, robot_no, 
+      place_height)
     values (#{createstoreareaId,jdbcType=VARCHAR}, #{createstorehouseId,jdbcType=VARCHAR}, 
       #{areaName,jdbcType=VARCHAR}, #{rowsCount,jdbcType=INTEGER}, #{rowsStart,jdbcType=INTEGER}, 
       #{columnsCount,jdbcType=INTEGER}, #{columnsStart,jdbcType=INTEGER}, #{sequence,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{robotNo,jdbcType=VARCHAR}
-      )
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{robotNo,jdbcType=VARCHAR}, 
+      #{placeHeight,jdbcType=DOUBLE})
   </insert>
 
 <!-- 修改区位 -->
@@ -88,7 +94,8 @@
       sequence = #{sequence,jdbcType=INTEGER},
       creator = #{creator,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      robot_no = #{robotNo,jdbcType=VARCHAR}
+      robot_no = #{robotNo,jdbcType=VARCHAR},
+      place_height = #{placeHeight,jdbcType=DOUBLE}
     where createstorearea_id = #{createstoreareaId,jdbcType=VARCHAR}
   </update>
 </mapper>

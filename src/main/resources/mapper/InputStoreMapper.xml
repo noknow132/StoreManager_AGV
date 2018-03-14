@@ -13,10 +13,11 @@
     <result column="unit" jdbcType="VARCHAR" property="unit" />
     <result column="input_time" jdbcType="TIMESTAMP" property="inputTime" />
     <result column="statue" jdbcType="INTEGER" property="statue" />
+    <result column="data_from" jdbcType="INTEGER" property="dataFrom" />
   </resultMap>
   <sql id="Base_Column_List">
     input_store_id, order_id, input_store_no, createstorehouse_id, store_id, bar_code, 
-    count, unit, input_time
+    count, unit, input_time, data_from
   </sql>
   <!-- 查询入库作业 -->
   <select id="searchInputStore" parameterType="java.lang.String" resultType="hashmap">
@@ -75,14 +76,16 @@
   
   <!-- 入库添加 -->
   <insert id="insertGoods" parameterType="com.entity.InputStore">
-    insert into input_store (input_store_id, order_id, order_detail_id, 
+        insert into input_store (input_store_id, order_id, order_detail_id, 
       input_store_no, createstorehouse_id, store_id, 
       bar_code, count, unit, 
-      input_time, statue)
+      input_time, statue, data_from
+      )
     values (#{inputStoreId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{orderDetailId,jdbcType=VARCHAR}, 
       #{inputStoreNo,jdbcType=VARCHAR}, #{createstorehouseId,jdbcType=VARCHAR}, #{storeId,jdbcType=VARCHAR}, 
       #{barCode,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, 
-      #{inputTime,jdbcType=TIMESTAMP}, #{statue,jdbcType=INTEGER})
+      #{inputTime,jdbcType=TIMESTAMP}, #{statue,jdbcType=INTEGER}, #{dataFrom,jdbcType=INTEGER}
+      )
   </insert>
 
 <!-- 修改入库 -->
@@ -97,7 +100,8 @@
       count = #{count,jdbcType=INTEGER},
       unit = #{unit,jdbcType=VARCHAR},
       input_time = #{inputTime,jdbcType=TIMESTAMP},
-      statue = #{statue,jdbcType=INTEGER}
+      statue = #{statue,jdbcType=INTEGER},
+      data_from = #{dataFrom,jdbcType=INTEGER}
     where input_store_id = #{inputStoreId,jdbcType=VARCHAR}
   </update>
 </mapper>

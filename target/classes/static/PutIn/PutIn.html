@@ -49,7 +49,7 @@
                     </a>
                     <div class="sanjiao pos_a none"></div>
                 </li>
-                <li class="fl pos_r">
+               <!--  <li class="fl pos_r">
                     <a class="fc_3 fs14 pos_r" href="../LibraryOut/libraryOut.html">
                         <i class="iconfont icon-yidong"></i>
                         调库作业
@@ -62,7 +62,7 @@
                         移库作业
                     </a>
                     <div class="sanjiao pos_a none"></div>
-                </li>
+                </li> -->
                 <li class="fl pos_r">
                     <a class="fc_3  fs14 pos_r" href="../StorageMessage/storageMessage.html">
                         <i class="iconfont icon-tiaoxingma"></i>
@@ -97,11 +97,21 @@
         <div class="fl success_search_div" style="left: 136px;">
             <input type="text" class="success_seach" name="barCode" placeholder="请输入条形码"/>
         </div>
-         <span class="fl" style="position: absolute;left:380px;top:42px;color:#fff;">数量</span>
-       <div class="fl success_search_div" style="left:420px;">
+        <span class="fl" style="position: absolute;left:380px;top:42px;color:#fff;">数量</span>
+        <div class="fl success_search_div" style="left:420px;">
             <input type="number" name="count" class="success_seach" style="width: 160px;" placeholder="仓位每箱最多200件"/>
         </div>
-
+          <span class="fl" style="position: absolute;left:604px;top:42px;color:#fff;">取货台</span>
+           <div class="fl success_search_div" style="left:657px;">
+              <select class="success_seach" style="width: 120px;">
+            	<option value= "">请选择</option>
+            	<option value= "1">1</option>
+            	<option value= "2">2</option>
+            	<option value= "3">3</option>
+            	<option value= "4">4</option>
+            	<option value= "5">5</option>
+            </select>
+		  </div>
 		<span class="fr putIn_btn_T1" style="margin-top: 34px;margin-left:10px;"  onclick="startInputStore()"><i class="iconfont icon-ruku1-copy"></i> &nbsp;执行入库作业</span>
         <span class="fr putIn_btn_T1" id="PutInCho" style="margin-top: 34px;" onclick="searchEmptyStoreHouse()">选择仓位</span>
         
@@ -137,7 +147,7 @@
                 <div>条码</div>
                 <!--<div>仓位状态</div>-->
                 <div>数量</div>
-                <!--<div>入库时间</div>-->
+                <div>取货台</div>
             </div>
             <!--表格内容q-->
             <ul id="moveS_ulAppend">

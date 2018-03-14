@@ -14,10 +14,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -35,7 +33,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class AuthorizationUtils {  
     public static void main1(String args[]) throws Exception {  
 //    	System.out.println("本机物理地址:"+getMac());  
-    	String code = getMachineCode();  
+//    	String code = getMachineCode();  
     	//code = code.substring(0, code.length()).replace('/', '2').replace('$', '1').replace('.', '0');
 //        System.out.println("运行环境编码：" + code);  
         
@@ -54,7 +52,7 @@ public class AuthorizationUtils {
   //检查注册文件是否存在，返回文件内容
     public static String[] createRegFile(String path,List<String> info){
 //    	String ip = getServerIp();
-    	String[] value = new String[2];
+    	String[] value = new String[3];
     	if(info.size()>0){
     		try {
     			path = path+"storeRegedit.txt"; 
@@ -65,14 +63,16 @@ public class AuthorizationUtils {
 		        OutputStreamWriter write = new OutputStreamWriter(new FileOutputStream(f),"gbk");      
 		        BufferedWriter out=new BufferedWriter(write);   
 		        String envo = getMachineCode();
+		        String mac = getMac();
 		        for (int i = 0; i < info.size(); i++) {
 		        	out.write(info.get(i)+"\r\n"); 
 				}
-		        out.write("Mac：" + getMac()+"\r\n"); 
+		        out.write("Mac：" + mac +"\r\n"); 
 		        out.write("申请码：" + envo); 
 		        out.close();
 		        value[0] = envo;
 		        value[1] = path;
+		        value[2] = mac;
 		        return value;
 	        } catch (Exception e) {
 	        	e.printStackTrace();
@@ -181,19 +181,14 @@ public class AuthorizationUtils {
     public static String getMachineCode() {  
         Set<String> result = new HashSet<>();  
         String mac = getMac();  
-//        System.out.println("mac:" + getMac());  
         result.add(mac);  
         Properties props = System.getProperties();  
         String javaVersion = props.getProperty("java.version");  
         result.add(javaVersion);  
-        // System.out.println("Java的运行环境版本：    " + javaVersion);  
         String javaVMVersion = props.getProperty("java.vm.version");  
         result.add(javaVMVersion);  
-        // System.out.println("Java的虚拟机实现版本：" + props.getProperty("java.vm.version"));  
         String osVersion = props.getProperty("os.version");  
         result.add(osVersion);  
-        // System.out.println("操作系统的版本：" + props.getProperty("os.version"));  
-        
         String code = new BCryptPasswordEncoder().encode(result.toString());
         return changeUnicode(getSplitString(code, "-", 4));  
   

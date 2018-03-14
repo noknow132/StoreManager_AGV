@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.IOutinPlaceDao">
+  <resultMap id="BaseResultMap" type="com.entity.OutinPlace">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="place_no" jdbcType="INTEGER" property="placeNo" />
+    <result column="createstorehouse_id" jdbcType="VARCHAR" property="createstorehouseId" />
+    <result column="createstorearea_id" jdbcType="VARCHAR" property="createstoreareaId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="place_height" jdbcType="INTEGER" property="placeHeight" />
+    <result column="place_column" jdbcType="INTEGER" property="placeColumn" />
+    <result column="out_no" jdbcType="VARCHAR" property="outNo" />
+    <result column="edit_date" jdbcType="TIMESTAMP" property="editDate" />
+    <result column="is_used" jdbcType="INTEGER" property="isUsed" />
+  </resultMap>
+  
+<!--   添加出入口配置 -->
+  <insert id="insertOutPlace" parameterType="com.entity.OutinPlace">
+    insert into outin_place (id, name, place_no, 
+      createstorehouse_id, createstorearea_id, 
+      type, place_height, place_column, 
+      out_no, edit_date, is_used
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{placeNo,jdbcType=INTEGER}, 
+      #{createstorehouseId,jdbcType=VARCHAR}, #{createstoreareaId,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{placeHeight,jdbcType=INTEGER}, #{placeColumn,jdbcType=INTEGER}, 
+      #{outNo,jdbcType=VARCHAR}, #{editDate,jdbcType=TIMESTAMP}, #{isUsed,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <!--   修改出入口配置 -->
+  <update id="updateOutPlace" parameterType="com.entity.OutinPlace">
+        update outin_place
+    set name = #{name,jdbcType=VARCHAR},
+      place_no = #{placeNo,jdbcType=INTEGER},
+      createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR},
+      createstorearea_id = #{createstoreareaId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      place_height = #{placeHeight,jdbcType=INTEGER},
+      place_column = #{placeColumn,jdbcType=INTEGER},
+      out_no = #{outNo,jdbcType=VARCHAR},
+      edit_date = #{editDate,jdbcType=TIMESTAMP},
+      is_used = #{isUsed,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 通过id查找出入口配置 -->
+  <select id="searchOutinPlaceById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from outin_place
+    where id = #{0}
+  </select>
+
+<!-- 通过id删除出入口配置 -->
+  <delete id="deleteOutPlaceById" parameterType="java.lang.String">
+    delete from outin_place
+    where id = #{0}
+  </delete>
+  
+  <!-- 查询所有出入口配置 -->
+  <select id="searchOutPlace"  parameterType="java.lang.String" resultType="hashmap">
+      select op.*,csa.area_name from outin_place op 
+      left join createstorearea csa on op.createstorearea_id = csa.createstorearea_id
+      <if test='type != null and type != ""'>
+      where op.type = #{type}
+      </if>
+  </select>
+  
+   <!-- 通过根据类型查找出入口配置-->
+  <select id="selectOutinPlaceByType" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+      select * from outin_place op where op.type=#{type} limit 0,1
+  </select>
+  
+   <!-- 根据出口编号查找取货台 -->
+  <select id="selectOutinPlaceByOutNo" parameterType="java.lang.String"  resultMap="BaseResultMap">
+    select * from outin_place op where op.out_no=#{outNo} limit 0,1
+  </select>
+  
+</mapper>

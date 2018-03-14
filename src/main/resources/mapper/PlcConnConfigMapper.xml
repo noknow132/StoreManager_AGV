@@ -9,7 +9,11 @@
     <result column="plc_port" jdbcType="INTEGER" property="plcPort" />
     <result column="refresh" jdbcType="INTEGER" property="refresh" />
     <result column="plc_type" jdbcType="INTEGER" property="plcType" />
+    <result column="plc_model" jdbcType="VARCHAR" property="plcModel" />
   </resultMap>
+  <sql id="Base_Column_List">
+    pic_id, plc_name, local_ip, plc_ip, plc_port, refresh, plc_type, plc_model
+  </sql>
   <!-- 查找所有plc配置 -->
   <select id="searchPlcConnConfigAll" parameterType="java.lang.String" resultMap="BaseResultMap">
     select * from plc_conn_config
@@ -43,10 +47,10 @@
   <insert id="insertPlcConfig" parameterType="com.entity.PlcConnConfig">
     insert into plc_conn_config (pic_id, plc_name, local_ip, 
       plc_ip, plc_port, refresh, 
-      plc_type)
+      plc_type,plc_model)
     values (#{picId,jdbcType=VARCHAR}, #{plcName,jdbcType=VARCHAR}, #{localIp,jdbcType=VARCHAR}, 
       #{plcIp,jdbcType=VARCHAR}, #{plcPort,jdbcType=INTEGER}, #{refresh,jdbcType=INTEGER}, 
-      #{plcType,jdbcType=INTEGER})
+      #{plcType,jdbcType=INTEGER}, #{plcModel,jdbcType=VARCHAR})
   </insert>
 
 <!-- 修改plc配置 -->
@@ -57,7 +61,8 @@
       plc_ip = #{plcIp,jdbcType=VARCHAR},
       plc_port = #{plcPort,jdbcType=INTEGER},
       refresh = #{refresh,jdbcType=INTEGER},
-      plc_type = #{plcType,jdbcType=INTEGER}
+      plc_type = #{plcType,jdbcType=INTEGER},
+      plc_model = #{plcModel,jdbcType=VARCHAR}
     where pic_id = #{picId,jdbcType=VARCHAR}
   </update>
 </mapper>

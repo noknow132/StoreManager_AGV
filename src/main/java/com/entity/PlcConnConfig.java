@@ -15,6 +15,8 @@ public class PlcConnConfig {
 
     private Integer plcType;
 
+    private String plcModel;
+
     public String getPicId() {
         return picId;
     }
@@ -69,5 +71,13 @@ public class PlcConnConfig {
 
     public void setPlcType(Integer plcType) {
         this.plcType = plcType;
+    }
+
+    public String getPlcModel() {
+        return plcModel;
+    }
+
+    public void setPlcModel(String plcModel) {
+        this.plcModel = plcModel == null ? null : plcModel.trim();
     }
 }

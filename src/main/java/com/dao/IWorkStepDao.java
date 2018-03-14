@@ -45,6 +45,13 @@ public interface IWorkStepDao {
 	WorkStep selectWorkStepByFringeCode(Map<String,Object> params);
 	
 	/**
+	 * 根据仓位id和作业状态查找作业
+	 * @param params 
+	 * @return
+	 */
+	  List<WorkStep> selectWorkStepByStoreIdAndStatus(Map<String,Object> params);
+	
+	/**
 	 * 根据状态查找作业数量
 	 * @param params
 	 * @return
@@ -100,6 +107,12 @@ public interface IWorkStepDao {
 	 * @return
 	 */
 	WorkStep searchWorkStepByStatueAndType(Map<String,Object> params );
+	
+	/**
+	 * 根据执行状态查找
+	 * @return
+	 */
+	WorkStep searchWorkStepByStatueAndTypeZZ();
 	
 	/**
 	 * 修改作业表

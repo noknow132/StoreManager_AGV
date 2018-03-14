@@ -21,6 +21,7 @@ import com.entity.RunStep;
 import com.entity.RunStepRecord;
 import com.entity.StoreHouse;
 import com.entity.StoreHouseRecord;
+import com.util.plcconn.ConnDataStr;
 import com.util.plcconn.DataType;
 import com.util.plcconn.PLCConfig;
 import com.util.plcconn.PLCController;
@@ -32,7 +33,7 @@ public class FinishWorkTool {
 	public static boolean  chainPlc(byte chainData ){
 		boolean falg=false;
 		try{
-			if(PLCConfig.CheckConnect2(1)>=0){
+			if(PLCConfig.CheckConnect2(1,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)>=0){
 				byte data[]=new byte[]{chainData};
 				falg = PLCController.wirteData(1, PlcMemory.DR,DataType.BYTE8,(short)102,(short)1,data );
 			}else{
@@ -48,8 +49,8 @@ public class FinishWorkTool {
 	public static int  ArrivalTableHasGood( ){
 		try{
 			while(true){
-				if(PLCConfig.CheckConnect2(1)>=0){
-					Object readData = PLCController.readData(1, PlcMemory.DR,DataType.BYTE8,(short)100,(short)1 );
+				if(PLCConfig.CheckConnect2(1,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)>=0){
+					Object readData = PLCController.readData_200(1, PlcMemory.DR,DataType.BYTE8,(short)100,(short)1 );
 					if(readData instanceof Object[]){
 						Object[] readData2By = (Object[])readData;	
 						if(((byte)readData2By[0] & 0xFF)==1){
@@ -69,8 +70,8 @@ public class FinishWorkTool {
 	public static int  OutputTableHasGood( ){
 		try{
 			while(true){
-				if(PLCConfig.CheckConnect2(1)>=0){
-					Object readData = PLCController.readData(1, PlcMemory.DR,DataType.BYTE8,(short)101,(short)1 );
+				if(PLCConfig.CheckConnect2(1,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2)>=0){
+					Object readData = PLCController.readData_200(1, PlcMemory.DR,DataType.BYTE8,(short)101,(short)1 );
 					if(readData instanceof Object[]){
 						Object[] readData2By = (Object[])readData;	
 						if(((byte)readData2By[0] & 0xFF)==0){
@@ -395,7 +396,7 @@ public class FinishWorkTool {
 			try {
 				Thread.sleep(300);
 				//启动
-				Object runstepObj=PLCConfig.YKSPlcRead(0,PlcMemory.DR,DataType.BYTE8,(short)7,(short)1);
+				Object runstepObj=PLCConfig.YKSPlcRead(0,PlcMemory.DR,DataType.BYTE8,(short)0,(short)7,(short)1,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2);
 				Object[] runstepArr=(Object[])runstepObj;
 				int runstep2=((byte)runstepArr[0] & 0xFF);
 				int[] startState = PLCController.getStartState();

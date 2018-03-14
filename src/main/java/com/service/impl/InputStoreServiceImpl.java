@@ -48,6 +48,7 @@ public class InputStoreServiceImpl implements IInputStoreService{
 			inputStore.setInputStoreNo(sdf.format(new Date()));//入库单号
 			inputStore.setCreatestorehouseId(cs.getCreatestorehouseId());//建库id
 			inputStore.setStoreId(inputStore.getStoreId());//仓库id
+			inputStore.setPlaceId(inputStore.getPlaceId());//取货台id
 			inputStore.setBarCode(inputStore.getBarCode());//条形码，货物码
 			inputStore.setCount(inputStore.getCount());//数量
 			inputStore.setUnit("箱");//单位
@@ -57,7 +58,7 @@ public class InputStoreServiceImpl implements IInputStoreService{
 			
 			/**当前仓位改为预占用**/
 			StoreHouse storeHouse = storeHouseDao.selectByStoreId(inputStore.getStoreId());
-			storeHouse.setStoreStatue(1);
+			storeHouse.setStoreStatue(12); //预占用无货
 			storeHouseDao.updateStoreHouse(storeHouse);
 			result.put("stus", "200");
 		} catch (Exception e) {
@@ -128,7 +129,8 @@ public class InputStoreServiceImpl implements IInputStoreService{
 
 				ws.setFringeCode(inputStore.getBarCode());
 				ws.setCount(inputStore.getCount());
-				ws.setPutPlace(storeHouse.getStoreId());
+				ws.setPutPlace(storeHouse.getStoreId());//放货位是仓库
+				ws.setGetPlace(inputStore.getPlaceId());//放货位是仓库
 				ws.setRebotCode("机器码");
 				ws.setInsertTime(new Date());
 				wsList.add(ws);

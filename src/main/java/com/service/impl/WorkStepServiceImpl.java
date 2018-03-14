@@ -46,10 +46,11 @@ import com.entity.WorkStep;
 import com.service.IWorkStepService;
 import com.thread.ApplicationContextProvider;
 import com.thread.DoWorkThreadPLC;
+import com.thread.DoWorkThreadPLCZZ;
 import com.thread.FinishWorkTool;
 
 import com.thread.WarnThreadPLC;
-
+import com.util.plcconn.ConnDataStr;
 import com.util.plcconn.PLCConfig;
 import com.util.plcconn.PLCController;
 
@@ -496,8 +497,7 @@ public class WorkStepServiceImpl implements IWorkStepService {
 	@Override
 	public Map<String, Object> getNowPlace() {
 		Map<String ,Object> result=new HashMap<String,Object>();
-		int isConnect = PLCConfig.CheckConnect((byte)0);
-		//System.out.println("isConnect:......."+isConnect);
+		/*int isConnect = PLCConfig.CheckConnect2(0,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2);
 		if(isConnect<0){
 			//当连接失败的时 把数据库中作业中的作业改成等待中
 			List<WorkStep> list2 = workStepDao.searchWorkStepByStatue("1");
@@ -538,7 +538,7 @@ public class WorkStepServiceImpl implements IWorkStepService {
 			e.printStackTrace();
 			result.put("code", 404);//连接失误
 
-		}
+		}*/
 		return result;
 	}
 
@@ -559,12 +559,12 @@ public class WorkStepServiceImpl implements IWorkStepService {
 					ConfigParam configParam = configParamDao.selectConfigParamOne();
 					configParam.setIsRun(1);
 					configParamDao.updateConfigParam(configParam);
-					WarnThreadPLC watp= ApplicationContextProvider.getBean("warnThreadPLC", WarnThreadPLC.class);
-					DoWorkThreadPLC dwtp= ApplicationContextProvider.getBean("doWorkThreadPLC", DoWorkThreadPLC.class);
+					//WarnThreadPLC watp= ApplicationContextProvider.getBean("warnThreadPLC", WarnThreadPLC.class);
+					DoWorkThreadPLCZZ dwtp= ApplicationContextProvider.getBean("doWorkThreadPLCZZ", DoWorkThreadPLCZZ.class);
 					ConfigParam cfg = this.configParamDao.selectConfigParamOne();
-					watp.setWarn(cfg.getWarn());
+				/*	watp.setWarn(cfg.getWarn());
 					watp.setWarnb(0);
-					watp.start();
+					watp.start();*/
 					dwtp.start();
 					result.put("stus", 200);//操作成功
 				}else{

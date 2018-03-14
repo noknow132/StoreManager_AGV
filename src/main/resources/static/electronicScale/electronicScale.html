@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<!--公共的js库-->
+<script src="../js/jquery-3.2.1.min.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="../image/logo4.ico" type="image/x-icon" />
+<script type="text/javascript" charset="utf-8" src="../js/bootstrap.min.js"></script>	
+<script type="text/javascript" charset="utf-8" src="../js/bootstrapValidator.js"></script>
+<script src="../js/bootstrap-table.min.js"></script>
+<link rel="stylesheet" href="../css/head.css" /><!--头部样式-->
+<link rel="stylesheet" href="../css/rest.css" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrapValidator.css" />
+<link rel="stylesheet" href="../css/bootstrap-table.min.css" />
+<!-- 字库引用 -->
+<link rel="stylesheet" href="../fonts/iconfont.css" />
+<link rel="stylesheet" href="../fonts/font/iconfont.css" />
+<!-- <link rel="stylesheet" href="css/lian/iconfont.css" /> -->
+<link rel="stylesheet" href="../fonts/confont/iconfont.css"/>
+
+<script type="text/javascript" src="../js/head.js"></script><!--头部js-->
+<!-- 电子称 -->
+<link rel="stylesheet" href="css/configuration.css" />
+<link rel="stylesheet" href="css/electronicScale.css" />
+<script type="text/javascript" src="js/electronicScale.js"></script>
+
+</head>
+<body>
+<!--头部q-->
+	<div class="head">
+		<div class="add_top"></div>
+		<!--导航-->
+		<div class="add_nav_box clearfix">
+			<div class="wrap add_nav clearfix" style="padding: 0 15px;">
+				<ul class="clearfix add_nav_ul fl">
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r"  href="../currentTask/currentTask.html">
+							<i class="iconfont icon-cangku-" style="font-size:42px;"></i>
+						   当前任务
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r" href="../PutIn/PutIn.html">
+							<i class="iconfont icon-ruku1-copy"></i>
+						入库作业
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+					 	<a class="fc_3 fs14 pos_r" href="../OutPut/outPut.html">
+					 		<i class="iconfont icon-renwu"></i>
+					 	出库作业
+					 	</a>
+					 	<div class="sanjiao pos_a none"></div>
+					</li>
+					<!-- <li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r" href="../LibraryOut/libraryOut.html">
+						<i class="iconfont icon-yidong"></i>
+						调库作业
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fc_3 fs14 pos_r"  href="../moveStorage/moveStorage.html">
+							<i class="iconfont icon-yufenjian"></i>
+						移库作业
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li> -->
+					<li class="fl pos_r">
+						<a class="fs14 pos_r select" href="../electronicScale/electronicScale.html">
+						  <i class="iconfont icon-tiaoxingma"></i>
+						电子称信息
+						</a>
+						<div class="sanjiao pos_a "></div>
+					</li>
+					<li class="fl pos_r">
+						<a class="fs14 pos_r" href="../StorageMessage/storageMessage.html">
+						  <i class="iconfont icon-tiaoxingma"></i>
+						仓库信息
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r none">
+						<a class="fc_3 fs14 pos_r" href="../userInfo/userInfo.html">
+						<i class="iconfont icon-guanliyuan1" ></i>
+						账号管理
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+					<li class="fl pos_r">
+						<a class=" fc_3 fs14 pos_r" href="../Configuration/configuration.html">
+						<i class="iconfont icon-shezhi" style="font-size:38px;"></i>
+						配置管理
+						</a>
+						<div class="sanjiao pos_a none"></div>
+					</li>
+				</ul>
+					<!-- <div class="fr fc_3 fs14 add_nav_ul_right mt50">入口复位</div> -->
+					
+			</div>
+		</div>
+	</div>
+<!-- 电子秤 -->
+<div class="wrap">
+	
+	<!--表格头部-->
+	<div class="clearfix config_table_back mt15">
+		
+	<!-- 第一行电子称 -->
+	<div style="width:100%;border-bottom:1px solid #999;color:#666;">电子称信息-取货口</div>
+	<div id="duiduojiDiv">
+	<ul>
+		<li>
+			<div class="mt20 clearfix"  style="display:inline-block;">
+				<span class="fl fc_8 fs14 plc_span">1号称：</span>
+				<input type="text" id="chainWeight1" class="plc_input fs14 fc_8 fl"  name="ele_one" placeholder="11.2" style="width:100px;"></input>
+				
+				<span class="fl fc_8 fs14 plc_span lh24">2号称：</span>
+				<input type="text" id="chainWeight2" class="plc_input fs14 fc_8 fl"  name="ele_two" placeholder="11.2" style="width:100px;"></input>
+				
+				<span class="fl fc_8 fs14 plc_span">3号称：</span>
+				<input type="text" id="chainWeight3" class="plc_input fs14 fc_8 fl"  name="ele_three" placeholder="11.2" style="width:100px;"></input>
+				
+				<span class="fl fc_8 fs14 plc_span">4号称：</span>
+				<input type="text" id="chainWeight4" class="plc_input fs14 fc_8 fl"  name="ele_fore" placeholder="11.2" style="width:100px;"></input>
+				
+				<span class="fl fc_8 fs14 plc_span">5号称：</span>
+				<input type="text" id="chainWeight5" class="plc_input fs14 fc_8 fl"  name="ele_five" placeholder="11.2" style="width:100px;"></input>
+	
+			</div>
+		</li>
+	</ul>
+	</div>
+
+
+
+<!-- 第二行电子称 -->
+<div class="mt30" style="width:100%;border-bottom:1px solid #999;color:#666;">电子称信息-放货口</div>
+<div id="shusonglianDiv">
+<ul>
+	<li>
+		<div class="mt20 clearfix" style="display:inline-block;">
+			<span class="fl fc_8 fs14 plc_span">6号称：</span>
+				<input  id="chainWeight6" type="text" class="plc_input fs14 fc_8 fl"  name="ele_six" placeholder="11.2" style="width:100px;"></input>
+				
+				<span class="fl fc_8 fs14 plc_span lh24">7号称：</span>
+				<input id="chainWeight7" type="text" class="plc_input fs14 fc_8 fl"  name="ele_seven" placeholder="11.2" style="width:100px;"></input>
+				
+				<span class="fl fc_8 fs14 plc_span">8号称：</span>
+				<input id="chainWeight8" type="text" class="plc_input fs14 fc_8 fl"  name="ele_eight" placeholder="11.2" style="width:100px;"></input>
+				
+				<span class="fl fc_8 fs14 plc_span">9号称：</span>
+				<input id="chainWeight9" type="text" class="plc_input fs14 fc_8 fl"  name="ele_nine" placeholder="11.2" style="width:100px;"></input>
+				
+				<span class="fl fc_8 fs14 plc_span">10号称：</span>
+				<input id="chainWeight10" type="text" class="plc_input fs14 fc_8 fl"  name="ele_ten" placeholder="11.2" style="width:100px;"></input>
+	
+				<span class="fl fc_8 fs14 plc_span">11号称：</span>
+				<input id="chainWeight11" type="text" class="plc_input fs14 fc_8 fl"  name="ele_eleven" placeholder="11.2" style="width:100px;"></input>
+	
+		</div>
+	</li>
+	
+	
+</ul>
+</div>
+
+
+	</div>
+ </div>
+
+
+</body>
+</html>

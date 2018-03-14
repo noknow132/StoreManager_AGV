@@ -57,30 +57,36 @@
 		</foreach>
 	</insert>
 
+	<!-- 仓库有货的数量 -->
+	<select id="selectCountStoreHouseCountHasGoods" 
+		resultType="java.lang.Integer">
+		select count(*) from  storehouse sh where  sh.store_statue=11 or sh.store_statue=2 
+	</select>
+	
 	<!-- 根据条件查找要出库的商品 -->
 	<select id="selectHasGoodsBySearch" parameterType="java.lang.String"
 		resultType="map">
-			SELECT
-				sh.store_id,
-				sh.createstorehouse_id,
-				sh.createstorearea_id,
-				sh.store_no,
-				sh.store_statue,
-				sh.good_no,
-				sh.order_id order_no,
-				sh.order_detail_id,
-				sh.count,
-				sh.unit,			
-				ins.input_store_no,
-				ins.input_time
-			FROM
-				storehouse sh			
-			LEFT JOIN input_store ins ON sh.order_id = ins.order_id
-			WHERE
-				sh.store_statue = 2
+		SELECT
+		sh.store_id,
+		sh.createstorehouse_id,
+		sh.createstorearea_id,
+		sh.store_no,
+		sh.store_statue,
+		sh.good_no,
+		sh.order_id order_no,
+		sh.order_detail_id,
+		sh.count,
+		sh.unit,
+		ins.input_store_no,
+		ins.input_time
+		FROM
+		storehouse sh
+		LEFT JOIN input_store ins ON sh.order_id = ins.order_id
+		WHERE
+		sh.store_statue = 2
 		<if test="search != null and search != ''">
-		
-			and (sh.order_id like CONCAT('%',#{search},'%')  or sh.store_no 
+
+			and (sh.order_id like CONCAT('%',#{search},'%') or sh.store_no
 			like CONCAT('%',#{search},'%') or
 			sh.good_no like CONCAT('%',#{search},'%'))
 		</if>
@@ -89,78 +95,80 @@
 	<!-- 根据多条件查找要出库的商品 -->
 	<select id="selectHasGoodsBySearchList" parameterType="java.util.List"
 		resultType="map">
-			SELECT
-				sh.store_id,
-				sh.createstorehouse_id,
-				sh.createstorearea_id,
-				sh.store_no,
-				sh.store_statue,
-				sh.good_no,
-				sh.order_id order_no,
-				sh.order_detail_id,
-				sh.count,
-				sh.unit,			
-				ins.input_store_no,
-				ins.input_time
-			FROM
-				storehouse sh			
-			LEFT JOIN input_store ins ON sh.order_id = ins.order_id
-			WHERE
-				sh.store_statue = 2
-<!-- 		<if test="search != null and search != ''">
-			and (sh.order_id like CONCAT('%',#{search},'%')  or sh.store_no 
-			like CONCAT('%',#{search},'%') or
-			sh.good_no like CONCAT('%',#{search},'%'))
-		</if> -->
+		SELECT
+		sh.store_id,
+		sh.createstorehouse_id,
+		sh.createstorearea_id,
+		sh.store_no,
+		sh.store_statue,
+		sh.good_no,
+		sh.order_id order_no,
+		sh.order_detail_id,
+		sh.count,
+		sh.unit,
+		ins.input_store_no,
+		ins.input_time
+		FROM
+		storehouse sh
+		LEFT JOIN input_store ins ON sh.order_id = ins.order_id
+		WHERE
+		sh.store_statue = 2
+		<!-- <if test="search != null and search != ''"> and (sh.order_id like 
+			CONCAT('%',#{search},'%') or sh.store_no like CONCAT('%',#{search},'%') or 
+			sh.good_no like CONCAT('%',#{search},'%')) </if> -->
 		<if test="searchList != null and searchList.size() >0 ">
-			and 
-			<foreach item="search" index="index" collection="searchList"  separator=" or " >  <!-- open="(" close=")" -->
-                (sh.order_id like CONCAT('%',#{search},'%')  or sh.store_no 
-			     like CONCAT('%',#{search},'%') or
-			      sh.good_no like CONCAT('%',#{search},'%'))
-            </foreach> 
+			and
+			<foreach item="search" index="index" collection="searchList"
+				separator=" or ">  <!-- open="(" close=")" -->
+				(sh.order_id like CONCAT('%',#{search},'%') or sh.store_no
+				like CONCAT('%',#{search},'%') or
+				sh.good_no like CONCAT('%',#{search},'%'))
+			</foreach>
 		</if>
 	</select>
 
-	<!-- 根据条件查找所有库位-->
+	<!-- 根据条件查找所有库位 -->
 	<select id="selectAllBySearch" parameterType="hashmap"
 		resultType="map">
 		select sh.store_id,sh.createstorehouse_id,sh.store_no,sh.store_statue,
 		sh.good_no,sh.order_id,sh.order_detail_id,sh.count,sh.unit,oinf.order_no,ins.input_store_no,ins.input_time
 		from storehouse sh left join order_info oinf on
 		oinf.order_id=sh.order_id left join input_store ins on sh.order_id=
-		ins.order_id   
+		ins.order_id
 		where 1=1
 		<if test="search != null and search != ''">
-			<!-- and (oinf.order_no like CONCAT('%',#{search},'%') or sh.store_no
-			like CONCAT('%',#{search},'%') or
-			sh.good_no like CONCAT('%',#{search},'%')) -->
-			
-			and 
-			<foreach item="item" index="index" collection="search"  separator=" or " >  <!-- open="(" close=")" -->
-                oinf.order_no like CONCAT('%',#{item},'%') 
-                or sh.store_no like CONCAT('%',#{item},'%') 
-                or sh.good_no like CONCAT('%',#{item},'%')
-            </foreach> 
+			<!-- and (oinf.order_no like CONCAT('%',#{search},'%') or sh.store_no 
+				like CONCAT('%',#{search},'%') or sh.good_no like CONCAT('%',#{search},'%')) -->
+
+			and
+			<foreach item="item" index="index" collection="search"
+				separator=" or ">  <!-- open="(" close=")" -->
+				oinf.order_no like CONCAT('%',#{item},'%')
+				or sh.store_no like CONCAT('%',#{item},'%')
+				or sh.good_no like CONCAT('%',#{item},'%')
+			</foreach>
 		</if>
 		<if test="csId != null and csId != ''">
 			and sh.createstorearea_id=#{csId}
 		</if>
 		<if test="storeName != null and storeName != ''">
 			and sh.createstorehouse_id in (
-			select  csh.createstorehouse_id  from createstorehouse csh where csh.store_name =#{storeName} 
+			select
+			csh.createstorehouse_id from createstorehouse csh where
+			csh.store_name =#{storeName}
 			)
 		</if>
 		order by sh.store_no
 	</select>
-	
+
 	<!-- 根据主键id查找仓库 -->
 	<select id="selectByStoreId" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		select
 		*
 		from storehouse
-		where store_id = #{storeId,jdbcType=VARCHAR}
+		where store_id =
+		#{storeId,jdbcType=VARCHAR}
 	</select>
 
 	<!-- 根据仓位编号和所属区位查找仓库 -->
@@ -169,119 +177,155 @@
 		select
 		*
 		from storehouse
-		where store_no = #{storeNo,jdbcType=VARCHAR}
-		and createstorearea_id = #{createStoreAreaId,jdbcType=VARCHAR}
+		where store_no =
+		#{storeNo,jdbcType=VARCHAR}
+		and createstorearea_id =
+		#{createStoreAreaId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据仓位编号和所属区位查找仓库 -->
+	<select id="selectByStoreNoAndCreateStoreHouseId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		*
+		from storehouse
+		where store_no =
+		#{storeNo,jdbcType=VARCHAR}
+		and createstorehouse_id =
+		#{createStoreHouseId,jdbcType=VARCHAR}
 	</select>
 
 	<!-- 查询空仓位 -->
-	<select id="searchEmptyStoreHouse" parameterType="String" resultMap="BaseResultMap">
+	<select id="searchEmptyStoreHouse" parameterType="String"
+		resultMap="BaseResultMap">
 		select * from storehouse
-		where store_statue = 0 
+		where store_statue = 0
 		and createstorehouse_id = #{createStoreHouseId}
 		<if test='storeNo != null and storeNo != ""'>
-		and store_no like CONCAT('%',#{storeNo},'%')
+			and store_no like CONCAT('%',#{storeNo},'%')
 		</if>
 		order by store_no
-	</select> 
+	</select>
+
+	<!-- 查询空仓位 -->
+	<select id="searchEmptyStoreHouseZZ" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from (select * from storehouse sh
+		where store_statue = 0 and createstorehouse_id = #{createStoreHouseId}
+		order by store_no desc) sh2
+		group by right(sh2.store_no,2)
+	</select>
 
 	<!-- 查询仓库信息 -->
-	<select id="searchStoreHouseByStoreStatus" parameterType="String" resultType="hashmap">
-		select sh.*,input.input_time from storehouse sh 
+	<select id="searchStoreHouseByStoreStatus" parameterType="String"
+		resultType="hashmap">
+		select sh.*,input.input_time from storehouse sh
 		inner join input_store input on sh.store_id = input.store_id
-		where sh.store_statue = #{storeStatus}
+		where
+		sh.store_statue = #{storeStatus}
 		<if test='condition != null and condition != ""'>
-		and (sh.order_id like CONCAT('%',#{condition},'%') or 
-		sh.store_no like CONCAT('%',#{condition},'%') or 
-		sh.good_no like CONCAT('%',#{condition},'%'))
+			and (sh.order_id like CONCAT('%',#{condition},'%') or
+			sh.store_no like CONCAT('%',#{condition},'%') or
+			sh.good_no like CONCAT('%',#{condition},'%'))
 		</if>
 	</select>
-	
+
 	<!-- 查询不在预移库范围内的仓库(移库使用) -->
-	<select id="searchStoreHouseByNotInMoveStore" parameterType="String" resultType="hashmap">
-		select sh.*,input.input_time from storehouse sh 
+	<select id="searchStoreHouseByNotInMoveStore" parameterType="String"
+		resultType="hashmap">
+		select sh.*,input.input_time from storehouse sh
 		left join input_store input on sh.order_id = input.order_id
-		where sh.store_statue = 2
+		where
+		sh.store_statue = 2
 		<if test='condition != null and condition != ""'>
-		and (sh.order_id like CONCAT('%',#{condition},'%') or 
-		sh.store_no like CONCAT('%',#{condition},'%') or 
-		sh.good_no like CONCAT('%',#{condition},'%'))
+			and (sh.order_id like CONCAT('%',#{condition},'%') or
+			sh.store_no like CONCAT('%',#{condition},'%') or
+			sh.good_no like CONCAT('%',#{condition},'%'))
 		</if>
 	</select>
-	
+
 	<!-- 根据建库id查询仓位 -->
-	<select id="searchStoreHouseByCreateStoreId" parameterType="java.lang.String" resultMap="BaseResultMap">
+	<select id="searchStoreHouseByCreateStoreId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
 		select * from storehouse
-		where createstorehouse_id = #{0} order by store_no
-	</select> 
-	
+		where createstorehouse_id = #{0}
+		order by store_no
+	</select>
+
 	<!-- 通过区位id 查找当前区位对应的所有仓位 -->
-  <select id="searchStoreHouseByCreateStoreAreaId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select * from storehouse s where s.createstorearea_id = #{0}
-  </select>
-  
-  <!-- 查询仓位信息（纠正仓位信息功能查询） -->
-  <select id="searchStoreHouseByIdOnStorageMessage" parameterType="java.lang.String" resultType="hashmap">
-    select sh.*,csh.store_name,csa.area_name from storehouse sh 
-	left join createstorehouse csh on sh.createstorehouse_id = csh.createstorehouse_id
-	left join createstorearea csa on csa.createstorearea_id = sh.createstorearea_id
-	where sh.store_id = #{0}
-  </select>
+	<select id="searchStoreHouseByCreateStoreAreaId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from storehouse s where s.createstorearea_id = #{0}
+	</select>
+
+	<!-- 查询仓位信息（纠正仓位信息功能查询） -->
+	<select id="searchStoreHouseByIdOnStorageMessage" parameterType="java.lang.String"
+		resultType="hashmap">
+		select sh.*,csh.store_name,csa.area_name from storehouse sh
+		left join createstorehouse csh on sh.createstorehouse_id =
+		csh.createstorehouse_id
+		left join createstorearea csa on csa.createstorearea_id =
+		sh.createstorearea_id
+		where sh.store_id = #{0}
+	</select>
 
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		delete from
 		storehouse
 		where store_id = #{storeId,jdbcType=VARCHAR}
 	</delete>
-	
+
 	<!-- 通过仓位号和区位id 删除仓位 -->
 	<delete id="deleteStoreByStoreNoAndAreaId" parameterType="java.lang.String">
-		delete from
+		delete
+		from
 		storehouse
 		where store_no = #{0}
 		and createstorearea_id = #{1}
 	</delete>
-	
+
 	<!-- 通过建库id删除所有对应的仓库 -->
 	<delete id="deleteStoreByCreateStoreHouseId" parameterType="java.lang.String">
 		delete from storehouse
 		where createstorehouse_id = #{0}
 	</delete>
-	
+
 	<!-- 通过区位id删除所有对应的仓库 -->
 	<delete id="deleteStoreByCreateStoreAreaId" parameterType="java.lang.String">
 		delete from storehouse
 		where createstorearea_id = #{0}
 	</delete>
-	
 
-<!-- 修改仓库 -->
+
+	<!-- 修改仓库 -->
 	<update id="updateStoreHouse" parameterType="com.entity.StoreHouse">
 		update storehouse
-    set createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR},
-      createstorearea_id = #{createstoreareaId,jdbcType=VARCHAR},
-      store_no = #{storeNo,jdbcType=VARCHAR},
-      store_statue = #{storeStatue,jdbcType=INTEGER},
-      good_no = #{goodNo,jdbcType=VARCHAR},
-      order_id = #{orderId,jdbcType=VARCHAR},
-      order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
-      count = #{count,jdbcType=INTEGER},
-      unit = #{unit,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
-    where store_id = #{storeId,jdbcType=VARCHAR}
+		set createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR},
+		createstorearea_id = #{createstoreareaId,jdbcType=VARCHAR},
+		store_no = #{storeNo,jdbcType=VARCHAR},
+		store_statue = #{storeStatue,jdbcType=INTEGER},
+		good_no = #{goodNo,jdbcType=VARCHAR},
+		order_id = #{orderId,jdbcType=VARCHAR},
+		order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
+		count = #{count,jdbcType=INTEGER},
+		unit = #{unit,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR}
+		where store_id = #{storeId,jdbcType=VARCHAR}
 	</update>
-	
+
 	<update id="updateManyStoreHouse" parameterType="com.entity.StoreHouse">
-		update storehouse
-    	set createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR},
-    	createstorearea_id = #{createstoreareaId,jdbcType=VARCHAR},
-      store_no = #{storeNo,jdbcType=VARCHAR},
-      store_statue = #{storeStatue,jdbcType=INTEGER},
-      good_no = #{goodNo,jdbcType=VARCHAR},
-      order_id = #{orderId,jdbcType=VARCHAR},
-      order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
-      count = #{count,jdbcType=INTEGER},
-      unit = #{unit,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR}
-    where store_id = #{storeId,jdbcType=VARCHAR}
+		update
+		storehouse
+		set createstorehouse_id = #{createstorehouseId,jdbcType=VARCHAR},
+		createstorearea_id = #{createstoreareaId,jdbcType=VARCHAR},
+		store_no = #{storeNo,jdbcType=VARCHAR},
+		store_statue = #{storeStatue,jdbcType=INTEGER},
+		good_no = #{goodNo,jdbcType=VARCHAR},
+		order_id = #{orderId,jdbcType=VARCHAR},
+		order_detail_id = #{orderDetailId,jdbcType=VARCHAR},
+		count = #{count,jdbcType=INTEGER},
+		unit = #{unit,jdbcType=VARCHAR},
+		remark = #{remark,jdbcType=VARCHAR}
+		where store_id = #{storeId,jdbcType=VARCHAR}
 	</update>
 </mapper>

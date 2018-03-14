@@ -9,6 +9,7 @@ import com.dao.IChangeStoreDao;
 import com.dao.IConfigParamDao;
 import com.dao.IOutputStoreDao;
 import com.entity.ConfigParam;
+import com.util.plcconn.ConnDataStr;
 import com.util.plcconn.DataType;
 import com.util.plcconn.PLCConfig;
 import com.util.plcconn.PLCController;
@@ -27,13 +28,11 @@ public class WarnThreadPLC  extends Thread{
 		ConfigParam cfp = null;
 		try{
 			while(!exit){
-				//System.out.println("123123123123");
-				 
-				int checkNum = PLCConfig.CheckConnect2(0);
+				int checkNum = PLCConfig.CheckConnect2(0,ConnDataStr.plc_200Smart_1,ConnDataStr.plc_200Smart_2);
 				if(checkNum<0){
 					continue;
 				}
-				Object[] readData = (Object[])PLCController.readData(0,PlcMemory.DR,DataType.BYTE8,(short)40,(short)1);	
+				Object[] readData = (Object[])PLCController.readData_200(0,PlcMemory.DR,DataType.BYTE8,(short)40,(short)1);	
 				cfp = configParamDao.selectConfigParamOne();
 				int warnb2=(byte)readData[0] & 0xFF;
 				if(warnb2!=0&&warnb2!=warnb){
